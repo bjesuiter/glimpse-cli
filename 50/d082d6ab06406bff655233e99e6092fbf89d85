@@ -1,0 +1,45 @@
+.clawpatch/runs/20260528T205026-d8735c.json
+  s_9c579781abc78c::t_23ecedd3ebf791 13-14
+.clawpatch/features/feat_cli-command_012418b101.json
+  s_9c579781abc78c::t_23ecedd3ebf791 85,105
+test/cli-helpers.test.ts
+  s_9c579781abc78c::t_cc2e93f2d5741e 1,3-11
+  s_9c579781abc78c::t_2a1c7ad24f21bc 2
+.clawpatch/findings/fnd_sig-feat-cli-command-012418b101-_629eb64cab.json
+  s_9c579781abc78c::t_23ecedd3ebf791 39-61,66
+dist/cli.mjs.map
+  ai_agent 1
+src/cli-helpers.ts
+  s_9c579781abc78c::t_7d83fbd21d50fc 1-12
+examples/02_counter.sh
+  s_ffa560ca55e7e1::t_c0766de75193fd 81,83-85,88-91,96
+dist/cli.mjs
+  s_9c579781abc78c::t_a3895e4e4a0346 175-182,252,261
+src/cli.ts
+  s_9c579781abc78c::t_f68bfbc41e0cd0 25-26
+  s_9c579781abc78c::t_3985bcc4032f6c 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "50d082d6ab06406bff655233e99e6092fbf89d85",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    },
+    "s_ffa560ca55e7e1": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7062-212a-7159-9cd9-8e4d829147b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
