@@ -1,0 +1,42 @@
+examples/02_counter.sh
+  s_6d8abf04006c4c::t_f06d87acf9930f 68-74,76,86,97
+  s_6d8abf04006c4c::t_24c17392fc48d7 96,98-103,105
+.clawpatch/runs/20260528T204729-46e49d.json
+  s_9c579781abc78c::t_6ef4ccb39681d5 13-14
+test/daemon.test.ts
+  s_9c579781abc78c::t_27fcc7d35116fb 1-8
+.clawpatch/findings/fnd_sig-feat-cli-command-012418b101-_2073d50d6a.json
+  s_9c579781abc78c::t_6ef4ccb39681d5 39-60,65
+src/daemon/daemon.ts
+  s_9c579781abc78c::t_23983fc7913426 24,28-29
+dist/daemon-main.mjs
+  s_9c579781abc78c::t_89f3458ae31c45 174,179-181,232,239
+src/daemon/window-registry.ts
+  s_9c579781abc78c::t_c6bff6f13eedd7 30-31
+dist/daemon-main.mjs.map
+  ai_agent 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "01ae7a9fe82c4dd399c90dad2df829c1b121a3fc",
+  "prompts": {},
+  "sessions": {
+    "s_6d8abf04006c4c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7056-e99f-7a21-804f-93934e504ce7",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    },
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
