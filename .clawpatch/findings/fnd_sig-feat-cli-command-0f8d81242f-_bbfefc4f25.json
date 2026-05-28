@@ -29,11 +29,37 @@
   "whyTestsDoNotAlreadyCoverThis": "No packaging or install smoke tests are linked, so there is nothing verifying the published bin works in a clean environment.",
   "suggestedRegressionTest": "Add a release smoke test that packs/installs the package and verifies the installed `glimpse` executable starts successfully in the supported runtime, plus a metadata check that the required runtime is declared.",
   "minimumFixScope": "src/cli.ts and package.json",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T203734-886c8d",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence paths still exist, but the relevant behavior has changed. src/cli.ts:1 is now `#!/usr/bin/env node`, not Bun. package.json:5-7 now publishes `glimpse` as `./dist/cli.mjs`, not raw TypeScript. The built published artifact dist/cli.mjs:1 also has `#!/usr/bin/env node`, and tsdown.config.ts targets Node (`platform: 'node'`, `target: 'node20'`). A direct smoke check with `node dist/cli.mjs --help` succeeds and prints the CLI help, showing the published entrypoint no longer requires Bun to start. `bun test` also passes 6 tests. Bun remains used for development scripts (`prepack`, `test`, `start`), but that is no longer evidence that the installed npm bin depends on Bun at runtime.",
+      "commands": [
+        "pwd && rg -n '^(#!|\\s*\"bin\"|\\s*\"engines\"|bun|glimpse)' src/cli.ts package.json README.md 2>/dev/null",
+        "sed -n '1,80p' src/cli.ts",
+        "sed -n '1,220p' package.json",
+        "rg -n 'pack|npm pack|bin|engines|bun|release|smoke|install' . --glob '!node_modules/**' --glob '!dist/**'",
+        "rg --files -g 'dist/**' -g 'tsdown*' -g 'vite*' -g 'rollup*'",
+        "sed -n '1,80p' dist/cli.mjs 2>/dev/null",
+        "sed -n '1,120p' tsdown.config.* 2>/dev/null",
+        "node dist/cli.mjs --help 2>&1 | sed -n '1,80p'",
+        "bun test",
+        "node -e \"const p=require('./package.json'); console.log(JSON.stringify({bin:p.bin, engines:p.engines, files:p.files, scripts:p.scripts}, null, 2))\"",
+        "rg -n \"#!/usr/bin/env bun|bun src/cli|bun run build|bun test|engines|dist/cli.mjs|usr/bin/env node\" src package.json dist test docs README.md examples tsdown.config.ts",
+        "nl -ba package.json | sed -n '1,30p'",
+        "nl -ba src/cli.ts | sed -n '1,8p'",
+        "nl -ba dist/cli.mjs | sed -n '1,8p'",
+        "nl -ba tsdown.config.ts | sed -n '1,30p'"
+      ],
+      "createdAt": "2026-05-28T20:38:33.708Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-0f8d81242f_24db495dd0",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:20.965Z",
-  "updatedAt": "2026-05-28T20:32:20.965Z"
+  "updatedAt": "2026-05-28T20:38:33.707Z"
 }
