@@ -36,11 +36,31 @@
   "whyTestsDoNotAlreadyCoverThis": "There are no parallel-start integration tests; current tests are single-threaded helper tests only.",
   "suggestedRegressionTest": "A test that fires two `ensureDaemon()` calls concurrently and asserts that exactly one daemon instance is started and both callers complete successfully.",
   "minimumFixScope": "src/ipc/client.ts::ensureDaemon and related daemon startup coordination",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T204729-46e49d",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original client evidence no longer exists in the reported form. src/ipc/client.ts now has acquireStartupLock() at lines 16-23 returning true only when mkdirSync(lockPath()) succeeds, and ensureDaemon() at lines 33-49 only spawns when ownsLock is true. Non-owners wait for ping success or lock release at lines 51-60 and do not spawn while the peer owns startup. The server still unlinks the socket at src/ipc/server.ts lines 7-8, but the client-side duplicate-spawn race described by the finding has been addressed. Existing tests pass, though there is still no explicit parallel-start regression test in test/ipc-client.test.ts.",
+      "commands": [
+        "rg -n \"ensureDaemon|lockPath|socketPath|daemon-main|unlinkSync|mkdirSync\" src test tests . --glob '!node_modules'",
+        "git status --short",
+        "rg --files -g 'package.json' -g '*test*' -g '*spec*' -g 'vitest.config*' -g 'jest.config*' -g 'tsconfig.json'",
+        "nl -ba src/ipc/client.ts | sed -n '1,120p'",
+        "nl -ba src/ipc/server.ts | sed -n '1,80p'",
+        "nl -ba test/ipc-client.test.ts | sed -n '1,220p'",
+        "cat package.json",
+        "bun test test/ipc-client.test.ts",
+        "bun test"
+      ],
+      "createdAt": "2026-05-28T20:48:08.368Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-012418b101_4832d0f92d",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:33:25.790Z",
-  "updatedAt": "2026-05-28T20:33:25.790Z"
+  "updatedAt": "2026-05-28T20:48:08.368Z"
 }

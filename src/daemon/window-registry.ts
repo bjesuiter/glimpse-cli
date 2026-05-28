@@ -27,6 +27,7 @@ export class WindowRegistry {
   send(ref: string, type: string, data: unknown) { const w = this.must(ref); if (!w.bridge) throw new Error('Window has no bridge'); w.win!.send(`window.dispatchEvent(new CustomEvent('glimpse-message',{detail:${JSON.stringify({ type, data })}}))`); }
   close(ref: string, force = false) { const w = this.must(ref); if (force) { w.win?.close(); this.windows.delete(w.id); return; } w.win?.close(); this.markClosed(w); }
   closeAll(force = false) { for (const w of [...this.windows.values()].filter(w => w.state === 'open')) this.close(w.id, force); }
-  private must(ref: string) { const w = this.resolve(ref); if (!w || w.state !== 'open') throw new Error(`Window ${ref} is not open.`); return w; }
+  requireOpen(ref: string) { const w = this.resolve(ref); if (!w || w.state !== 'open') throw new Error(`Window ${ref} is not open.`); return w; }
+  private must(ref: string) { return this.requireOpen(ref); }
   private markClosed(w: WindowRecord) { if (w.state === 'closed') return; w.state = 'closed'; w.queue.system('window.closed'); w.closedAt = Date.now(); w.expiresAt = w.closedAt + 30_000; w.name = undefined; setTimeout(() => this.windows.delete(w.id), 30_000).unref?.(); }
 }

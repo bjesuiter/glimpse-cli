@@ -171,10 +171,13 @@ var WindowRegistry = class {
 	closeAll(force = false) {
 		for (const w of [...this.windows.values()].filter((w) => w.state === "open")) this.close(w.id, force);
 	}
-	must(ref) {
+	requireOpen(ref) {
 		const w = this.resolve(ref);
 		if (!w || w.state !== "open") throw new Error(`Window ${ref} is not open.`);
 		return w;
+	}
+	must(ref) {
+		return this.requireOpen(ref);
 	}
 	markClosed(w) {
 		if (w.state === "closed") return;
@@ -226,13 +229,14 @@ async function dispatch(method, p = {}) {
 	}
 }
 function wait(window, type, timeout) {
+	registry.requireOpen(window);
 	return new Promise((resolve, reject) => {
 		const deadline = timeout ? setTimeout(() => {
 			clearInterval(iv);
 			reject(/* @__PURE__ */ new Error("timeout"));
 		}, timeout) : null;
 		const iv = setInterval(() => {
-			const ev = registry.resolve(window)?.queue.read(type);
+			const ev = registry.requireOpen(window).queue.read(type);
 			if (ev) {
 				if (deadline) clearTimeout(deadline);
 				clearInterval(iv);

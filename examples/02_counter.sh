@@ -65,9 +65,15 @@ HTML=$(cat <<'HTML'
 HTML
 )
 
-$GLIMPSE open --name "$WINDOW_NAME" --replace --width 380 --height 430 --title "Glimpse Counter" --html "$HTML"
+open_json=$($GLIMPSE open --name "$WINDOW_NAME" --replace --width 380 --height 430 --title "Glimpse Counter" --html "$HTML")
+echo "$open_json"
+WINDOW_REF=$(printf '%s' "$open_json" | sed -n 's/.*"windowId":"\([^"]*\)".*/\1/p')
+if [[ -z "$WINDOW_REF" ]]; then
+  echo "Failed to open counter window." >&2
+  exit 1
+fi
 
-echo "Opened window '$WINDOW_NAME'."
+echo "Opened window '$WINDOW_NAME' ($WINDOW_REF)."
 echo "Polling reliable counter snapshots. Press Ctrl-C to stop listening; close the window when done."
 
 # For UI control loops, prefer observing state snapshots over treating every
@@ -77,7 +83,7 @@ echo "Polling reliable counter snapshots. Press Ctrl-C to stop listening; close 
 last_seq=0
 while true; do
   while true; do
-    event_json=$($GLIMPSE read -w "$WINDOW_NAME" --type counter.snapshot)
+    event_json=$($GLIMPSE read -w "$WINDOW_REF" --type counter.snapshot)
     if [[ "$event_json" == *'"event":null'* ]]; then
       break
     fi
@@ -87,5 +93,13 @@ while true; do
       last_seq="$seq"
     fi
   done
+
+  closed_json=$($GLIMPSE read -w "$WINDOW_REF" --type window.closed)
+  if [[ "$closed_json" != *'"event":null'* ]]; then
+    echo "$closed_json"
+    echo "Window closed; stopping listener."
+    break
+  fi
+
   sleep 0.05
- done
+done

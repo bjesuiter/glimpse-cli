@@ -21,10 +21,12 @@ export async function dispatch(method: string, p: any = {}) {
 }
 
 function wait(window: string, type?: string, timeout?: number) {
+  registry.requireOpen(window);
   return new Promise((resolve, reject) => {
     const deadline = timeout ? setTimeout(() => { clearInterval(iv); reject(new Error('timeout')); }, timeout) : null;
     const iv = setInterval(() => {
-      const ev = registry.resolve(window)?.queue.read(type);
+      const w = registry.requireOpen(window);
+      const ev = w.queue.read(type);
       if (ev) { if (deadline) clearTimeout(deadline); clearInterval(iv); resolve({ event: ev }); }
     }, 50);
   });
