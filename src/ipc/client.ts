@@ -4,11 +4,17 @@ import { existsSync, mkdirSync, rmdirSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { socketPath, lockPath } from '../platform/paths.ts';
 
+function daemonEntrypoint() {
+  const bundled = new URL('./daemon-main.mjs', import.meta.url).pathname;
+  if (existsSync(bundled)) return bundled;
+  return new URL('../daemon-main.ts', import.meta.url).pathname;
+}
+
 async function ping() { try { await request('ping', {}, false); return true; } catch { return false; } }
 export async function ensureDaemon() {
   if (await ping()) return;
   try { mkdirSync(lockPath()); } catch {}
-  spawn(process.execPath, [new URL('../daemon-main.ts', import.meta.url).pathname], { detached: true, stdio: 'ignore', env: process.env }).unref();
+  spawn(process.execPath, [daemonEntrypoint()], { detached: true, stdio: 'ignore', env: process.env }).unref();
   const deadline = Date.now() + 5000;
   while (Date.now() < deadline) { if (await ping()) { try { rmdirSync(lockPath()); } catch {} ; return; } await new Promise(r => setTimeout(r, 100)); }
   throw new Error('Daemon startup timed out');

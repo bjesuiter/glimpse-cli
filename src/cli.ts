@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { Command } from 'commander';
 import { readFileSync, existsSync } from 'node:fs';
 import { request } from './ipc/client.ts';
