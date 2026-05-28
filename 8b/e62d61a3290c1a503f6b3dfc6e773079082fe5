@@ -1,0 +1,45 @@
+src/ipc/client.ts
+  s_9c579781abc78c::t_96f9cd9b39ca83 7,9-12,17
+  s_9c579781abc78c::t_a3021098a5502d 8
+dist/glimpse-adapter-g-UHqPu4.mjs.map
+  ai_agent 1
+tsdown.config.ts
+  s_9c579781abc78c::t_e09a725403bfe9 1-16
+package.json
+  s_9c579781abc78c::t_46c26c276546a0 6
+  s_9c579781abc78c::t_760dfa60cc6874 1-5,7-27
+src/cli.ts
+  s_9c579781abc78c::t_154ef181a688db 1
+dist/daemon-main.mjs
+  s_9c579781abc78c::t_80c3a124aa875e 1
+  s_9c579781abc78c::t_d703eb641455ec 2-250
+src/daemon-main.ts
+  s_9c579781abc78c::t_40e18f3e1bda87 1
+bun.lock
+  ai_agent 15,21-84,87-90,93-98,101-102,105-112,115-118,121-152,155-156,160-165
+dist/cli.mjs.map
+  ai_agent 1
+dist/cli.mjs
+  s_9c579781abc78c::t_80c3a124aa875e 1
+  s_9c579781abc78c::t_d703eb641455ec 2-323
+dist/daemon-main.mjs.map
+  ai_agent 1
+dist/glimpse-adapter-g-UHqPu4.mjs
+  s_9c579781abc78c::t_d703eb641455ec 1-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "8be62d61a3290c1a503f6b3dfc6e773079082fe5",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
