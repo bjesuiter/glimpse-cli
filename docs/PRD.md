@@ -6,6 +6,24 @@
 
 macOS is the first supported implementation target, but the command and data model should remain platform-neutral.
 
+## Implementation Stack
+
+v1 should use a minimal dependency policy while avoiding custom implementations for well-solved infrastructure.
+
+- Runtime/tooling: Bun with TypeScript.
+- Binary goal: keep the code compatible with `bun build --compile` so `glimpse` can become a standalone binary.
+- CLI parser: `commander`.
+- JSON validation: `valibot` for command inputs, IPC payloads, command results, and persisted daemon state.
+- Logging: `evlog` for structured daemon/CLI diagnostics.
+- UI runtime: Glimpse JavaScript SDK/runtime.
+- File watching: start with built-in file watching for single-file HTML watch mode. If reliability issues appear or directory watching is needed, prefer `@parcel/watcher` over `chokidar`. Avoid `chokidar` by default due to prior memory-leak concerns and because v1 does not need glob-heavy watcher features. Before adopting `@parcel/watcher`, verify compatibility with `bun build --compile` because it uses native components.
+- IPC: built-in Unix domain sockets via `node:net` on macOS.
+- IDs: built-in `node:crypto` UUIDs.
+- URL/DNS checks: built-in `node:url`, `node:dns/promises`, and `node:net`.
+- Duration parsing: small local helper for `ms`, `s`, and `m` suffixes.
+
+Avoid additional dependencies in v1 unless they remove substantial complexity or address a proven reliability issue.
+
 ## v1 Commands
 
 - `glimpse prompt <html-source>`: one-shot foreground interaction.
