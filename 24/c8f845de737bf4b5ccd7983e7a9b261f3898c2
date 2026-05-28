@@ -1,0 +1,56 @@
+src/daemon/event-queue.ts
+  s_9c579781abc78c::t_2124fa07cf3435 1-16
+src/types.d.ts
+  s_9c579781abc78c::t_7c4a81ac02b18c 1-4
+src/ipc/server.ts
+  s_9c579781abc78c::t_36d007f3f8bcbf 1-27
+src/utils/duration.ts
+  s_9c579781abc78c::t_9368b3dd5ebaeb 1-9
+examples/counter.sh
+  s_9c579781abc78c::t_785c1d49381c74 1-44,47,51,57-69,71,77,90
+  s_9c579781abc78c::t_7cba9cdbf9767e 70,72-76,79,83-87,89
+  s_9c579781abc78c::t_154cc74a16c879 45-46,48-50,52-56
+  s_9c579781abc78c::t_85300e34040b9f 78,80-82,88
+src/platform/url-policy.ts
+  s_9c579781abc78c::t_2c80dc74204c9b 1-32
+src/utils/json.ts
+  s_9c579781abc78c::t_db006f1594d45b 1-16
+src/daemon/window-registry.ts
+  s_9c579781abc78c::t_abc9d178226419 1-32
+src/daemon/daemon.ts
+  s_9c579781abc78c::t_c10d9386a46ef0 1-31
+src/runtime/glimpse-adapter.ts
+  s_9c579781abc78c::t_0bc1dc432f75e1 12-13,15
+  s_9c579781abc78c::t_783b5ac1a8cbe1 1-11,14,16-24
+package.json
+  s_9c579781abc78c::t_601dadb1f8825b 1
+src/ipc/protocol.ts
+  s_9c579781abc78c::t_6ea6bbb61cf0cf 1-7
+src/daemon-main.ts
+  s_9c579781abc78c::t_7cac1f3d70fe62 1-4
+src/cli.ts
+  s_9c579781abc78c::t_17d380280aaaca 1-32
+  s_9c579781abc78c::t_43b7c06b787839 33-38
+test/core.test.ts
+  s_9c579781abc78c::t_a5aa5cb4d1c599 1-28
+tsconfig.json
+  s_9c579781abc78c::t_18c265b227c2e6 1
+src/platform/paths.ts
+  s_9c579781abc78c::t_fdc4c310816a99 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "24c8f845de737bf4b5ccd7983e7a9b261f3898c2",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
