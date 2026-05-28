@@ -1,0 +1,22 @@
+examples/02_counter.sh
+  s_9c579781abc78c::t_657d2002ad044f 5
+examples/01_prompt.sh
+  s_9c579781abc78c::t_92a22660d025ea 60
+  s_9c579781abc78c::t_eaca50c4cdd6e9 1-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "9e00f53d98f8209e14d38b392c385366249afc6a",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
