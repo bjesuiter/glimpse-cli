@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feat_cli-command_012418b101",
+  "title": "Node source src",
+  "summary": "Node/TypeScript source group src with 12 files.",
+  "kind": "cli-command",
+  "source": "node-source-group",
+  "confidence": "medium",
+  "entrypoints": [
+    {
+      "path": "package.json",
+      "symbol": "src",
+      "route": null,
+      "command": null
+    }
+  ],
+  "ownedFiles": [
+    {
+      "path": "src/daemon-main.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/daemon/daemon.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/daemon/event-queue.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/daemon/window-registry.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/ipc/client.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/ipc/protocol.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/platform/paths.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/platform/url-policy.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/runtime/glimpse-adapter.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/utils/duration.ts",
+      "reason": "source group src"
+    },
+    {
+      "path": "src/utils/json.ts",
+      "reason": "source group src"
+    }
+  ],
+  "contextFiles": [
+    {
+      "path": "package.json",
+      "reason": "package manifest"
+    }
+  ],
+  "tests": [],
+  "tags": [
+    "node",
+    "typescript",
+    "source-group",
+    "project:glimpse-cli",
+    "project-root:."
+  ],
+  "trustBoundaries": [
+    "user-input",
+    "process-exec"
+  ],
+  "status": "pending",
+  "lock": null,
+  "findingIds": [],
+  "patchAttemptIds": [],
+  "analysisHistory": [],
+  "createdAt": "2026-05-28T20:29:33.111Z",
+  "updatedAt": "2026-05-28T20:29:33.111Z"
+}

@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feat_cli-command_17d514f2b2",
+  "title": "Node package glimpse-cli",
+  "summary": "Node package glimpse-cli with package metadata and review context rooted at ..",
+  "kind": "cli-command",
+  "source": "node-package",
+  "confidence": "medium",
+  "entrypoints": [
+    {
+      "path": "package.json",
+      "symbol": "glimpse-cli",
+      "route": null,
+      "command": null
+    }
+  ],
+  "ownedFiles": [
+    {
+      "path": "package.json",
+      "reason": "package manifest"
+    },
+    {
+      "path": "tsconfig.json",
+      "reason": "typescript configuration"
+    }
+  ],
+  "contextFiles": [
+    {
+      "path": "src/cli.ts",
+      "reason": "package entrypoint"
+    },
+    {
+      "path": "src/daemon-main.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/daemon/daemon.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/daemon/event-queue.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/daemon/window-registry.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/ipc/client.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/ipc/protocol.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/platform/paths.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/platform/url-policy.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/runtime/glimpse-adapter.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/utils/duration.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/utils/json.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "test/core.test.ts",
+      "reason": "package test"
+    }
+  ],
+  "tests": [],
+  "tags": [
+    "node",
+    "package",
+    "project:glimpse-cli",
+    "project-root:."
+  ],
+  "trustBoundaries": [
+    "user-input",
+    "process-exec"
+  ],
+  "status": "pending",
+  "lock": null,
+  "findingIds": [],
+  "patchAttemptIds": [],
+  "analysisHistory": [],
+  "createdAt": "2026-05-28T20:29:33.111Z",
+  "updatedAt": "2026-05-28T20:29:33.111Z"
+}

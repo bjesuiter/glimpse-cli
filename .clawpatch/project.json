@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "projectId": "prj_git-github-com-bjesuiter-glimpse_1ad0bba2c1",
+  "name": "glimpse-cli",
+  "rootPath": "/Users/bjesuiter/Develop/bjesuiter/glimpse-cli",
+  "git": {
+    "remoteUrl": "git@github.com:bjesuiter/glimpse-cli.git",
+    "defaultBranch": null,
+    "currentBranch": "main",
+    "headSha": "7ddaa162dcf9fa03848b8f28890ce0587f518d82"
+  },
+  "detected": {
+    "languages": [
+      "typescript",
+      "javascript"
+    ],
+    "frameworks": [],
+    "packageManagers": [
+      "node"
+    ],
+    "commands": {
+      "typecheck": "npm run typecheck",
+      "lint": null,
+      "format": null,
+      "test": "npm run test"
+    }
+  },
+  "createdAt": "2026-05-28T20:29:26.111Z",
+  "updatedAt": "2026-05-28T20:29:26.111Z"
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feat_cli-command_0f8d81242f",
+  "title": "CLI command glimpse",
+  "summary": "Package bin 'glimpse' at ./src/cli.ts.",
+  "kind": "cli-command",
+  "source": "package-json-bin",
+  "confidence": "high",
+  "entrypoints": [
+    {
+      "path": "src/cli.ts",
+      "symbol": null,
+      "route": null,
+      "command": "glimpse"
+    }
+  ],
+  "ownedFiles": [
+    {
+      "path": "src/cli.ts",
+      "reason": "package bin entrypoint"
+    }
+  ],
+  "contextFiles": [
+    {
+      "path": "package.json",
+      "reason": "package manifest"
+    }
+  ],
+  "tests": [],
+  "tags": [
+    "node",
+    "cli"
+  ],
+  "trustBoundaries": [
+    "user-input",
+    "filesystem",
+    "process-exec"
+  ],
+  "status": "pending",
+  "lock": null,
+  "findingIds": [],
+  "patchAttemptIds": [],
+  "analysisHistory": [],
+  "createdAt": "2026-05-28T20:29:33.111Z",
+  "updatedAt": "2026-05-28T20:29:33.111Z"
+}
