@@ -1,0 +1,30 @@
+skills/glimpse-open/SKILL.md
+  s_ffa560ca55e7e1::t_ea33f7918025c2 1-2,4-7,9,11,16,18-25,27,29,31-40,42-56,58,60,62-67,69,71-78,80,82
+  s_ffa560ca55e7e1::t_6e9bd144498834 3
+  s_ffa560ca55e7e1::t_55613e8af30d80 8,10,12-15,17,26,28,30,41,57,59,61,68,70,79,81,83-86
+skills/glimpse-prompt/SKILL.md
+  s_ffa560ca55e7e1::t_27156e9205557a 8-112
+  s_ffa560ca55e7e1::t_095d88dc59fb4a 3
+.beans/glimpse-cli-v65i--evaluate-glimpse-openprompt-skills.md
+  s_ffa560ca55e7e1::t_2d9e29914b9c54 4,21-23
+  s_ffa560ca55e7e1::t_6e404856eb5ac1 12-16,19-20
+  s_ffa560ca55e7e1::t_d8998337e7a88c 8,24
+  s_ffa560ca55e7e1::t_cb84489569ee04 1-3,5-7,9-11
+  s_ffa560ca55e7e1::t_37697fc75dc107 17-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "7770d914a104ae43760005b42ce2efaa3ceb1193",
+  "prompts": {},
+  "sessions": {
+    "s_ffa560ca55e7e1": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7062-212a-7159-9cd9-8e4d829147b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
