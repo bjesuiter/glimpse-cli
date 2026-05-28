@@ -44,16 +44,20 @@ HTML=$(cat <<'HTML'
     const output = document.querySelector('#count');
     function render() { output.textContent = String(count); }
     let seq = 0;
-    let dirty = false;
+    let snapshotRetries = 0;
     function emit(action) {
       seq += 1;
-      dirty = true;
+      snapshotRetries = 10;
       window.glimpse?.send?.({ type: 'counter.changed', action, count, seq });
     }
     // Reliable state channel: clicks can be bursty and shell polling is coarse.
-    // Keep sending the latest snapshot until the CLI has a chance to observe it.
+    // Repeat each latest snapshot briefly, then stop so the CLI queue cannot
+    // grow forever while waiting for the window to close.
     setInterval(() => {
-      if (dirty) window.glimpse?.send?.({ type: 'counter.snapshot', count, seq });
+      if (snapshotRetries > 0) {
+        snapshotRetries -= 1;
+        window.glimpse?.send?.({ type: 'counter.snapshot', count, seq });
+      }
     }, 100);
     document.querySelector('#inc').addEventListener('click', () => { count += 1; render(); emit('increment'); });
     document.querySelector('#dec').addEventListener('click', () => { count -= 1; render(); emit('decrement'); });
@@ -82,23 +86,20 @@ echo "Polling reliable counter snapshots. Press Ctrl-C to stop listening; close 
 # prints each new sequence once.
 last_seq=0
 while true; do
-  while true; do
-    event_json=$($GLIMPSE read -w "$WINDOW_REF" --type counter.snapshot)
-    if [[ "$event_json" == *'"event":null'* ]]; then
-      break
-    fi
-    seq=$(printf '%s' "$event_json" | sed -n 's/.*"seq":\([0-9][0-9]*\).*/\1/p')
-    if [[ -n "$seq" && "$seq" -gt "$last_seq" ]]; then
-      echo "$event_json"
-      last_seq="$seq"
-    fi
-  done
-
   closed_json=$($GLIMPSE read -w "$WINDOW_REF" --type window.closed)
   if [[ "$closed_json" != *'"event":null'* ]]; then
     echo "$closed_json"
     echo "Window closed; stopping listener."
     break
+  fi
+
+  event_json=$($GLIMPSE read -w "$WINDOW_REF" --type counter.snapshot)
+  if [[ "$event_json" != *'"event":null'* ]]; then
+    seq=$(printf '%s' "$event_json" | sed -n 's/.*"seq":\([0-9][0-9]*\).*/\1/p')
+    if [[ -n "$seq" && "$seq" -gt "$last_seq" ]]; then
+      echo "$event_json"
+      last_seq="$seq"
+    fi
   fi
 
   sleep 0.05
