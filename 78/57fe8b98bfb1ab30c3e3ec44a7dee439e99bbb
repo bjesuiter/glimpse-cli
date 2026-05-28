@@ -1,0 +1,48 @@
+CONTEXT.md
+  s_1c9420357de105::t_d067fca1fa8033 29
+  s_1c9420357de105::t_12a00cfc65d515 53
+  s_1c9420357de105::t_534ef0113523e0 61
+  s_1c9420357de105::t_836662c66a600c 21
+  s_1c9420357de105::t_1e38a377cd3708 93
+  s_1c9420357de105::t_939666e68b1b0c 75-76,78
+  s_1c9420357de105::t_4f4bd2bdf5dbac 57
+  s_1c9420357de105::t_51735550b9eb27 25
+  s_1c9420357de105::t_f86193e691fdbf 31-33
+  s_1c9420357de105::t_7310a5074b6178 89
+  s_1c9420357de105::t_e2d84b0d932189 27-28,30
+  s_1c9420357de105::t_4205604abfcac7 69
+  s_1c9420357de105::t_f46af2a614cae9 77
+  s_1c9420357de105::t_02be73f3f503ff 13
+  s_1c9420357de105::t_2aa59b35915c7a 49,58-60
+  s_1c9420357de105::t_272e0976600006 87-88
+  s_1c9420357de105::t_a20a7595aa99df 45
+  s_1c9420357de105::t_a4b06dfdb81055 17-20
+  s_1c9420357de105::t_a2bac0bed76db2 85
+  s_1c9420357de105::t_24816ab1ca3411 23-24,26
+  s_1c9420357de105::t_91fa4e84922c83 79-80,82
+  s_1c9420357de105::t_076f3166f23bfa 37
+  s_1c9420357de105::t_fbcb147e4700cc 65
+  s_1c9420357de105::t_f141a7824c5d25 81
+docs/PRD.md
+  s_1c9420357de105::t_ecd858b6fe7ab3 1-265
+.beans/glimpse-cli-pj3z--evaluate-seamless-hmr-for-watched-glimpse-windows.md
+  s_1c9420357de105::t_ca1680b0756df1 1-24
+.beans/glimpse-cli-zbfv--evaluate-global-event-awaiting-across-windows.md
+  s_1c9420357de105::t_80a4b0ee6d81f1 1-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "7857fe8b98bfb1ab30c3e3ec44a7dee439e99bbb",
+  "prompts": {},
+  "sessions": {
+    "s_1c9420357de105": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e64f7-430d-7e94-a1b1-cabd2f7844d3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
