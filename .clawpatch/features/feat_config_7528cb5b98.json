@@ -29,11 +29,24 @@
     "process-exec",
     "filesystem"
   ],
-  "status": "pending",
+  "status": "needs-fix",
   "lock": null,
-  "findingIds": [],
+  "findingIds": [
+    "fnd_sig-feat-config-7528cb5b98-8fae7_35e3bf63e2",
+    "fnd_sig-feat-config-7528cb5b98-fad9e_a6348367d7"
+  ],
   "patchAttemptIds": [],
-  "analysisHistory": [],
+  "analysisHistory": [
+    {
+      "runId": "20260528T203017-f145c2",
+      "kind": "review",
+      "summary": "2 finding(s)",
+      "provider": "codex",
+      "model": null,
+      "reasoningEffort": null,
+      "createdAt": "2026-05-28T20:32:33.405Z"
+    }
+  ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:29:33.111Z"
+  "updatedAt": "2026-05-28T20:32:33.405Z"
 }

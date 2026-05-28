@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-17d514f2b2-_35af6cdcc0",
+  "featureId": "feat_cli-command_17d514f2b2",
+  "title": "Published npm bin depends on Bun and raw TypeScript sources",
+  "category": "build-release",
+  "severity": "high",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": "\"bin\":{\"glimpse\":\"./src/cli.ts\"},\"scripts\":{\"test\":\"bun test\""
+    },
+    {
+      "path": "tsconfig.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": "\"types\":[\"bun\"],\"allowImportingTsExtensions\":true,\"noEmit\":true"
+    },
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 11,
+      "endLine": 11,
+      "symbol": "ensureDaemon",
+      "quote": "spawn(process.execPath, [new URL('../daemon-main.ts', import.meta.url).pathname]"
+    }
+  ],
+  "reasoning": "The package is presented as an npm/Node CLI, but it ships a `.ts` bin entry, emits no JavaScript, assumes Bun-only globals/types, and autostarts the daemon by reusing the current runtime to execute another `.ts` file. In a normal Node installation, especially via the Windows npm shim, the CLI and daemon startup path will try to run raw TypeScript under Node and fail before any command logic runs.",
+  "reproduction": "Pack/install the package in an environment that has Node but not Bun, then run `glimpse list`. On Windows, the generated `.cmd` shim will invoke Node on `src/cli.ts`, which cannot execute this source as shipped.",
+  "recommendation": "Publish compiled JavaScript for the CLI and daemon, point `bin` at that emitted entrypoint, and make the daemon spawn path target the compiled JS artifact. If Bun is a hard requirement, declare it explicitly in package metadata and stop presenting the package as a generic Node CLI.",
+  "whyTestsDoNotAlreadyCoverThis": "The only included tests exercise utility helpers under Bun. There is no packed-install smoke test, no Node-only execution test, and no Windows/bin-shim coverage.",
+  "suggestedRegressionTest": "Add a release smoke test that packs the module, installs it into a clean temporary project with Node only, and asserts `glimpse list` starts successfully. Add a Windows CI job or equivalent shim test for the published bin.",
+  "minimumFixScope": "package.json, tsconfig/build output, and the daemon spawn target in src/ipc/client.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-17d514f2b2_dd1da9ec98",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:50.058Z",
+  "updatedAt": "2026-05-28T20:32:50.058Z"
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-c708252bd0-_cf67ca87fe",
+  "featureId": "feat_cli-command_c708252bd0",
+  "title": "Published `glimpse` binary requires Bun and ships raw TypeScript without declaring that runtime contract",
+  "category": "build-release",
+  "severity": "high",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "src/cli.ts",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": "#!/usr/bin/env bun"
+    },
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": "\"bin\":{\"glimpse\":\"./src/cli.ts\"}"
+    }
+  ],
+  "reasoning": "The package exposes `src/cli.ts` directly as the installed executable, and that file is hard-wired to `bun` via its shebang. On a normal Node/npm installation without Bun on PATH, the generated `glimpse` shim will invoke `/usr/bin/env bun` and fail before any CLI logic runs. Because the manifest does not declare a Bun engine/runtime requirement or publish a built JavaScript entrypoint, this is a release-time contract break for consumers who can install the package successfully but cannot execute it.",
+  "reproduction": "Install the package on a machine with Node/npm but no Bun, then run `glimpse list`; the process fails immediately because `env` cannot find `bun`.",
+  "recommendation": "Either publish a compiled JavaScript CLI that runs under Node, or explicitly make Bun a declared runtime requirement (for example via `engines`/documentation and a packaging check) so the install contract matches the executable.",
+  "whyTestsDoNotAlreadyCoverThis": "No linked tests cover packaging or a clean install/run path, so the executable contract is never exercised outside the author environment.",
+  "suggestedRegressionTest": "Add a release smoke test that packs the package, installs it into a clean Node-only environment, and runs `glimpse list`; if Bun is intentionally required, assert that the manifest clearly declares that requirement instead.",
+  "minimumFixScope": "src/cli.ts and package.json",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-c708252bd0_727b944462",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:00.792Z",
+  "updatedAt": "2026-05-28T20:32:00.792Z"
+}

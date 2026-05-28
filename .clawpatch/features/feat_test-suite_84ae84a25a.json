@@ -29,11 +29,23 @@
     "project-root:."
   ],
   "trustBoundaries": [],
-  "status": "pending",
+  "status": "needs-fix",
   "lock": null,
-  "findingIds": [],
+  "findingIds": [
+    "fnd_sig-feat-test-suite-84ae84a25a-9_4571103aab"
+  ],
   "patchAttemptIds": [],
-  "analysisHistory": [],
+  "analysisHistory": [
+    {
+      "runId": "20260528T203017-f145c2",
+      "kind": "review",
+      "summary": "1 finding(s)",
+      "provider": "codex",
+      "model": null,
+      "reasoningEffort": null,
+      "createdAt": "2026-05-28T20:32:54.834Z"
+    }
+  ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:29:33.111Z"
+  "updatedAt": "2026-05-28T20:32:54.834Z"
 }

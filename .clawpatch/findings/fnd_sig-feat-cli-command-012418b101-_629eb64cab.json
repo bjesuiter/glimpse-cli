@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-012418b101-_629eb64cab",
+  "featureId": "feat_cli-command_012418b101",
+  "title": "`wait` can hang forever on missing or expired windows and never sends an IPC response",
+  "category": "bug",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/daemon/daemon.ts",
+      "startLine": 16,
+      "endLine": 16,
+      "symbol": "dispatch",
+      "quote": "case 'wait': return wait(p.window, p.type, p.timeout);"
+    },
+    {
+      "path": "src/daemon/daemon.ts",
+      "startLine": 23,
+      "endLine": 29,
+      "symbol": "wait",
+      "quote": "const ev = registry.resolve(window)?.queue.read(type);"
+    },
+    {
+      "path": "src/daemon/window-registry.ts",
+      "startLine": 30,
+      "endLine": 30,
+      "symbol": "must",
+      "quote": "if (!w || w.state !== 'open') throw new Error(`Window ${ref} is not open.`);"
+    }
+  ],
+  "reasoning": "Unlike the mutating commands, `wait` never validates the window reference. If the window does not exist, has expired from the registry, or is already closed and its queue is empty, `registry.resolve(window)?.queue.read(type)` stays falsy forever. With no timeout provided, the interval and open IPC request live indefinitely, so the caller hangs instead of getting the same invalid-window error that other commands return.",
+  "reproduction": "Call `wait` on a nonexistent window ID, or on a closed window after its final event has already been consumed, without `--timeout`. The command never returns.",
+  "recommendation": "Validate the target window up front for `wait`, or terminate the wait when the window is missing/closed and return a structured error instead of polling forever. Keep timeout as an upper bound, not the only escape hatch.",
+  "whyTestsDoNotAlreadyCoverThis": "No test exercises daemon IPC behavior for invalid window references; the existing suite stops at `EventQueue` unit tests.",
+  "suggestedRegressionTest": "An integration test that sends `wait` for an unknown window and asserts a prompt error response, plus a test for waiting on a closed/expired window after consuming `window.closed`.",
+  "minimumFixScope": "src/daemon/daemon.ts, with any needed registry helper changes in src/daemon/window-registry.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-012418b101_48abe0010e",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:33:25.790Z",
+  "updatedAt": "2026-05-28T20:33:25.790Z"
+}

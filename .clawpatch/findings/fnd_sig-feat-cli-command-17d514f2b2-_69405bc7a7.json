@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-17d514f2b2-_69405bc7a7",
+  "featureId": "feat_cli-command_17d514f2b2",
+  "title": "Daemon liveness is inferred from socket-file existence, so stale sockets break commands instead of recovering",
+  "category": "bug",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 17,
+      "endLine": 18,
+      "symbol": "request",
+      "quote": "if (autostart && !existsSync(socketPath())) await ensureDaemon();"
+    },
+    {
+      "path": "src/cli.ts",
+      "startLine": 32,
+      "endLine": 32,
+      "symbol": null,
+      "quote": "if (!existsSync(socketPath())) ok({ daemon:{ running:false }, windows:[] }); else ok(await request('list', { includeClosed:o.includeClosed }, false));"
+    },
+    {
+      "path": "src/platform/paths.ts",
+      "startLine": 11,
+      "endLine": 11,
+      "symbol": "socketPath",
+      "quote": "export const socketPath = () => join(runtimeDir(), 'daemon.sock');"
+    }
+  ],
+  "reasoning": "Both autostart and `list` use `existsSync(socketPath())` as the liveness check. If the daemon crashes or is killed and leaves `daemon.sock` behind, `open`/`send`/etc. will skip `ensureDaemon()`, `list` will skip the `running:false` fallback, and every command will fail on connect instead of restarting or reporting a stopped daemon. Because the socket path is stable, one stale file is enough to wedge the CLI until manual cleanup.",
+  "reproduction": "Start the daemon, kill it uncleanly so `daemon.sock` remains, then run `glimpse list` or `glimpse open ...`. The command fails on socket connection instead of recovering or reporting `running:false`.",
+  "recommendation": "Use an actual ping/connect probe for liveness, not file existence. On connection errors such as `ENOENT`/`ECONNREFUSED`, remove the stale socket if appropriate and retry through `ensureDaemon()` before surfacing failure.",
+  "whyTestsDoNotAlreadyCoverThis": "Included tests only cover duration parsing, event queue behavior, and loopback detection. There is no daemon crash-recovery or stale-socket integration test.",
+  "suggestedRegressionTest": "Create a stale socket scenario, then assert both `request('open')` and `glimpse list` recover by starting a new daemon or return a clean `running:false` result.",
+  "minimumFixScope": "src/ipc/client.ts and the `list` command path in src/cli.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-17d514f2b2_82aba71455",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:50.058Z",
+  "updatedAt": "2026-05-28T20:32:50.058Z"
+}

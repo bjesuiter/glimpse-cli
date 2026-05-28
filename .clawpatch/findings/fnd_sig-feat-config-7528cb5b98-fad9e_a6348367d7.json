@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-config-7528cb5b98-fad9e_a6348367d7",
+  "featureId": "feat_config_7528cb5b98",
+  "title": "Declared test command does not match project script",
+  "category": "build-release",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": "scripts.test",
+      "quote": "\"scripts\":{\"test\":\"bun test\",\"typecheck\":\"tsc --noEmit\",\"start\":\"bun src/cli.ts\"}"
+    }
+  ],
+  "reasoning": "The project metadata for this review says the detected test command is `npm run test`, but the actual script delegates to `bun test` while Bun is not declared as an engine, package manager, dependency, or devDependency. In a clean Node/npm environment, `npm run test` will fail if Bun is not preinstalled, which makes CI and contributor verification depend on undeclared global tooling.",
+  "reproduction": "On a machine or CI image with Node/npm but without Bun, run `npm run test`; the shell cannot resolve `bun`.",
+  "recommendation": "Either declare Bun as a required tool using `packageManager`/`engines` and document it in the release setup, or switch test/start scripts to tooling declared by the package. CI should install the declared package manager/runtime before invoking scripts.",
+  "whyTestsDoNotAlreadyCoverThis": "This is a toolchain declaration gap; repository tests cannot run in the affected environment because the test runner itself is the missing prerequisite.",
+  "suggestedRegressionTest": "Add a CI setup check or package-manager smoke job that installs from a clean checkout using the declared toolchain and runs `npm run test` and `npm run typecheck`.",
+  "minimumFixScope": "Update `package.json` toolchain metadata and/or scripts so required runtimes are declared and reproducible.",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-config-7528cb5b98_fad9ec6c1e",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:33.404Z",
+  "updatedAt": "2026-05-28T20:32:33.404Z"
+}

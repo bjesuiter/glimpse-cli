@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-012418b101-_95c4a24060",
+  "featureId": "feat_cli-command_012418b101",
+  "title": "Stale Unix socket leaves the CLI unable to restart the daemon after a crash",
+  "category": "bug",
+  "severity": "high",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 17,
+      "endLine": 20,
+      "symbol": "request",
+      "quote": "if (autostart && !existsSync(socketPath())) await ensureDaemon();"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "startLine": 7,
+      "endLine": 8,
+      "symbol": "serve",
+      "quote": "try { unlinkSync(socketPath()); } catch {}"
+    }
+  ],
+  "reasoning": "Auto-start is gated only on the socket path being absent. On Unix, a daemon crash or SIGKILL typically leaves the socket file on disk, so subsequent requests skip `ensureDaemon()`, attempt to connect to a dead socket, and fail permanently. The stale socket is only cleaned up inside `serve()`, but that code never runs because restart is skipped.",
+  "reproduction": "Start the daemon, kill it with SIGKILL so `daemon.sock` remains, then run any command that calls `request()`. It fails on `net.createConnection(socketPath())` instead of respawning the daemon.",
+  "recommendation": "Make `request()` recover from stale sockets by attempting a ping/connect first and falling back to `ensureDaemon()` on connect errors such as `ECONNREFUSED`/`ENOENT`, or always call `ensureDaemon()` when autostart is enabled and let its ping logic decide whether a restart is needed.",
+  "whyTestsDoNotAlreadyCoverThis": "The only tests exercise `parseDuration`, `EventQueue`, and `isLoopbackAddress`; there is no daemon lifecycle or crash-recovery coverage.",
+  "suggestedRegressionTest": "An integration test that starts the daemon, force-kills it without removing the socket file, then verifies a fresh `request('ping')` respawns the daemon and succeeds.",
+  "minimumFixScope": "src/ipc/client.ts and, if needed, the daemon startup/cleanup path in src/ipc/server.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-012418b101_75f85ca2ce",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:33:25.790Z",
+  "updatedAt": "2026-05-28T20:33:25.790Z"
+}

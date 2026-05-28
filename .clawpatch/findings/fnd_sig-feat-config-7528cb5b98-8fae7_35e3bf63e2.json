@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-config-7528cb5b98-8fae7_35e3bf63e2",
+  "featureId": "feat_config_7528cb5b98",
+  "title": "Published binary points directly at a TypeScript source file",
+  "category": "build-release",
+  "severity": "high",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": "bin.glimpse",
+      "quote": "\"bin\":{\"glimpse\":\"./src/cli.ts\"}"
+    }
+  ],
+  "reasoning": "The package exposes the CLI executable as a raw `.ts` file, but `package.json` does not declare a runtime loader or a build/prepublish step that emits JavaScript. When installed with npm, the generated `glimpse` shim will execute `./src/cli.ts` with Node, and Node does not run TypeScript source by default. This makes the released CLI fail for normal package consumers unless they happen to invoke it through Bun or a TypeScript loader outside the package contract.",
+  "reproduction": "Run `npm pack`, install the tarball in a clean Node project, then execute `glimpse`; the shim resolves to `src/cli.ts` rather than compiled JavaScript.",
+  "recommendation": "Add a build step that emits JavaScript, point `bin.glimpse` at the built executable such as `./dist/cli.js`, and ensure the published artifact includes that file. Alternatively, make the package explicitly Bun-only and use a launcher script that invokes Bun, but that should be intentional and documented in package metadata.",
+  "whyTestsDoNotAlreadyCoverThis": "No linked tests exercise package installation or the published CLI entrypoint; the configured `test` command only runs the repository tests under Bun.",
+  "suggestedRegressionTest": "Add a packaging smoke test that runs `npm pack`, installs the tarball into a temporary project, and executes the `glimpse` binary with the supported runtime.",
+  "minimumFixScope": "Update package release configuration and CLI entrypoint packaging in `package.json`; add a build or pack smoke test.",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-config-7528cb5b98_8fae7d13a9",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:33.404Z",
+  "updatedAt": "2026-05-28T20:32:33.404Z"
+}

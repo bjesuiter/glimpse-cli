@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-0f8d81242f-_bbfefc4f25",
+  "featureId": "feat_cli-command_0f8d81242f",
+  "title": "Published `glimpse` bin depends on Bun without declaring that runtime contract",
+  "category": "build-release",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "src/cli.ts",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": null
+    },
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": null,
+      "quote": null
+    }
+  ],
+  "reasoning": "The package exposes `glimpse` as an npm bin, but that bin is the raw TypeScript source file with a `#!/usr/bin/env bun` shebang. Consumers invoking the installed command need a `bun` executable on PATH; otherwise the entrypoint fails before the CLI code runs. The manifest does not declare an `engines` requirement, fallback Node build, or release artifact that would make this contract explicit.",
+  "reproduction": "Install the package on a machine without Bun and invoke `glimpse`; `/usr/bin/env` fails to locate `bun` before any CLI logic executes.",
+  "recommendation": "Either publish a compiled JavaScript bin runnable under Node, or explicitly declare Bun as a runtime requirement via package metadata and installation/docs so consumers do not get a broken executable unexpectedly.",
+  "whyTestsDoNotAlreadyCoverThis": "No packaging or install smoke tests are linked, so there is nothing verifying the published bin works in a clean environment.",
+  "suggestedRegressionTest": "Add a release smoke test that packs/installs the package and verifies the installed `glimpse` executable starts successfully in the supported runtime, plus a metadata check that the required runtime is declared.",
+  "minimumFixScope": "src/cli.ts and package.json",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-0f8d81242f_24db495dd0",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:20.965Z",
+  "updatedAt": "2026-05-28T20:32:20.965Z"
+}

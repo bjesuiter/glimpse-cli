@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-test-suite-84ae84a25a-9_4571103aab",
+  "featureId": "feat_test-suite_84ae84a25a",
+  "title": "Test script depends on an undeclared Bun runtime",
+  "category": "build-release",
+  "severity": "medium",
+  "confidence": "medium",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "package.json",
+      "startLine": 1,
+      "endLine": 1,
+      "symbol": "scripts.test",
+      "quote": "\"scripts\":{\"test\":\"bun test\",\"typecheck\":\"tsc --noEmit\",\"start\":\"bun src/cli.ts\"}"
+    }
+  ],
+  "reasoning": "The declared project command is `npm run test`, but that script shells out to `bun test`. `package.json` does not declare a Bun package manager version or runtime requirement, so a normal Node/npm checkout can install dependencies successfully and still fail to run tests with `bun: command not found`. This makes test execution environment-dependent and can break CI or release validation.",
+  "reproduction": "On a machine with Node/npm but without Bun installed, run `npm install` and then `npm run test`; the script fails before running tests because `bun` is unavailable.",
+  "recommendation": "Declare the Bun requirement explicitly, for example with a `packageManager` field such as `bun@<version>` and CI/setup documentation, or change the test script to a Node/npm-compatible runner if Bun is not required for the project.",
+  "whyTestsDoNotAlreadyCoverThis": "This is a package/runtime contract issue; project tests only run after the package script successfully resolves the `bun` executable.",
+  "suggestedRegressionTest": null,
+  "minimumFixScope": "Update `package.json` to declare the required package/runtime contract or replace the test script with a runner available from declared npm dependencies.",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-test-suite-84ae84a25a_9b01aa1081",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:54.833Z",
+  "updatedAt": "2026-05-28T20:32:54.833Z"
+}

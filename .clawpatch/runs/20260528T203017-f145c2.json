@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260528T203017-f145c2",
+  "command": "review",
+  "args": [
+    "review",
+    "--limit",
+    "10",
+    "--jobs",
+    "4",
+    "--no-input"
+  ],
+  "rootPath": "/Users/bjesuiter/Develop/bjesuiter/glimpse-cli",
+  "headSha": "116d0e4f31ddf8046a612fbefcbac8fcd5140cd4",
+  "startedAt": "2026-05-28T20:30:17.528Z",
+  "finishedAt": "2026-05-28T20:33:25.792Z",
+  "status": "completed",
+  "claimedFeatureIds": [
+    "feat_cli-command_012418b101",
+    "feat_cli-command_0f8d81242f",
+    "feat_cli-command_17d514f2b2",
+    "feat_cli-command_c708252bd0",
+    "feat_config_0c1c23856a",
+    "feat_config_7528cb5b98",
+    "feat_release_775032a0f4",
+    "feat_release_a235aa99b1",
+    "feat_test-suite_84ae84a25a"
+  ],
+  "findingIds": [
+    "fnd_sig-feat-cli-command-c708252bd0-_cf67ca87fe",
+    "fnd_sig-feat-cli-command-c708252bd0-_0543af5854",
+    "fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201",
+    "fnd_sig-feat-cli-command-0f8d81242f-_648bc03573",
+    "fnd_sig-feat-cli-command-0f8d81242f-_bbfefc4f25",
+    "fnd_sig-feat-config-7528cb5b98-8fae7_35e3bf63e2",
+    "fnd_sig-feat-config-7528cb5b98-fad9e_a6348367d7",
+    "fnd_sig-feat-cli-command-17d514f2b2-_35af6cdcc0",
+    "fnd_sig-feat-cli-command-17d514f2b2-_69405bc7a7",
+    "fnd_sig-feat-cli-command-17d514f2b2-_97e1ce9843",
+    "fnd_sig-feat-cli-command-17d514f2b2-_e6c844ba86",
+    "fnd_sig-feat-test-suite-84ae84a25a-9_4571103aab",
+    "fnd_sig-feat-cli-command-012418b101-_95c4a24060",
+    "fnd_sig-feat-cli-command-012418b101-_2073d50d6a",
+    "fnd_sig-feat-cli-command-012418b101-_629eb64cab"
+  ],
+  "patchAttemptIds": [],
+  "errors": []
+}

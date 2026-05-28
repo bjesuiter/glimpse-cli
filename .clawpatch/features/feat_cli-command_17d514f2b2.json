@@ -93,11 +93,26 @@
     "user-input",
     "process-exec"
   ],
-  "status": "pending",
+  "status": "needs-fix",
   "lock": null,
-  "findingIds": [],
+  "findingIds": [
+    "fnd_sig-feat-cli-command-17d514f2b2-_35af6cdcc0",
+    "fnd_sig-feat-cli-command-17d514f2b2-_69405bc7a7",
+    "fnd_sig-feat-cli-command-17d514f2b2-_97e1ce9843",
+    "fnd_sig-feat-cli-command-17d514f2b2-_e6c844ba86"
+  ],
   "patchAttemptIds": [],
-  "analysisHistory": [],
+  "analysisHistory": [
+    {
+      "runId": "20260528T203017-f145c2",
+      "kind": "review",
+      "summary": "4 finding(s)",
+      "provider": "codex",
+      "model": null,
+      "reasoningEffort": null,
+      "createdAt": "2026-05-28T20:32:50.060Z"
+    }
+  ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:29:33.111Z"
+  "updatedAt": "2026-05-28T20:32:50.060Z"
 }

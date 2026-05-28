@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-012418b101-_2073d50d6a",
+  "featureId": "feat_cli-command_012418b101",
+  "title": "Concurrent autostart does not honor the lock and can spawn multiple daemons",
+  "category": "concurrency",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 8,
+      "endLine": 13,
+      "symbol": "ensureDaemon",
+      "quote": "try { mkdirSync(lockPath()); } catch {}"
+    },
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 11,
+      "endLine": 13,
+      "symbol": "ensureDaemon",
+      "quote": "spawn(process.execPath, [new URL('../daemon-main.ts', import.meta.url).pathname], { detached: true, stdio: 'ignore', env: process.env }).unref();"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "startLine": 7,
+      "endLine": 9,
+      "symbol": "serve",
+      "quote": "try { unlinkSync(socketPath()); } catch {}"
+    }
+  ],
+  "reasoning": "`ensureDaemon()` creates a lock directory but ignores whether it actually acquired the lock, then always spawns a daemon anyway. Two CLI processes starting at the same time can therefore launch two detached daemons. Because each daemon unlinks the shared socket path during startup, they can interfere with each other, causing intermittent startup failures, socket hijacking, or orphaned background processes.",
+  "reproduction": "Remove the socket file, then start two CLI commands in parallel that both need the daemon. Observe multiple `daemon-main` processes or flaky startup timeouts while they race over the same socket path.",
+  "recommendation": "Use the lock as an actual ownership check: only the process that successfully acquires it should spawn, while other callers wait for ping success or lock release. Also clear stale locks on timeout/failure.",
+  "whyTestsDoNotAlreadyCoverThis": "There are no parallel-start integration tests; current tests are single-threaded helper tests only.",
+  "suggestedRegressionTest": "A test that fires two `ensureDaemon()` calls concurrently and asserts that exactly one daemon instance is started and both callers complete successfully.",
+  "minimumFixScope": "src/ipc/client.ts::ensureDaemon and related daemon startup coordination",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-012418b101_4832d0f92d",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:33:25.790Z",
+  "updatedAt": "2026-05-28T20:33:25.790Z"
+}

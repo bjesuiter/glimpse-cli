@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201",
+  "featureId": "feat_cli-command_0f8d81242f",
+  "title": "`--url` is interpolated into HTML without escaping, allowing script injection in `prompt`/`open`",
+  "category": "security",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/cli.ts",
+      "startLine": 24,
+      "endLine": 25,
+      "symbol": null,
+      "quote": null
+    }
+  ],
+  "reasoning": "Both `prompt` and `open` build an `<iframe src=\"...\">` wrapper by concatenating the raw `o.url` string directly into an HTML attribute. `assertUrlAllowed` only classifies the URL; it does not sanitize or normalize the original string before that same raw value is rendered. A URL containing a quote can break out of the `src` attribute and inject arbitrary HTML/JS into the wrapper document. In `prompt`, that injected code runs in the bridged page context because `withBridge(...)` is always applied and the default CSP permits inline scripts.",
+  "reproduction": "Run `glimpse prompt --url 'http://localhost/\" onload=\"alert(1)'` and the injected handler is rendered as part of the wrapper HTML instead of remaining confined to the iframe URL.",
+  "recommendation": "Construct the iframe with an escaped/serialized URL value, e.g. by parsing once with `new URL(...)` and interpolating `url.href`, or by HTML-escaping attribute values before insertion. Add a regression test that passes quotes in `--url` and asserts the generated HTML keeps them inside the `src` value.",
+  "whyTestsDoNotAlreadyCoverThis": "No linked tests are present for the CLI entrypoint, and there is no evidence of a regression test covering hostile `--url` input.",
+  "suggestedRegressionTest": "Add a CLI-level test for `prompt --url` and `open --url` that stubs the downstream call, passes a URL containing quotes, and asserts the generated HTML contains a safely escaped `src` attribute with no injected attributes or tags.",
+  "minimumFixScope": "src/cli.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-0f8d81242f_1a481d484d",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:20.965Z",
+  "updatedAt": "2026-05-28T20:32:20.965Z"
+}

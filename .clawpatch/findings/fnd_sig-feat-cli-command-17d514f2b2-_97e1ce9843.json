@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-17d514f2b2-_97e1ce9843",
+  "featureId": "feat_cli-command_17d514f2b2",
+  "title": "Cold-start race can spawn multiple daemons concurrently",
+  "category": "concurrency",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "confirmed-bug",
+  "evidence": [
+    {
+      "path": "src/ipc/client.ts",
+      "startLine": 8,
+      "endLine": 13,
+      "symbol": "ensureDaemon",
+      "quote": "try { mkdirSync(lockPath()); } catch {} spawn(process.execPath, ... ).unref();"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "startLine": 8,
+      "endLine": 8,
+      "symbol": "serve",
+      "quote": "try { unlinkSync(socketPath()); } catch {}"
+    },
+    {
+      "path": "src/ipc/server.ts",
+      "startLine": 25,
+      "endLine": 25,
+      "symbol": "serve",
+      "quote": "server.listen(socketPath(), () => writeFileSync(statePath(), JSON.stringify({ pid: process.pid"
+    }
+  ],
+  "reasoning": "`ensureDaemon()` attempts to create a lock directory but ignores failure and spawns anyway. Two CLI processes starting from a cold state will both see `ping()` fail and both launch a daemon. Each daemon then unconditionally unlinks and binds the same socket path, so one process can steal the socket path from the other and leave an orphaned daemon behind. The lock path currently does not serialize startup at all.",
+  "reproduction": "From a clean runtime directory, launch two CLI commands that autostart the daemon at the same time and inspect the resulting daemon processes/socket behavior.",
+  "recommendation": "Make startup single-writer: if lock acquisition fails, wait for the existing starter to finish instead of spawning. Also treat socket bind failure or unexpected socket replacement as a startup error rather than silently racing.",
+  "whyTestsDoNotAlreadyCoverThis": "There is no parallel startup test and no assertion that a cold start yields exactly one daemon process.",
+  "suggestedRegressionTest": "Add an integration test that fires two concurrent requests from a clean state and asserts only one daemon instance is created and both requests succeed against the same socket.",
+  "minimumFixScope": "src/ipc/client.ts startup locking and daemon single-instance handling in src/ipc/server.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-17d514f2b2_389f164697",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:50.058Z",
+  "updatedAt": "2026-05-28T20:32:50.058Z"
+}

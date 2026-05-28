@@ -32,11 +32,21 @@
     "process-exec",
     "filesystem"
   ],
-  "status": "pending",
+  "status": "reviewed",
   "lock": null,
   "findingIds": [],
   "patchAttemptIds": [],
-  "analysisHistory": [],
+  "analysisHistory": [
+    {
+      "runId": "20260528T203017-f145c2",
+      "kind": "review",
+      "summary": "0 finding(s)",
+      "provider": "codex",
+      "model": null,
+      "reasoningEffort": null,
+      "createdAt": "2026-05-28T20:32:31.245Z"
+    }
+  ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:29:33.111Z"
+  "updatedAt": "2026-05-28T20:32:31.245Z"
 }

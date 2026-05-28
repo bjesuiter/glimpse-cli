@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-c708252bd0-_0543af5854",
+  "featureId": "feat_cli-command_c708252bd0",
+  "title": "Several advertised CLI flags are silently ignored",
+  "category": "api-contract",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "contract-mismatch",
+  "evidence": [
+    {
+      "path": "src/cli.ts",
+      "startLine": 19,
+      "endLine": 20,
+      "symbol": "addPolicy",
+      "quote": "function addPolicy(c: Command) { return c.option('--allow-remote').option('--allow-bridge').option('--allow-remote-resources').option('--csp <policy>'); }"
+    },
+    {
+      "path": "src/cli.ts",
+      "startLine": 24,
+      "endLine": 27,
+      "symbol": null,
+      "quote": "`prompt`, `set-html`, and `navigate` all inherit policy flags, but only some handlers read them"
+    },
+    {
+      "path": "src/cli.ts",
+      "startLine": 25,
+      "endLine": 25,
+      "symbol": null,
+      "quote": ".option('--watch').action((src, o) => run(async () => {"
+    }
+  ],
+  "reasoning": "The CLI surface promises behaviors that the handlers do not implement. `open` accepts `--watch` but never reads it. `navigate` inherits `--allow-bridge`, `--allow-remote-resources`, and `--csp`, but its action only uses `o.allowRemote`. `prompt` and `set-html` also accept `--allow-bridge`, but their handlers never branch on that option. Because Commander accepts these flags and the command still returns success, callers can believe a policy or watch mode was applied when it was actually ignored.",
+  "reproduction": null,
+  "recommendation": "Remove unsupported flags so the CLI rejects them, or implement the missing behavior and assert that each parsed option changes the outgoing request/prompt payload.",
+  "whyTestsDoNotAlreadyCoverThis": "No linked command-level tests assert option propagation or rejection, so no-op flags can ship unnoticed.",
+  "suggestedRegressionTest": "Add CLI tests for each command that pass these flags and verify either a changed payload (`request`/`promptWindow` arguments) or an explicit usage error for unsupported options.",
+  "minimumFixScope": "src/cli.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-c708252bd0_4196b99fb5",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:00.793Z",
+  "updatedAt": "2026-05-28T20:32:00.793Z"
+}

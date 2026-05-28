@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-17d514f2b2-_e6c844ba86",
+  "featureId": "feat_cli-command_17d514f2b2",
+  "title": "`wait` on an unknown window never settles and leaves a live polling interval",
+  "category": "performance",
+  "severity": "medium",
+  "confidence": "high",
+  "triage": "risk",
+  "evidence": [
+    {
+      "path": "src/daemon/daemon.ts",
+      "startLine": 16,
+      "endLine": 16,
+      "symbol": "dispatch",
+      "quote": "case 'wait': return wait(p.window, p.type, p.timeout);"
+    },
+    {
+      "path": "src/daemon/daemon.ts",
+      "startLine": 23,
+      "endLine": 29,
+      "symbol": "wait",
+      "quote": "const iv = setInterval(() => { const ev = registry.resolve(window)?.queue.read(type); if (ev) { ... resolve({ event: ev }); } }, 50);"
+    }
+  ],
+  "reasoning": "Unlike the other window operations, `wait()` never validates that the referenced window exists or is open. If the caller passes an invalid or already-closed window and omits `--timeout`, `registry.resolve(window)` stays undefined forever, the promise never resolves or rejects, the client hangs, and the daemon keeps a polling interval alive indefinitely. Repeated bad waits accumulate timers inside the long-lived daemon.",
+  "reproduction": "Call `glimpse wait -w missing` without `--timeout`. The CLI blocks indefinitely and the daemon retains the interval until the process exits.",
+  "recommendation": "Fail fast when the window cannot be resolved, or at minimum reject immediately once the window is known to be absent/closed. Keep the timeout path as a secondary safeguard, not the only exit condition.",
+  "whyTestsDoNotAlreadyCoverThis": "The tests exercise `EventQueue` directly but do not cover daemon `wait` behavior, invalid window references, or timer cleanup.",
+  "suggestedRegressionTest": "Add a daemon-level test asserting `wait` rejects immediately for an unknown window and does not leave active timers behind.",
+  "minimumFixScope": "src/daemon/daemon.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-17d514f2b2_e307cd98d2",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:50.058Z",
+  "updatedAt": "2026-05-28T20:32:50.058Z"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "findingId": "fnd_sig-feat-cli-command-0f8d81242f-_648bc03573",
+  "featureId": "feat_cli-command_0f8d81242f",
+  "title": "`open --watch` is advertised but never used",
+  "category": "api-contract",
+  "severity": "low",
+  "confidence": "high",
+  "triage": "contract-mismatch",
+  "evidence": [
+    {
+      "path": "src/cli.ts",
+      "startLine": 25,
+      "endLine": 25,
+      "symbol": null,
+      "quote": null
+    }
+  ],
+  "reasoning": "The `open` command declares a `--watch` option, but the action handler never reads `o.watch` and never forwards any watch-related field in the `request('open', ...)` payload. Users can supply the flag without any observable effect, which is a direct mismatch between the CLI surface and actual behavior.",
+  "reproduction": "Invoke `glimpse open page.html --watch`; the request payload is identical to the same command without `--watch`.",
+  "recommendation": "Either implement the watch behavior end-to-end or remove the flag until support exists so the CLI does not promise a no-op feature.",
+  "whyTestsDoNotAlreadyCoverThis": "There are no linked tests for command option handling, so this dead flag is not exercised anywhere in the provided evidence.",
+  "suggestedRegressionTest": "Add a command test for `open --watch` that asserts either `watch: true` is sent in the IPC request or that the parser rejects/omits the option if the feature is intentionally unsupported.",
+  "minimumFixScope": "src/cli.ts",
+  "status": "open",
+  "history": [],
+  "signature": "sig_feat-cli-command-0f8d81242f_04def54999",
+  "linkedPatchAttemptIds": [],
+  "createdByRunId": "20260528T203017-f145c2",
+  "createdAt": "2026-05-28T20:32:20.965Z",
+  "updatedAt": "2026-05-28T20:32:20.965Z"
+}
