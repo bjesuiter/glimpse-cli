@@ -1,0 +1,28 @@
+examples/01_prompt.sh
+  s_9c579781abc78c::t_d414a2be1a025d 35,51
+docs/PRD.md
+  s_9c579781abc78c::t_91b3ebb1d7143d 153,156-162
+  s_9c579781abc78c::t_65bed6e44f8dfa 175
+CONTEXT.md
+  s_9c579781abc78c::t_be730a08af2bda 57
+  s_9c579781abc78c::t_96f2072e04e65a 53
+  s_9c579781abc78c::t_0fd3445e3209f2 55-56
+src/cli.ts
+  s_9c579781abc78c::t_4ddeb5048c5303 24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "7ddaa162dcf9fa03848b8f28890ce0587f518d82",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
