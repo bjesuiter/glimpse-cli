@@ -1,0 +1,28 @@
+docs/PRD.md
+  s_1c9420357de105::t_1d4d09c66d603d 60-61
+  s_1c9420357de105::t_e402f5bdb4eb31 102
+  s_1c9420357de105::t_c8752ebae11b03 294-307
+  s_1c9420357de105::t_79e4461a764f8a 161-166
+  s_1c9420357de105::t_e3410af8c9c54f 103
+  s_1c9420357de105::t_009ef3b452439a 14
+  s_1c9420357de105::t_b4766a6d4c1524 258-268
+  s_1c9420357de105::t_b31766ebde9f62 19
+  s_1c9420357de105::t_2c2c023d966c13 21
+  s_1c9420357de105::t_c2a727c832d88e 28-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "193270fa4fa386c42029c398a87141bfb16451a1",
+  "prompts": {},
+  "sessions": {
+    "s_1c9420357de105": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e64f7-430d-7e94-a1b1-cabd2f7844d3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
