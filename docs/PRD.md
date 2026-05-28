@@ -150,10 +150,16 @@ Failure:
 }
 ```
 
-Prompt cancellation/window close is not an error:
+Prompt cancellation/window close is not an error. Explicit in-page cancellation uses a reserved Prompt Result:
 
 ```json
-{ "ok": true, "result": null }
+{ "ok": true, "result": { "type": "prompt.canceled" } }
+```
+
+Prompt Window closure without a page-submitted value uses a synthesized Prompt Result:
+
+```json
+{ "ok": true, "result": { "type": "window.closed" } }
 ```
 
 Timeouts are technical failures.
@@ -166,7 +172,7 @@ Exit codes:
 
 ## Prompt Semantics
 
-`prompt` opens a temporary Window, waits for first page-to-CLI message, prints raw submitted value as `result`, closes, and exits.
+`prompt` opens a temporary Window, waits for first page-to-CLI message, prints raw submitted value as `result`, closes, and exits. Explicit in-page cancel controls should submit `{ "type": "prompt.canceled" }`. Prompt Window closure without a page-submitted value returns `{ "type": "window.closed" }`. Prompt content should not submit raw `null`; in v1, raw `null` is treated as Window closure.
 
 `prompt --timeout <duration>` fails with `timeout` if no result arrives.
 

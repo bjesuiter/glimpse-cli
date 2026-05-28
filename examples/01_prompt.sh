@@ -32,7 +32,7 @@ HTML=$(cat <<'HTML'
 <body>
   <form id="prompt-form">
     <h1>Quick prompt</h1>
-    <p>Submit a short value back to the shell. Closing or cancelling returns <code>null</code>.</p>
+    <p>Submit a short value back to the shell. Cancel and window close return explicit result objects.</p>
     <label for="answer">What should Glimpse say?</label>
     <input id="answer" name="answer" value="Hello from Glimpse" autofocus />
     <div class="actions">
@@ -48,7 +48,7 @@ HTML=$(cat <<'HTML'
       event.preventDefault();
       window.glimpse?.send?.({ answer: answer.value, submittedAt: new Date().toISOString() });
     });
-    document.querySelector('#cancel').addEventListener('click', () => window.glimpse?.close?.());
+    document.querySelector('#cancel').addEventListener('click', () => window.glimpse?.send?.({ type: 'prompt.canceled' }));
     answer.select();
   </script>
 </body>
