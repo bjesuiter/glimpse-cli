@@ -1,0 +1,41 @@
+examples/02_counter.sh
+  s_ffa560ca55e7e1::t_8ec9c4a4e33d5f 5
+src/cli.ts
+  s_9c579781abc78c::t_30f7e4d5a20dd5 3,32
+.clawpatch/findings/fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201.json
+  s_9c579781abc78c::t_e96a063c4c1efd 25-46,51
+dist/cli.mjs.map
+  ai_agent 1
+.clawpatch/runs/20260528T210256-8d30d6.json
+  s_9c579781abc78c::t_e96a063c4c1efd 13-14
+test/cli-list.test.ts
+  s_9c579781abc78c::t_5051f835c0825d 1-39
+dist/cli.mjs
+  s_9c579781abc78c::t_3d71224c58970e 328-335
+examples/02b_counter_w_state.sh
+  s_ffa560ca55e7e1::t_5708230413c5f4 5-6,41,48,51,54-62,82,85-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "33cd9b35c0140d430323614bd82b32ace27034c8",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    },
+    "s_ffa560ca55e7e1": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7062-212a-7159-9cd9-8e4d829147b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
