@@ -36,11 +36,32 @@
   "whyTestsDoNotAlreadyCoverThis": "No test exercises daemon IPC behavior for invalid window references; the existing suite stops at `EventQueue` unit tests.",
   "suggestedRegressionTest": "An integration test that sends `wait` for an unknown window and asserts a prompt error response, plus a test for waiting on a closed/expired window after consuming `window.closed`.",
   "minimumFixScope": "src/daemon/daemon.ts, with any needed registry helper changes in src/daemon/window-registry.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T205026-d8735c",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence paths still exist, but the behavior has changed. `src/daemon/daemon.ts:23-31` now calls `registry.requireOpen(window)` before creating the polling promise and uses `registry.requireOpen(window)` inside the polling loop before reading the queue, instead of optional-chaining through `registry.resolve(window)?.queue.read(type)`. `src/daemon/window-registry.ts:30` rejects missing, expired/deleted, or closed windows with `Window <ref> is not open.`. There is also a focused regression test at `test/daemon.test.ts:4-7` asserting that `dispatch('wait', { window: 'missing-window' })` rejects immediately. The focused daemon test and the full test suite both pass.",
+      "commands": [
+        "pwd && rg -n \"case 'wait'|function wait|const wait|registry\\.resolve\\(window\\)|must\\(\" src/daemon src test tests 2>/dev/null",
+        "git status --short && rg --files",
+        "nl -ba src/daemon/daemon.ts | sed -n '1,120p'",
+        "nl -ba src/daemon/window-registry.ts | sed -n '1,180p'",
+        "rg -n \"wait|window\\.closed|EventQueue|queue\\.read|requireOpen|resolve\\(\" src test tests 2>/dev/null",
+        "nl -ba test/daemon.test.ts | sed -n '1,160p'",
+        "sed -n '1,220p' package.json",
+        "nl -ba src/ipc/server.ts | sed -n '1,80p'",
+        "bun test test/daemon.test.ts",
+        "bun test"
+      ],
+      "createdAt": "2026-05-28T20:51:35.247Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-012418b101_48abe0010e",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:33:25.790Z",
-  "updatedAt": "2026-05-28T20:33:25.790Z"
+  "updatedAt": "2026-05-28T20:51:35.247Z"
 }

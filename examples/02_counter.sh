@@ -78,29 +78,26 @@ if [[ -z "$WINDOW_REF" ]]; then
 fi
 
 echo "Opened window '$WINDOW_NAME' ($WINDOW_REF)."
-echo "Polling reliable counter snapshots. Press Ctrl-C to stop listening; close the window when done."
+echo "Waiting for counter events. Press Ctrl-C to stop listening; close the window when done."
 
-# For UI control loops, prefer observing state snapshots over treating every
-# click as a durable transport message. The page emits counter.changed per
-# click, but also repeats counter.snapshot while the state is dirty; this loop
-# prints each new sequence once.
+# Block until the next event instead of polling with repeated CLI invocations.
+# The page emits counter.changed per click, and repeats counter.snapshot while
+# the state is dirty; this loop prints each new snapshot sequence once.
 last_seq=0
 while true; do
-  closed_json=$($GLIMPSE read -w "$WINDOW_REF" --type window.closed)
-  if [[ "$closed_json" != *'"event":null'* ]]; then
-    echo "$closed_json"
+  event_json=$($GLIMPSE wait -w "$WINDOW_REF")
+
+  if [[ "$event_json" == *'"type":"window.closed"'* ]]; then
+    echo "$event_json"
     echo "Window closed; stopping listener."
     break
   fi
 
-  event_json=$($GLIMPSE read -w "$WINDOW_REF" --type counter.snapshot)
-  if [[ "$event_json" != *'"event":null'* ]]; then
+  if [[ "$event_json" == *'"type":"counter.snapshot"'* ]]; then
     seq=$(printf '%s' "$event_json" | sed -n 's/.*"seq":\([0-9][0-9]*\).*/\1/p')
     if [[ -n "$seq" && "$seq" -gt "$last_seq" ]]; then
       echo "$event_json"
       last_seq="$seq"
     fi
   fi
-
-  sleep 0.05
 done

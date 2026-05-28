@@ -172,6 +172,14 @@ async function assertUrlAllowed(raw, allowRemote) {
 	return trust;
 }
 //#endregion
+//#region src/cli-helpers.ts
+function escapeHtmlAttribute(value) {
+	return value.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+function iframeForUrl(rawUrl) {
+	return `<iframe src="${escapeHtmlAttribute(new URL(rawUrl).href)}" style="border:0;width:100vw;height:100vh"></iframe>`;
+}
+//#endregion
 //#region src/cli.ts
 const DEFAULT_CSP = "default-src 'self' data: blob:; img-src 'self' data: blob: http://localhost:* https://localhost:* http://127.0.0.1:* https://127.0.0.1:* http://*.localhost:* https://*.localhost:*; style-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline' blob:; connect-src 'self' http://localhost:* https://localhost:* ws://localhost:* wss://localhost:* http://127.0.0.1:* https://127.0.0.1:* ws://127.0.0.1:* wss://127.0.0.1:* http://*.localhost:* https://*.localhost:* ws://*.localhost:* wss://*.localhost:*; font-src 'self' data:; media-src 'self' data: blob:;";
 function print(v) {
@@ -241,7 +249,7 @@ function addOpts(c) {
 }
 const program = new Command().name("glimpse").showHelpAfterError().exitOverride();
 addOpts(addHtml(program.command("prompt"))).option("--url <url>").option("--timeout <duration>").action((src, o) => run(async () => {
-	let html = o.url ? `<iframe src="${o.url}" style="border:0;width:100vw;height:100vh"></iframe>` : await htmlSource(src, o);
+	let html = o.url ? iframeForUrl(o.url) : await htmlSource(src, o);
 	if (o.url) await assertUrlAllowed(o.url, o.allowRemote);
 	const res = await promptWindow(withBridge(html, o.csp ?? (o.allowRemoteResources ? void 0 : DEFAULT_CSP)), {
 		...options(o),
@@ -250,7 +258,7 @@ addOpts(addHtml(program.command("prompt"))).option("--url <url>").option("--time
 	ok({ result: res === null ? { type: "window.closed" } : res });
 }));
 addOpts(addHtml(program.command("open"))).option("--url <url>").option("--watch").action((src, o) => run(async () => {
-	let html = o.url ? `<iframe src="${o.url}" style="border:0;width:100vw;height:100vh"></iframe>` : await htmlSource(src, o);
+	let html = o.url ? iframeForUrl(o.url) : await htmlSource(src, o);
 	let security = {};
 	if (o.url) security = await assertUrlAllowed(o.url, o.allowRemote);
 	html = withBridge(html, o.csp ?? (o.allowRemoteResources || o.url ? void 0 : DEFAULT_CSP));
