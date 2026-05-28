@@ -1,6 +1,6 @@
 import net from 'node:net';
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, rmdirSync } from 'node:fs';
+import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { socketPath, lockPath } from '../platform/paths.ts';
 
@@ -11,13 +11,53 @@ function daemonEntrypoint() {
 }
 
 async function ping() { try { await request('ping', {}, false); return true; } catch { return false; } }
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+function acquireStartupLock() {
+  try {
+    mkdirSync(lockPath());
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function releaseStartupLock() {
+  rmSync(lockPath(), { recursive: true, force: true });
+}
+
 export async function ensureDaemon() {
   if (await ping()) return;
-  try { mkdirSync(lockPath()); } catch {}
-  spawn(process.execPath, [daemonEntrypoint()], { detached: true, stdio: 'ignore', env: process.env }).unref();
+
   const deadline = Date.now() + 5000;
-  while (Date.now() < deadline) { if (await ping()) { try { rmdirSync(lockPath()); } catch {} ; return; } await new Promise(r => setTimeout(r, 100)); }
-  throw new Error('Daemon startup timed out');
+  const ownsLock = acquireStartupLock();
+
+  if (ownsLock) {
+    try {
+      // Another process may have started the daemon between our first ping and
+      // lock acquisition. Re-check before spawning to avoid duplicate daemons.
+      if (await ping()) return;
+      spawn(process.execPath, [daemonEntrypoint()], { detached: true, stdio: 'ignore', env: process.env }).unref();
+      while (Date.now() < deadline) {
+        if (await ping()) return;
+        await sleep(100);
+      }
+      throw new Error('Daemon startup timed out');
+    } finally {
+      releaseStartupLock();
+    }
+  }
+
+  // A peer owns startup. Do not spawn; wait for the daemon to answer or for the
+  // peer to release the lock, then retry as the potential new owner.
+  while (Date.now() < deadline) {
+    if (await ping()) return;
+    if (!existsSync(lockPath())) return ensureDaemon();
+    await sleep(100);
+  }
+
+  releaseStartupLock();
+  return ensureDaemon();
 }
 
 export async function request(method: string, params?: unknown, autostart = true): Promise<any> {

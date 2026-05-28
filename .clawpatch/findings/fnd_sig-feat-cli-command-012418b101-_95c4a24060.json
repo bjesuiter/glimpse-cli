@@ -29,11 +29,32 @@
   "whyTestsDoNotAlreadyCoverThis": "The only tests exercise `parseDuration`, `EventQueue`, and `isLoopbackAddress`; there is no daemon lifecycle or crash-recovery coverage.",
   "suggestedRegressionTest": "An integration test that starts the daemon, force-kills it without removing the socket file, then verifies a fresh `request('ping')` respawns the daemon and succeeds.",
   "minimumFixScope": "src/ipc/client.ts and, if needed, the daemon startup/cleanup path in src/ipc/server.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T204351-79f827",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence paths still exist, but the client-side evidence has changed. In src/ipc/client.ts, request() now always runs ensureDaemon() when autostart is true, instead of gating startup on !existsSync(socketPath()). ensureDaemon() first pings with autostart=false, so a stale Unix socket causes ping to fail, daemon startup to run, and src/ipc/server.ts still unlinks the stale socket during serve(). The built dist/cli.mjs reflects the same behavior. A current regression test, test/ipc-client.test.ts, explicitly creates a stale socket path and verifies request('ping') succeeds via autostart recovery. Both that focused test and the full test suite pass.",
+      "commands": [
+        "rg -n \"autostart|ensureDaemon|socketPath|createConnection|ECONNREFUSED|ENOENT\" src test tests . --glob '!node_modules'",
+        "sed -n '1,220p' src/ipc/client.ts",
+        "sed -n '1,220p' src/ipc/server.ts",
+        "rg --files --glob '!node_modules' | rg '(^|/)(test|tests|spec|__tests__)|\\.test\\.|\\.spec\\.'",
+        "sed -n '1,220p' test/ipc-client.test.ts",
+        "sed -n '1,180p' package.json",
+        "sed -n '1,90p' dist/cli.mjs",
+        "git status --short",
+        "bun test test/ipc-client.test.ts",
+        "bun test"
+      ],
+      "createdAt": "2026-05-28T20:44:33.200Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-012418b101_75f85ca2ce",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:33:25.790Z",
-  "updatedAt": "2026-05-28T20:33:25.790Z"
+  "updatedAt": "2026-05-28T20:44:33.200Z"
 }

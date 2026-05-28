@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260528T204351-79f827",
+  "command": "revalidate",
+  "args": [
+    "revalidate",
+    "--finding",
+    "fnd_sig-feat-cli-command-012418b101-_95c4a24060"
+  ],
+  "rootPath": "/Users/bjesuiter/Develop/bjesuiter/glimpse-cli",
+  "headSha": "b8e32b20f9d209a0e0d15f0ba23617b11b301ca4",
+  "startedAt": "2026-05-28T20:43:51.475Z",
+  "finishedAt": "2026-05-28T20:44:33.205Z",
+  "status": "completed",
+  "claimedFeatureIds": [],
+  "findingIds": [
+    "fnd_sig-feat-cli-command-012418b101-_95c4a24060"
+  ],
+  "patchAttemptIds": [],
+  "errors": []
+}

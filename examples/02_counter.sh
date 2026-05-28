@@ -16,7 +16,8 @@ HTML=$(cat <<'HTML'
   <title>Glimpse Counter</title>
   <style>
     :root { color-scheme: dark; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: radial-gradient(circle at top, #334155, #020617 65%); color: #f8fafc; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; overflow-x: hidden; background: radial-gradient(circle at top, #334155, #020617 65%); color: #f8fafc; }
     main { width: min(360px, calc(100vw - 32px)); padding: 28px; border: 1px solid rgba(148, 163, 184, .35); border-radius: 24px; background: rgba(15, 23, 42, .78); box-shadow: 0 24px 80px rgba(0, 0, 0, .45); text-align: center; }
     h1 { margin: 0 0 12px; font-size: 18px; font-weight: 650; color: #cbd5e1; }
     output { display: block; margin: 18px 0 24px; font-size: 72px; font-weight: 800; line-height: 1; letter-spacing: -0.06em; }

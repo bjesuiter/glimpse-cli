@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { a as socketPath, i as lockPath, n as promptWindow, r as withBridge } from "./glimpse-adapter-g-UHqPu4.mjs";
 import { Command } from "commander";
-import { existsSync, mkdirSync, readFileSync, rmdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import net from "node:net";
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -20,27 +20,46 @@ async function ping() {
 		return false;
 	}
 }
-async function ensureDaemon() {
-	if (await ping()) return;
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+function acquireStartupLock() {
 	try {
 		mkdirSync(lockPath());
-	} catch {}
-	spawn(process.execPath, [daemonEntrypoint()], {
-		detached: true,
-		stdio: "ignore",
-		env: process.env
-	}).unref();
-	const deadline = Date.now() + 5e3;
-	while (Date.now() < deadline) {
-		if (await ping()) {
-			try {
-				rmdirSync(lockPath());
-			} catch {}
-			return;
-		}
-		await new Promise((r) => setTimeout(r, 100));
+		return true;
+	} catch {
+		return false;
 	}
-	throw new Error("Daemon startup timed out");
+}
+function releaseStartupLock() {
+	rmSync(lockPath(), {
+		recursive: true,
+		force: true
+	});
+}
+async function ensureDaemon() {
+	if (await ping()) return;
+	const deadline = Date.now() + 5e3;
+	if (acquireStartupLock()) try {
+		if (await ping()) return;
+		spawn(process.execPath, [daemonEntrypoint()], {
+			detached: true,
+			stdio: "ignore",
+			env: process.env
+		}).unref();
+		while (Date.now() < deadline) {
+			if (await ping()) return;
+			await sleep(100);
+		}
+		throw new Error("Daemon startup timed out");
+	} finally {
+		releaseStartupLock();
+	}
+	while (Date.now() < deadline) {
+		if (await ping()) return;
+		if (!existsSync(lockPath())) return ensureDaemon();
+		await sleep(100);
+	}
+	releaseStartupLock();
+	return ensureDaemon();
 }
 async function request(method, params, autostart = true) {
 	if (autostart) await ensureDaemon();
