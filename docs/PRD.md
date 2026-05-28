@@ -11,18 +11,53 @@ macOS is the first supported implementation target, but the command and data mod
 v1 should use a minimal dependency policy while avoiding custom implementations for well-solved infrastructure.
 
 - Runtime/tooling: Bun with TypeScript.
+- Package identity: publish as `glimpse-cli` with binary name `glimpse`.
 - Binary goal: keep the code compatible with `bun build --compile` so `glimpse` can become a standalone binary.
 - CLI parser: `commander`.
 - JSON validation: `valibot` for command inputs, IPC payloads, command results, and persisted daemon state.
 - Logging: `evlog` for structured daemon/CLI diagnostics.
-- UI runtime: Glimpse JavaScript SDK/runtime.
+- UI runtime: `glimpseui` from npm. Direct Glimpse imports should be isolated behind an internal adapter module so runtime package/API changes do not leak into command logic.
 - File watching: start with built-in file watching for single-file HTML watch mode. If reliability issues appear or directory watching is needed, prefer `@parcel/watcher` over `chokidar`. Avoid `chokidar` by default due to prior memory-leak concerns and because v1 does not need glob-heavy watcher features. Before adopting `@parcel/watcher`, verify compatibility with `bun build --compile` because it uses native components.
-- IPC: built-in Unix domain sockets via `node:net` on macOS.
+- IPC: built-in Unix domain sockets via `node:net` on macOS, using newline-delimited JSON for request/response framing. IPC methods mirror CLI command names to keep command parsing and daemon dispatch simple.
 - IDs: built-in `node:crypto` UUIDs.
 - URL/DNS checks: built-in `node:url`, `node:dns/promises`, and `node:net`.
 - Duration parsing: small local helper for `ms`, `s`, and `m` suffixes.
 
 Avoid additional dependencies in v1 unless they remove substantial complexity or address a proven reliability issue.
+
+Recommended source layout:
+
+```text
+src/
+  cli.ts
+  daemon-main.ts
+  daemon/
+    daemon.ts
+    window-registry.ts
+    event-queue.ts
+  commands/
+    open.ts
+    prompt.ts
+  ipc/
+    client.ts
+    server.ts
+    protocol.ts
+  platform/
+    paths.ts
+    url-policy.ts
+  runtime/
+    glimpse-adapter.ts
+  schemas/
+    command-results.ts
+    ipc.ts
+  utils/
+    duration.ts
+    json.ts
+```
+
+The layout may be collapsed during early implementation if a separate file would add ceremony without clarity.
+
+Testing uses Bun's built-in test runner (`bun test`). Prioritize unit tests for duration parsing, JSON/Valibot schemas, URL trust policy, CSP generation, event queue semantics, IPC protocol framing, daemon startup path/lock behavior, and command parser smoke tests. Native window tests can start as manual or minimal smoke tests.
 
 ## v1 Commands
 
@@ -64,7 +99,8 @@ Persistent Windows are owned by an Ephemeral Daemon:
 - exits after last Window closes
 - may remain alive for up to 30 seconds to serve final close events
 - macOS IPC uses local same-user Unix domain socket
-- daemon discovery uses predictable per-user socket path plus state/lock files
+- daemon discovery uses predictable per-user socket path plus state files under `$TMPDIR/glimpse-cli-$UID/` (`daemon.sock`, `daemon.json`) and an atomic startup lock directory named `daemon.lock`
+- daemon startup uses detached child process launch followed by socket `ping` polling until ready or a 5 second startup timeout
 - concurrent CLI connections are allowed
 - mutations and event queue consumption are serialized per Window
 
@@ -121,6 +157,12 @@ Prompt cancellation/window close is not an error:
 ```
 
 Timeouts are technical failures.
+
+Exit codes:
+
+- `0`: success
+- `1`: runtime or command failure with JSON error
+- `2`: usage or validation error
 
 ## Prompt Semantics
 
@@ -213,6 +255,17 @@ Trusted local URLs:
 - `file:` URLs
 - `.localhost` hostnames only when they resolve to loopback addresses
 
+Trusted URL algorithm:
+
+1. Parse URL.
+2. If protocol is `file:`, trusted.
+3. If protocol is not `http:` or `https:`, untrusted.
+4. If hostname is `localhost`, trusted.
+5. If hostname is loopback IP (`127.0.0.0/8` or `::1`), trusted.
+6. If hostname ends with `.localhost`, resolve DNS once.
+7. `.localhost` is trusted only if every resolved address is loopback.
+8. Everything else is remote/untrusted.
+
 Trust is checked before loading/navigation. Redirects or in-window navigations to untrusted URLs are blocked unless remote loading is explicitly allowed.
 
 Remote URLs:
@@ -237,6 +290,20 @@ Default CSP intent:
 - allow literal `localhost`
 - allow broad `.localhost` resources for portless/local-dev workflows
 - block arbitrary remote subresources
+
+Initial v1 default CSP:
+
+```text
+default-src 'self' data: blob:;
+img-src 'self' data: blob: http://localhost:* https://localhost:* http://127.0.0.1:* https://127.0.0.1:* http://*.localhost:* https://*.localhost:*;
+style-src 'self' 'unsafe-inline' data:;
+script-src 'self' 'unsafe-inline' blob:;
+connect-src 'self' http://localhost:* https://localhost:* ws://localhost:* wss://localhost:* http://127.0.0.1:* https://127.0.0.1:* ws://127.0.0.1:* wss://127.0.0.1:* http://*.localhost:* https://*.localhost:* ws://*.localhost:* wss://*.localhost:*;
+font-src 'self' data:;
+media-src 'self' data: blob:;
+```
+
+The implementation may adjust this exact string if WKWebView behavior requires changes while preserving the stated policy intent.
 
 Escape hatches:
 
