@@ -1,0 +1,20 @@
+docs/PRD.md
+  s_1c9420357de105::t_ed9681ad8c01ce 9-18,20-26
+  s_1c9420357de105::t_3ed9185452aec8 19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "f07429ab729df954fef0c54621be50fe6e96a297",
+  "prompts": {},
+  "sessions": {
+    "s_1c9420357de105": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e64f7-430d-7e94-a1b1-cabd2f7844d3",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
