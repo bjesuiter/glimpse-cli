@@ -21,11 +21,15 @@ export async function ensureDaemon() {
 }
 
 export async function request(method: string, params?: unknown, autostart = true): Promise<any> {
-  if (autostart && !existsSync(socketPath())) await ensureDaemon();
+  // Always ping before autostarted requests. A crashed daemon can leave a stale
+  // Unix socket path behind; checking only existsSync(socketPath()) would then
+  // skip startup and fail forever with ECONNREFUSED.
+  if (autostart) await ensureDaemon();
   return new Promise((resolve, reject) => {
-    const sock = net.createConnection(socketPath()); let buf = '';
+    const sock = new net.Socket(); let buf = '';
     sock.on('error', reject);
     sock.on('connect', () => sock.write(JSON.stringify({ id: randomUUID(), method, params }) + '\n'));
+    sock.connect({ path: socketPath() });
     sock.on('data', chunk => { buf += chunk.toString(); const i = buf.indexOf('\n'); if (i >= 0) { sock.end(); const res = JSON.parse(buf.slice(0, i)); res.ok ? resolve(res.result) : reject(Object.assign(new Error(res.error.message), { code: res.error.code })); } });
   });
 }

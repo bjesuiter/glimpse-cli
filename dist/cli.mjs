@@ -43,9 +43,9 @@ async function ensureDaemon() {
 	throw new Error("Daemon startup timed out");
 }
 async function request(method, params, autostart = true) {
-	if (autostart && !existsSync(socketPath())) await ensureDaemon();
+	if (autostart) await ensureDaemon();
 	return new Promise((resolve, reject) => {
-		const sock = net.createConnection(socketPath());
+		const sock = new net.Socket();
 		let buf = "";
 		sock.on("error", reject);
 		sock.on("connect", () => sock.write(JSON.stringify({
@@ -53,6 +53,7 @@ async function request(method, params, autostart = true) {
 			method,
 			params
 		}) + "\n"));
+		sock.connect({ path: socketPath() });
 		sock.on("data", (chunk) => {
 			buf += chunk.toString();
 			const i = buf.indexOf("\n");
