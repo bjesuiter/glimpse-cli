@@ -325,11 +325,14 @@ program.command("close").option("-w, --window <ref>").option("--all").option("--
 	}));
 }));
 program.command("list").option("--include-closed").action((o) => run(async () => {
-	if (!existsSync(socketPath())) ok({
-		daemon: { running: false },
-		windows: []
-	});
-	else ok(await request("list", { includeClosed: o.includeClosed }, false));
+	try {
+		ok(await request("list", { includeClosed: o.includeClosed }, false));
+	} catch {
+		ok({
+			daemon: { running: false },
+			windows: []
+		});
+	}
 }));
 try {
 	program.parse();

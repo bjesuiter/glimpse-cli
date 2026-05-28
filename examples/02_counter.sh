@@ -2,6 +2,7 @@
 set -euo pipefail
 
 # Self-contained glimpse-cli example: an interactive counter window.
+# Uses one discrete event per button click.
 # Run from the repo root with: ./examples/02_counter.sh
 
 GLIMPSE="${GLIMPSE:-bun src/cli.ts}"
@@ -37,28 +38,17 @@ HTML=$(cat <<'HTML'
       <button id="reset" class="secondary">0</button>
       <button id="inc">+</button>
     </div>
-    <p>Clicks are sent back to the CLI event queue.</p>
+    <p>Each click is sent back as one discrete CLI event.</p>
   </main>
   <script>
     let count = 0;
     const output = document.querySelector('#count');
     function render() { output.textContent = String(count); }
     let seq = 0;
-    let snapshotRetries = 0;
     function emit(action) {
       seq += 1;
-      snapshotRetries = 10;
       window.glimpse?.send?.({ type: 'counter.changed', action, count, seq });
     }
-    // Reliable state channel: clicks can be bursty and shell polling is coarse.
-    // Repeat each latest snapshot briefly, then stop so the CLI queue cannot
-    // grow forever while waiting for the window to close.
-    setInterval(() => {
-      if (snapshotRetries > 0) {
-        snapshotRetries -= 1;
-        window.glimpse?.send?.({ type: 'counter.snapshot', count, seq });
-      }
-    }, 100);
     document.querySelector('#inc').addEventListener('click', () => { count += 1; render(); emit('increment'); });
     document.querySelector('#dec').addEventListener('click', () => { count -= 1; render(); emit('decrement'); });
     document.querySelector('#reset').addEventListener('click', () => { count = 0; render(); emit('reset'); });
@@ -78,12 +68,11 @@ if [[ -z "$WINDOW_REF" ]]; then
 fi
 
 echo "Opened window '$WINDOW_NAME' ($WINDOW_REF)."
-echo "Waiting for counter events. Press Ctrl-C to stop listening; close the window when done."
+echo "Waiting for discrete counter events. Press Ctrl-C to stop listening; close the window when done."
 
 # Block until the next event instead of polling with repeated CLI invocations.
-# The page emits counter.changed per click, and repeats counter.snapshot while
-# the state is dirty; this loop prints each new snapshot sequence once.
-last_seq=0
+# Waiting without --type lets the same loop handle both button clicks and the
+# window.closed system event.
 while true; do
   event_json=$($GLIMPSE wait -w "$WINDOW_REF")
 
@@ -93,11 +82,7 @@ while true; do
     break
   fi
 
-  if [[ "$event_json" == *'"type":"counter.snapshot"'* ]]; then
-    seq=$(printf '%s' "$event_json" | sed -n 's/.*"seq":\([0-9][0-9]*\).*/\1/p')
-    if [[ -n "$seq" && "$seq" -gt "$last_seq" ]]; then
-      echo "$event_json"
-      last_seq="$seq"
-    fi
+  if [[ "$event_json" == *'"type":"counter.changed"'* ]]; then
+    echo "$event_json"
   fi
 done

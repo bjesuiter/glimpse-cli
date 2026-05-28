@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { request } from './ipc/client.ts';
-import { socketPath } from './platform/paths.ts';
 import { parseDuration } from './utils/duration.ts';
 import { parseJson, readDataFile, readStdin } from './utils/json.ts';
 import { assertUrlAllowed } from './platform/url-policy.ts';
@@ -30,7 +29,7 @@ addWindow(program.command('send')).requiredOption('--type <type>').option('--dat
 addWindow(program.command('eval').argument('<js>')).action((js,o) => run(async () => ok(await request('eval', { window:o.window, js }))));
 for (const name of ['read','wait','events','peek'] as const) addWindow(program.command(name)).option('--type <type>').option('--timeout <duration>').action(o => run(async () => ok(await request(name, { window:o.window, type:o.type, timeout:parseDuration(o.timeout) }))));
 program.command('close').option('-w, --window <ref>').option('--all').option('--force').action(o => run(async () => { if (!o.all && !o.window) throw new Error('usage: close requires -w or --all'); ok(await request('close', { window:o.window, all:o.all, force:o.force })); }));
-program.command('list').option('--include-closed').action(o => run(async () => { if (!existsSync(socketPath())) ok({ daemon:{ running:false }, windows:[] }); else ok(await request('list', { includeClosed:o.includeClosed }, false)); }));
+program.command('list').option('--include-closed').action(o => run(async () => { try { ok(await request('list', { includeClosed:o.includeClosed }, false)); } catch { ok({ daemon:{ running:false }, windows:[] }); } }));
 try { program.parse(); } catch (err) {
   const e = err as any;
   if (e.code === 'commander.helpDisplayed') process.exit(0);
