@@ -1,0 +1,20 @@
+examples/02b_counter_discrete_events.sh
+  s_ffa560ca55e7e1::t_b4367f069a9148 1-4,7-40,42-70,72-73,76-84,87-88
+  s_ffa560ca55e7e1::t_02db77525c9678 5-6,41,71,74-75,85-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "470c17b6b4a69e221fc86391fdd9cc99e805708b",
+  "prompts": {},
+  "sessions": {
+    "s_ffa560ca55e7e1": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7062-212a-7159-9cd9-8e4d829147b9",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
