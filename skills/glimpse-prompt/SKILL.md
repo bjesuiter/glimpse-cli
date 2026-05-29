@@ -102,7 +102,7 @@ Local/trusted URL prompt:
 glimpse prompt --url http://localhost:3000/dialog
 ```
 
-Remote URL needs `--allow-remote`. Remote page needs send result to CLI? add `--allow-bridge` only then.
+Remote URL prompts require both `--allow-remote` and `--allow-bridge`, because prompts need the page bridge to return a result to the CLI.
 
 ## Agent parse rules
 
