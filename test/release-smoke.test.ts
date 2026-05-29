@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from 'bun:test';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync } from 'node:fs';
+import { mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -29,7 +29,9 @@ describe('release package smoke test', () => {
     const runtimeDir = tempDir('glimpse-runtime-');
 
     run('npm', ['pack', '--pack-destination', packDir]);
-    const tarball = join(packDir, 'glimpse-cli-0.1.0.tgz');
+    const tarballName = readdirSync(packDir).find((name) => name.endsWith('.tgz'));
+    expect(tarballName).toBeString();
+    const tarball = join(packDir, tarballName!);
 
     run('npm', ['init', '-y'], { cwd: installDir });
     run('npm', ['install', '--ignore-scripts', tarball], { cwd: installDir });
