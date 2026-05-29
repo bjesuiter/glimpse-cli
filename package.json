@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "prepack": "bun run build",
+    "prepack": "bun run build >/dev/null",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "start": "bun src/cli.ts"
