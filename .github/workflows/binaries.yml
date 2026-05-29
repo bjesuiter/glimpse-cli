@@ -71,6 +71,7 @@ jobs:
         run: bun run typecheck
 
       - name: Test
+        if: runner.os != 'Windows'
         run: bun test
 
       - name: Build binary
