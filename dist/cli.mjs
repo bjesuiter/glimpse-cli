@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { a as socketPath, i as lockPath, n as promptWindow, r as withBridge } from "./glimpse-adapter-g-UHqPu4.mjs";
+import { a as socketPath, i as lockPath, n as promptWindow, r as withBridge } from "./glimpse-adapter-COgj6E-W.mjs";
 import { Command } from "commander";
 import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { resolve } from "node:path";
 import net from "node:net";
 import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -269,10 +270,12 @@ addOpts(addPromptPolicy(program.command("prompt").argument("[html-source]").opti
 	ok({ result: res === null ? { type: "window.closed" } : res });
 }));
 addOpts(addOpenPolicy(program.command("open").argument("[html-source]").option("--html <literal>"))).option("--url <url>").option("--watch").action((src, o) => run(async () => {
+	if (o.watch && (!src || src === "-" || o.html != null || o.url)) throw new Error("usage: --watch requires a file-based html-source");
 	let html = o.url ? iframeForUrl(o.url) : await htmlSource(src, o);
 	let security = {};
 	if (o.url) security = await assertUrlAllowed(o.url, o.allowRemote);
 	html = withBridge(html, o.csp ?? (o.allowRemoteResources || o.url ? void 0 : DEFAULT_CSP));
+	const watchPath = o.watch ? resolve(String(src)) : void 0;
 	ok(await request("open", {
 		html,
 		name: o.name,
@@ -283,10 +286,12 @@ addOpts(addOpenPolicy(program.command("open").argument("[html-source]").option("
 			url: o.url
 		} : {
 			kind: "html",
-			path: src
+			path: src,
+			watch: Boolean(o.watch)
 		},
 		bridge: !o.url || security.trusted || o.allowBridge,
-		security
+		security,
+		watchPath
 	}));
 }));
 addHtml(addWindow(program.command("set-html"))).action((src, o) => run(async () => ok(await request("set-html", {

@@ -27,4 +27,10 @@ describe('CLI option surface', () => {
     expect(result.status).toBe(2);
     expect(result.stdout).toContain('unknown option');
   });
+
+  test('open --watch rejects non-file HTML sources', () => {
+    const result = spawnSync(process.execPath, ['src/cli.ts', 'open', '--html', '<h1>x</h1>', '--watch'], { encoding: 'utf8' });
+    expect(result.status).toBe(2);
+    expect(result.stdout).toContain('--watch requires a file-based html-source');
+  });
 });

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
-import { a as socketPath, o as statePath, t as openWindow } from "./glimpse-adapter-g-UHqPu4.mjs";
-import { unlinkSync, writeFileSync } from "node:fs";
+import { a as socketPath, o as statePath, t as openWindow } from "./glimpse-adapter-COgj6E-W.mjs";
+import { unlinkSync, watch, writeFileSync } from "node:fs";
 import net from "node:net";
 import { randomUUID } from "node:crypto";
 import * as v from "valibot";
+import { readFile } from "node:fs/promises";
 //#region src/ipc/protocol.ts
 const RequestSchema = v.object({
 	id: v.string(),
@@ -98,6 +99,39 @@ var EventQueue = class {
 	}
 };
 //#endregion
+//#region src/daemon/watchers.ts
+function watchHtmlFile(path, target) {
+	let timer;
+	let reloading = false;
+	let pending = false;
+	const reload = async () => {
+		if (reloading) {
+			pending = true;
+			return;
+		}
+		reloading = true;
+		try {
+			const html = await readFile(path, "utf8");
+			target.setHtml(html);
+			target.onReload?.();
+		} catch (error) {
+			target.onError?.(error);
+		} finally {
+			reloading = false;
+			if (pending) {
+				pending = false;
+				reload();
+			}
+		}
+	};
+	const watcher = watch(path, { persistent: false }, () => {
+		if (timer) clearTimeout(timer);
+		timer = setTimeout(() => void reload(), 75);
+	});
+	watcher.on("error", (error) => target.onError?.(error));
+	return watcher;
+}
+//#endregion
 //#region src/daemon/window-registry.ts
 var WindowRegistry = class {
 	windows = /* @__PURE__ */ new Map();
@@ -138,6 +172,11 @@ var WindowRegistry = class {
 		rec.win?.on("message", (data) => rec.queue.push(typeof data === "object" && data && "type" in data ? String(data.type) : "json", data));
 		rec.win?.once("closed", () => this.markClosed(rec));
 		rec.win?.on("error", (err) => rec.queue.system("glimpse.error", { message: String(err?.message ?? err) }));
+		if (opts.watchPath) rec.watcher = watchHtmlFile(opts.watchPath, {
+			setHtml: (html) => rec.win?.setHTML(html),
+			onReload: () => rec.queue.system("html.reloaded"),
+			onError: (error) => rec.queue.system("glimpse.error", { message: String(error?.message ?? error) })
+		});
 		return rec;
 	}
 	setHtml(ref, html) {
@@ -160,6 +199,7 @@ var WindowRegistry = class {
 	}
 	close(ref, force = false) {
 		const w = this.must(ref);
+		w.watcher?.close();
 		if (force) {
 			w.win?.close();
 			this.windows.delete(w.id);
@@ -181,6 +221,7 @@ var WindowRegistry = class {
 	}
 	markClosed(w) {
 		if (w.state === "closed") return;
+		w.watcher?.close();
 		w.state = "closed";
 		w.queue.system("window.closed");
 		w.closedAt = Date.now();

@@ -19,7 +19,8 @@ const lockPath = () => join(runtimeDir(), "daemon.lock");
 //#region src/runtime/glimpse-adapter.ts
 function withBridge(html, csp) {
 	const meta = csp ? `<meta http-equiv="Content-Security-Policy" content="${csp.replaceAll("\"", "&quot;")}">` : "";
-	return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (m) => `${m}${meta}`) : `${meta}${html}`;
+	const bridgeHint = "<script>window.dispatchEvent(new Event(\"glimpse:loaded\"));<\/script>";
+	return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, (m) => `${m}${meta}${bridgeHint}`) : `${meta}${bridgeHint}${html}`;
 }
 function openWindow(html, options = {}) {
 	return glimpse.open(html, options);
@@ -30,4 +31,4 @@ async function promptWindow(html, options = {}) {
 //#endregion
 export { socketPath as a, lockPath as i, promptWindow as n, statePath as o, withBridge as r, openWindow as t };
 
-//# sourceMappingURL=glimpse-adapter-g-UHqPu4.mjs.map
+//# sourceMappingURL=glimpse-adapter-COgj6E-W.mjs.map

@@ -12,7 +12,8 @@ export function withBridge(html: string, csp?: string): string {
   // Glimpse injects window.glimpse at document start in the native host.
   // Do not polyfill/overwrite it here, or page-to-CLI messages stop working.
   const meta = csp ? `<meta http-equiv="Content-Security-Policy" content="${csp.replaceAll('"','&quot;')}">` : '';
-  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, m => `${m}${meta}`) : `${meta}${html}`;
+  const bridgeHint = '<script>window.dispatchEvent(new Event("glimpse:loaded"));</script>';
+  return /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, m => `${m}${meta}${bridgeHint}`) : `${meta}${bridgeHint}${html}`;
 }
 
 export function openWindow(html: string, options: Record<string, unknown> = {}): RuntimeWindow {
