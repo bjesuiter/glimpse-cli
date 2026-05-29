@@ -10,6 +10,14 @@
   "bin": {
     "glimpse": "./dist/cli.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjesuiter/glimpse-cli.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "files": ["dist", "README.md", "docs", "examples"],
   "scripts": {
     "build": "tsdown",
