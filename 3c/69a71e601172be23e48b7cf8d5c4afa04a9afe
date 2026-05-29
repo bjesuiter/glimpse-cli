@@ -1,0 +1,28 @@
+.github/workflows/release.yml
+  s_6c710c0f41f39c::t_395c2d0a84d426 1-20,22-39,41-77,79-97,99-101
+  s_6c710c0f41f39c::t_2a5194b5b845fe 21,40,78,98
+docs/npm-staged-trusted-publishing.md
+  s_6c710c0f41f39c::t_5b6120544fa0fe 3,23-24,27,29-30,32,34,36-44
+  s_6c710c0f41f39c::t_c38f951068a1b2 1-2,4-22,25-26,28,31,33,35
+skills/npm-staged-publishing/SKILL.md
+  s_6c710c0f41f39c::t_9d32bd9902dbcd 1-2,4-5,7,9,11,13,15,17,42-59,62-66
+  s_6c710c0f41f39c::t_0b5c899c266100 3,6,8,10,12,14,16,18-41,60-61
+package.json
+  s_6c710c0f41f39c::t_34ace61251cb19 13-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "3c69a71e601172be23e48b7cf8d5c4afa04a9afe",
+  "prompts": {},
+  "sessions": {
+    "s_6c710c0f41f39c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73be-a0bb-7259-a74f-ca8e13819f8f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
