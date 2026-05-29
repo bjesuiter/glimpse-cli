@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_6c710c0f41f39c::t_15edb18aaaec0a 3-7
+package.json
+  s_6c710c0f41f39c::t_713e08a3c125df 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "43fe430386307a06ee275e7015084eb42574c977",
+  "prompts": {},
+  "sessions": {
+    "s_6c710c0f41f39c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73be-a0bb-7259-a74f-ca8e13819f8f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
