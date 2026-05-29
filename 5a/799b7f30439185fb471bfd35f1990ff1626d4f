@@ -1,0 +1,23 @@
+package.json
+  s_6c710c0f41f39c::t_8cd166302e5c24 3,21-26
+test/release-smoke.test.ts
+  s_6c710c0f41f39c::t_dc64fdbcc5bddb 3,32-34
+CHANGELOG.md
+  s_6c710c0f41f39c::t_83e34d0fe876c6 1-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "5a799b7f30439185fb471bfd35f1990ff1626d4f",
+  "prompts": {},
+  "sessions": {
+    "s_6c710c0f41f39c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73be-a0bb-7259-a74f-ca8e13819f8f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
