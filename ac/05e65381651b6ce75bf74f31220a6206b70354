@@ -1,0 +1,21 @@
+.clawpatch/reports/20260529T123943-dbcd05.md
+  s_6c710c0f41f39c::t_525f54ce9d762d 1-449
+.clawpatch/runs/20260529T123943-dbcd05.json
+  s_6c710c0f41f39c::t_525f54ce9d762d 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "ac05e65381651b6ce75bf74f31220a6206b70354",
+  "prompts": {},
+  "sessions": {
+    "s_6c710c0f41f39c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73be-a0bb-7259-a74f-ca8e13819f8f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
