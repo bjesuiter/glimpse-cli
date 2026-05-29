@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.1 - 2026-05-29
+
+- Switched the release workflow from staged npm publishing to direct trusted `npm publish`.
+- Updated the Bun setup action to a Node.js 24-compatible pinned release.
+
 ## 0.2.0 - 2026-05-29
 
 - Added the initial Glimpse CLI for opening, prompting, updating, and controlling persistent UI windows.
