@@ -1,0 +1,29 @@
+bun.lock
+  ai_agent 17,160
+.clawpatch/features/feat_cli-command_c708252bd0.json
+  s_9c579781abc78c::t_ff3cb9abc9c157 41,60
+.clawpatch/findings/fnd_sig-feat-cli-command-c708252bd0-_0543af5854.json
+  s_9c579781abc78c::t_ff3cb9abc9c157 39,86-111,118
+.clawpatch/runs/20260529T122302-cda862.json
+  s_9c579781abc78c::t_ff3cb9abc9c157 1-21
+package.json
+  s_9c579781abc78c::t_692c27b1ac21f6 30-31
+  s_9c579781abc78c::t_bff444cd004dea 7
+  s_9c579781abc78c::t_3b26526067f224 5-6,8-9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "7ddbab644b6a9f3f69a8ab6de5376eba20c2a412",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
