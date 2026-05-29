@@ -4,10 +4,19 @@ import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { randomUUID } from 'node:crypto';
 import { socketPath, lockPath } from '../platform/paths.ts';
 
-function daemonEntrypoint() {
-  const bundled = new URL('./daemon-main.mjs', import.meta.url).pathname;
+function isCompiledExecutableUrl(url: string): boolean {
+  return url.startsWith('file:///$bunfs/');
+}
+
+function daemonEntrypoint(metaUrl = import.meta.url) {
+  const bundled = new URL('./daemon-main.mjs', metaUrl).pathname;
   if (existsSync(bundled)) return bundled;
-  return new URL('../daemon-main.ts', import.meta.url).pathname;
+  return new URL('../daemon-main.ts', metaUrl).pathname;
+}
+
+export function daemonSpawnCommand(metaUrl = import.meta.url, execPath = process.execPath) {
+  if (isCompiledExecutableUrl(metaUrl)) return { command: execPath, args: ['--glimpse-daemon'] };
+  return { command: execPath, args: [daemonEntrypoint(metaUrl)] };
 }
 
 async function ping() { try { await request('ping', {}, false); return true; } catch { return false; } }
@@ -37,7 +46,8 @@ export async function ensureDaemon() {
       // Another process may have started the daemon between our first ping and
       // lock acquisition. Re-check before spawning to avoid duplicate daemons.
       if (await ping()) return;
-      spawn(process.execPath, [daemonEntrypoint()], { detached: true, stdio: 'ignore', env: process.env }).unref();
+      const daemon = daemonSpawnCommand();
+      spawn(daemon.command, daemon.args, { detached: true, stdio: 'ignore', env: process.env }).unref();
       while (Date.now() < deadline) {
         if (await ping()) return;
         await sleep(100);

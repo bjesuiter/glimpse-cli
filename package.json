@@ -26,6 +26,8 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "build:binary": "bun scripts/build-binaries.ts --current",
+    "build:binaries": "bun scripts/build-binaries.ts",
     "prepack": "bun run build >/dev/null",
     "test": "bun test",
     "typecheck": "tsc --noEmit",

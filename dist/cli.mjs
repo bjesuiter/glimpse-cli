@@ -8,10 +8,23 @@ import { spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { lookup } from "node:dns/promises";
 //#region src/ipc/client.ts
-function daemonEntrypoint() {
-	const bundled = new URL("./daemon-main.mjs", import.meta.url).pathname;
+function isCompiledExecutableUrl(url) {
+	return url.startsWith("file:///$bunfs/");
+}
+function daemonEntrypoint(metaUrl = import.meta.url) {
+	const bundled = new URL("./daemon-main.mjs", metaUrl).pathname;
 	if (existsSync(bundled)) return bundled;
-	return new URL("../daemon-main.ts", import.meta.url).pathname;
+	return new URL("../daemon-main.ts", metaUrl).pathname;
+}
+function daemonSpawnCommand(metaUrl = import.meta.url, execPath = process.execPath) {
+	if (isCompiledExecutableUrl(metaUrl)) return {
+		command: execPath,
+		args: ["--glimpse-daemon"]
+	};
+	return {
+		command: execPath,
+		args: [daemonEntrypoint(metaUrl)]
+	};
 }
 async function ping() {
 	try {
@@ -41,7 +54,8 @@ async function ensureDaemon() {
 	const deadline = Date.now() + 5e3;
 	if (acquireStartupLock()) try {
 		if (await ping()) return;
-		spawn(process.execPath, [daemonEntrypoint()], {
+		const daemon = daemonSpawnCommand();
+		spawn(daemon.command, daemon.args, {
 			detached: true,
 			stdio: "ignore",
 			env: process.env
