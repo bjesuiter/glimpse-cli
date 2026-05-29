@@ -1,0 +1,37 @@
+.clawpatch/runs/20260529T123755-503fb9.json
+  s_9c579781abc78c::t_5ab5464fd7a876 1-21
+.clawpatch/runs/20260529T123323-c6417e.json
+  s_9c579781abc78c::t_8012df3fd09418 1-21
+.clawpatch/runs/20260529T123101-3518a1.json
+  s_9c579781abc78c::t_f51d8997f1f78c 13-14
+.clawpatch/config.json
+  ai_agent 18-19
+.clawpatch/findings/fnd_sig-feat-test-suite-84ae84a25a-9_4571103aab.json
+  s_9c579781abc78c::t_5ab5464fd7a876 25,44-59,66
+.clawpatch/findings/fnd_sig-feat-config-7528cb5b98-fad9e_a6348367d7.json
+  s_9c579781abc78c::t_f51d8997f1f78c 25,44-59,66
+.clawpatch/features/feat_config_7528cb5b98.json
+  s_9c579781abc78c::t_f51d8997f1f78c 32,51
+.clawpatch/findings/fnd_sig-feat-cli-command-0f8d81242f-_648bc03573.json
+  s_9c579781abc78c::t_8012df3fd09418 25,48-73,80
+.clawpatch/features/feat_test-suite_84ae84a25a.json
+  s_9c579781abc78c::t_5ab5464fd7a876 32,50
+.clawpatch/features/feat_cli-command_0f8d81242f.json
+  s_9c579781abc78c::t_8012df3fd09418 39,59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "6a3055acf6784570f96efa9f79d1d541013a0a87",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
