@@ -1,0 +1,25 @@
+test/cli-list.test.ts
+  s_6c710c0f41f39c::t_3d5a289536f403 3,11
+test/ipc-client.test.ts
+  s_6c710c0f41f39c::t_834863633710f9 2,9,12,31-32
+test/watchers.test.ts
+  s_6c710c0f41f39c::t_358cd596f230a2 2,12
+test/release-smoke.test.ts
+  s_6c710c0f41f39c::t_b5cb0e2e51ef07 3,10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "7c34b3931c184e021bf2bce1fe5778f7560b6427",
+  "prompts": {},
+  "sessions": {
+    "s_6c710c0f41f39c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73be-a0bb-7259-a74f-ca8e13819f8f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
