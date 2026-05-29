@@ -22,11 +22,31 @@
   "whyTestsDoNotAlreadyCoverThis": "No linked tests exercise package installation or the published CLI entrypoint; the configured `test` command only runs the repository tests under Bun.",
   "suggestedRegressionTest": "Add a packaging smoke test that runs `npm pack`, installs the tarball into a temporary project, and executes the `glimpse` binary with the supported runtime.",
   "minimumFixScope": "Update package release configuration and CLI entrypoint packaging in `package.json`; add a build or pack smoke test.",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence is stale: package.json no longer has bin.glimpse pointing at ./src/cli.ts. Current package.json points bin.glimpse to ./dist/cli.mjs, includes dist in files, and defines prepack as bun run build. tsdown.config.ts builds src/cli.ts into dist/cli.mjs for Node ESM. The built dist/cli.mjs exists and starts with a Node shebang. A dedicated packaging smoke test now exists at test/release-smoke.test.ts and it packs the npm package, installs the tarball into a temporary project with scripts ignored, then executes node_modules/.bin/glimpse list with a Node-only PATH. That regression test passed.",
+      "commands": [
+        "pwd && rg -n '\"bin\"|\"glimpse\"|src/cli\\.ts|dist/cli|npm pack|bun' package.json bun.lockb package-lock.json pnpm-lock.yaml yarn.lock 2>/dev/null",
+        "rg --files -g 'package.json' -g '*test*' -g '*.ts' -g '*.js' -g '*.json'",
+        "git status --short",
+        "sed -n '1,80p' package.json",
+        "sed -n '1,220p' test/release-smoke.test.ts",
+        "sed -n '1,160p' tsdown.config.ts",
+        "rg --files dist 2>/dev/null || true",
+        "sed -n '1,80p' dist/cli.mjs 2>/dev/null || true",
+        "bun test test/release-smoke.test.ts"
+      ],
+      "createdAt": "2026-05-28T21:20:49.981Z"
+    }
+  ],
   "signature": "sig_feat-config-7528cb5b98_8fae7d13a9",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:33.404Z",
-  "updatedAt": "2026-05-28T20:32:33.404Z"
+  "updatedAt": "2026-05-28T21:20:49.981Z"
 }

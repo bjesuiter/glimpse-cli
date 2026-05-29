@@ -36,11 +36,35 @@
   "whyTestsDoNotAlreadyCoverThis": "The only included tests exercise utility helpers under Bun. There is no packed-install smoke test, no Node-only execution test, and no Windows/bin-shim coverage.",
   "suggestedRegressionTest": "Add a release smoke test that packs the module, installs it into a clean temporary project with Node only, and asserts `glimpse list` starts successfully. Add a Windows CI job or equivalent shim test for the published bin.",
   "minimumFixScope": "package.json, tsconfig/build output, and the daemon spawn target in src/ipc/client.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T211308-7ad62f",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original package.json evidence is no longer present: bin now points to ./dist/cli.mjs and package files include dist. The raw TypeScript bin problem is addressed by tsdown.config.ts, which builds src/cli.ts and src/daemon-main.ts into dist. The current src/ipc/client.ts still has a TypeScript fallback for development, but the bundled path checks ./daemon-main.mjs first, and dist/cli.mjs contains that same bundled daemon-main.mjs target. A Node execution smoke check succeeded with node dist/cli.mjs list, returning ok:true. The added release smoke test also passed and explicitly packs/installs the package with a Node-only PATH and runs node_modules/.bin/glimpse list. tsconfig.json still has Bun types/noEmit, but that is no longer evidence that the published bin runs raw TS because the release path now uses tsdown output. npm pack --dry-run could not be used as additional evidence in this read-only sandbox because prepack/cache writes failed with EPERM.",
+      "commands": [
+        "pwd && rg -n '\"bin\"|bun test|allowImportingTsExtensions|noEmit|types|daemon-main|spawn\\(process\\.execPath|src/cli\\.ts' package.json tsconfig.json src/ipc/client.ts 2>/dev/null",
+        "git status --short && rg --files",
+        "nl -ba package.json",
+        "nl -ba tsconfig.json",
+        "nl -ba src/ipc/client.ts",
+        "nl -ba test/release-smoke.test.ts && nl -ba tsdown.config.ts",
+        "nl -ba src/cli.ts | sed -n '1,220p'",
+        "nl -ba src/cli-helpers.ts | sed -n '1,220p'",
+        "node dist/cli.mjs list",
+        "bun test test/release-smoke.test.ts",
+        "rg -n \"daemonEntrypoint|daemon-main|\\.ts|process\\.execPath|#!/usr/bin/env node\" dist/cli.mjs dist/daemon-main.mjs package.json src/ipc/client.ts test/release-smoke.test.ts",
+        "npm pack --dry-run --json",
+        "npm pack --ignore-scripts --dry-run --json"
+      ],
+      "createdAt": "2026-05-28T21:14:10.203Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-17d514f2b2_dd1da9ec98",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:50.058Z",
-  "updatedAt": "2026-05-28T20:32:50.058Z"
+  "updatedAt": "2026-05-28T21:14:10.203Z"
 }

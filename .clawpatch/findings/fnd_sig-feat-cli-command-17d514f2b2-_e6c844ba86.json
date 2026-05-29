@@ -29,11 +29,32 @@
   "whyTestsDoNotAlreadyCoverThis": "The tests exercise `EventQueue` directly but do not cover daemon `wait` behavior, invalid window references, or timer cleanup.",
   "suggestedRegressionTest": "Add a daemon-level test asserting `wait` rejects immediately for an unknown window and does not leave active timers behind.",
   "minimumFixScope": "src/daemon/daemon.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence path still exists at src/daemon/daemon.ts:16 and wait is still implemented at src/daemon/daemon.ts:23-32, but the behavior has changed. wait() now calls registry.requireOpen(window) before creating the Promise or setInterval, so an unknown or already-closed window throws immediately instead of installing a polling interval that never settles. WindowRegistry.requireOpen at src/daemon/window-registry.ts:30 throws `Window <ref> is not open.` when resolve fails or the record is not open. A current regression test exists in test/daemon.test.ts:5-7 asserting dispatch('wait', { window: 'missing-window' }) rejects immediately, and both the targeted daemon test and full bun test suite pass. There is a possible adjacent issue if a valid window closes after wait() starts because requireOpen() is called inside the interval without clearing/rejecting, but that is not the original unknown/already-closed-window finding.",
+      "commands": [
+        "pwd && rg -n \"case 'wait'|function wait|const wait|registry\\.resolve\\(window\\)|setInterval|wait\\(\" src test tests --glob '!node_modules'",
+        "git status --short && rg --files | rg '(^|/)(package.json|pnpm-lock.yaml|yarn.lock|package-lock.json|vitest|jest|test|spec|daemon\\.ts)$'",
+        "nl -ba src/daemon/daemon.ts | sed -n '1,120p'",
+        "find . -maxdepth 3 -type f \\( -name '*test*' -o -name '*spec*' \\) | sort",
+        "sed -n '1,220p' package.json",
+        "nl -ba src/daemon/window-registry.ts | sed -n '1,220p'",
+        "nl -ba test/daemon.test.ts | sed -n '1,240p'",
+        "rg -n \"wait|requireOpen|unknown|missing|timeout|setInterval|active|timer\" test src --glob '!node_modules'",
+        "bun test test/daemon.test.ts",
+        "bun test"
+      ],
+      "createdAt": "2026-05-28T21:18:15.048Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-17d514f2b2_e307cd98d2",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:50.058Z",
-  "updatedAt": "2026-05-28T20:32:50.058Z"
+  "updatedAt": "2026-05-28T21:18:15.048Z"
 }

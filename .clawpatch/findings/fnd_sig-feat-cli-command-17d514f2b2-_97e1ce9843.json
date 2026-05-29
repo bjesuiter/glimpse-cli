@@ -36,11 +36,36 @@
   "whyTestsDoNotAlreadyCoverThis": "There is no parallel startup test and no assertion that a cold start yields exactly one daemon process.",
   "suggestedRegressionTest": "Add an integration test that fires two concurrent requests from a clean state and asserts only one daemon instance is created and both requests succeed against the same socket.",
   "minimumFixScope": "src/ipc/client.ts startup locking and daemon single-instance handling in src/ipc/server.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T211045-5fd535",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original client evidence no longer exists in the reported form. In current src/ipc/client.ts, ensureDaemon() calls acquireStartupLock(), only spawns when mkdirSync(lockPath()) succeeds, re-pings after acquiring the lock, and when lock acquisition fails it waits for the existing starter instead of spawning. The built dist/cli.mjs contains the same logic, so the shipped CLI is also updated. The server still unconditionally unlinks and listens on the socket path in src/ipc/server.ts and dist/daemon-main.mjs, but the original cold-start race was the client spawning multiple daemons after ignoring lock acquisition failure; current client code serializes that path. Existing tests pass, including the IPC stale-socket recovery test and full suite. I could not run an ad hoc two-process race repro in this read-only sandbox because creating an isolated /tmp runtime failed with EPERM, so this conclusion is based on current source/dist control flow plus passing tests rather than a live race stress test.",
+      "commands": [
+        "rg -n \"ensureDaemon|mkdirSync\\(|lockPath\\(|spawn\\(|unlinkSync\\(socketPath|server\\.listen\\(socketPath|statePath\\(\" src test tests package.json",
+        "git status --short",
+        "rg --files",
+        "nl -ba src/ipc/client.ts | sed -n '1,140p'",
+        "nl -ba src/ipc/server.ts | sed -n '1,120p'",
+        "nl -ba test/ipc-client.test.ts | sed -n '1,240p'",
+        "cat package.json",
+        "rg -n \"ensureDaemon|startup|lock|mkdirSync|spawn\\(process\\.execPath|unlinkSync\\(socketPath|server.listen\\(socketPath\" dist src test",
+        "bun test test/ipc-client.test.ts",
+        "bun test",
+        "tmp=$(mktemp -d /tmp/glimpse-race.XXXXXX); env TMPDIR=\"$tmp\" bun -e 'import { request } from \"./src/ipc/client.ts\"; await request(\"ping\"); console.log(\"one done\")' & p1=$!; env TMPDIR=\"$tmp\" bun -e 'import { request } from \"./src/ipc/client.ts\"; await request(\"ping\"); console.log(\"two done\")' & p2=$!; wait $p1 $p2; state=\"$tmp/glimpse-cli-$(id -u)/daemon.json\"; echo STATE:$state; cat \"$state\"; pid=$(node -e 'const fs=require(\"fs\"); const p=process.argv[1]; if (fs.existsSync(p)) process.stdout.write(String(JSON.parse(fs.readFileSync(p,\"utf8\")).pid));' \"$state\"); echo; echo PID:$pid; pgrep -fl \"daemon-main.ts|daemon-main.mjs\" || true; [ -n \"$pid\" ] && kill \"$pid\" 2>/dev/null || true; rm -rf \"$tmp\"",
+        "nl -ba dist/cli.mjs | sed -n '1,85p'",
+        "nl -ba dist/daemon-main.mjs | sed -n '20,60p'",
+        "rg -n \"concurrent|startup|daemon.*lock|ensureDaemon|request\\('ping'\" test src dist/cli.mjs"
+      ],
+      "createdAt": "2026-05-28T21:12:01.032Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-17d514f2b2_389f164697",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:50.058Z",
-  "updatedAt": "2026-05-28T20:32:50.058Z"
+  "updatedAt": "2026-05-28T21:12:01.032Z"
 }

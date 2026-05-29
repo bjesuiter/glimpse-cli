@@ -238,26 +238,37 @@ function options(o) {
 function addWindow(c) {
 	return c.requiredOption("-w, --window <ref>");
 }
-function addPolicy(c) {
-	return c.option("--allow-remote").option("--allow-bridge").option("--allow-remote-resources").option("--csp <policy>");
+function addUrlPolicy(c) {
+	return c.option("--allow-remote");
+}
+function addHtmlPolicy(c) {
+	return c.option("--allow-remote-resources").option("--csp <policy>");
+}
+function addOpenPolicy(c) {
+	return addHtmlPolicy(addUrlPolicy(c).option("--allow-bridge"));
+}
+function addPromptPolicy(c) {
+	return addHtmlPolicy(addUrlPolicy(c).option("--allow-bridge"));
 }
 function addHtml(c) {
-	return addPolicy(c.argument("[html-source]").option("--html <literal>"));
+	return addHtmlPolicy(c.argument("[html-source]").option("--html <literal>"));
 }
 function addOpts(c) {
 	return c.option("--name <name>").option("--replace").option("--options-json <json>").option("--width <n>", "", Number).option("--height <n>", "", Number).option("--title <title>").option("--x <n>", "", Number).option("--y <n>", "", Number).option("--frameless").option("--floating").option("--transparent").option("--click-through").option("--follow-cursor").option("--follow-mode <mode>").option("--cursor-offset <x,y>");
 }
 const program = new Command().name("glimpse").showHelpAfterError().exitOverride();
-addOpts(addHtml(program.command("prompt"))).option("--url <url>").option("--timeout <duration>").action((src, o) => run(async () => {
+addOpts(addPromptPolicy(program.command("prompt").argument("[html-source]").option("--html <literal>"))).option("--url <url>").option("--timeout <duration>").action((src, o) => run(async () => {
 	let html = o.url ? iframeForUrl(o.url) : await htmlSource(src, o);
-	if (o.url) await assertUrlAllowed(o.url, o.allowRemote);
+	if (o.url) {
+		if (!(await assertUrlAllowed(o.url, o.allowRemote)).trusted && !o.allowBridge) throw new Error("Remote URL prompts require --allow-bridge.");
+	}
 	const res = await promptWindow(withBridge(html, o.csp ?? (o.allowRemoteResources ? void 0 : DEFAULT_CSP)), {
 		...options(o),
 		timeout: parseDuration(o.timeout)
 	});
 	ok({ result: res === null ? { type: "window.closed" } : res });
 }));
-addOpts(addHtml(program.command("open"))).option("--url <url>").option("--watch").action((src, o) => run(async () => {
+addOpts(addOpenPolicy(program.command("open").argument("[html-source]").option("--html <literal>"))).option("--url <url>").option("--watch").action((src, o) => run(async () => {
 	let html = o.url ? iframeForUrl(o.url) : await htmlSource(src, o);
 	let security = {};
 	if (o.url) security = await assertUrlAllowed(o.url, o.allowRemote);
@@ -282,7 +293,7 @@ addHtml(addWindow(program.command("set-html"))).action((src, o) => run(async () 
 	window: o.window,
 	html: withBridge(await htmlSource(src, o), o.csp ?? (o.allowRemoteResources ? void 0 : DEFAULT_CSP))
 }))));
-addPolicy(addWindow(program.command("navigate")).requiredOption("--url <url>")).action((o) => run(async () => {
+addUrlPolicy(addWindow(program.command("navigate")).requiredOption("--url <url>")).action((o) => run(async () => {
 	await assertUrlAllowed(o.url, o.allowRemote);
 	ok(await request("navigate", {
 		window: o.window,

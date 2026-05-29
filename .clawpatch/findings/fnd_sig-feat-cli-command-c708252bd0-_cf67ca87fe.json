@@ -29,11 +29,32 @@
   "whyTestsDoNotAlreadyCoverThis": "No linked tests cover packaging or a clean install/run path, so the executable contract is never exercised outside the author environment.",
   "suggestedRegressionTest": "Add a release smoke test that packs the package, installs it into a clean Node-only environment, and runs `glimpse list`; if Bun is intentionally required, assert that the manifest clearly declares that requirement instead.",
   "minimumFixScope": "src/cli.ts and package.json",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original release contract issue is fixed in the current repository. The original package.json evidence no longer exists: package.json now maps the published binary to ./dist/cli.mjs at lines 5-7, not ./src/cli.ts. The original Bun shebang evidence also changed: src/cli.ts line 1 is now #!/usr/bin/env node, and the built published entry dist/cli.mjs line 1 is also #!/usr/bin/env node. Runtime evidence supports the fix: node dist/cli.mjs list returns {\"ok\":true,\"daemon\":{\"running\":false},\"windows\":[]}. A current regression test exists at test/release-smoke.test.ts and passes; it packs the package, installs it with --ignore-scripts into a clean temp project, restricts PATH to Node/npm locations, and runs node_modules/.bin/glimpse list successfully.",
+      "commands": [
+        "git status --short && rg --files",
+        "sed -n '1,220p' package.json",
+        "sed -n '1,80p' src/cli.ts",
+        "sed -n '1,220p' test/release-smoke.test.ts",
+        "sed -n '1,160p' tsdown.config.ts",
+        "nl -ba package.json | sed -n '1,80p'",
+        "nl -ba src/cli.ts | sed -n '1,12p'",
+        "nl -ba dist/cli.mjs | sed -n '1,20p'",
+        "node dist/cli.mjs list",
+        "bun test test/release-smoke.test.ts"
+      ],
+      "createdAt": "2026-05-28T21:20:05.169Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-c708252bd0_727b944462",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:00.792Z",
-  "updatedAt": "2026-05-28T20:32:00.792Z"
+  "updatedAt": "2026-05-28T21:20:05.169Z"
 }

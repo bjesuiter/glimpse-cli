@@ -36,11 +36,32 @@
   "whyTestsDoNotAlreadyCoverThis": "Included tests only cover duration parsing, event queue behavior, and loopback detection. There is no daemon crash-recovery or stale-socket integration test.",
   "suggestedRegressionTest": "Create a stale socket scenario, then assert both `request('open')` and `glimpse list` recover by starting a new daemon or return a clean `running:false` result.",
   "minimumFixScope": "src/ipc/client.ts and the `list` command path in src/cli.ts",
-  "status": "open",
-  "history": [],
+  "status": "fixed",
+  "history": [
+    {
+      "runId": "20260528T210849-12a153",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence no longer exists in the reported form. src/ipc/client.ts now defines ping() and ensureDaemon() checks actual daemon responsiveness before autostarted requests; request() unconditionally calls ensureDaemon() when autostart is true instead of gating on existsSync(socketPath()). src/cli.ts list now attempts request('list', ..., false) and catches failures to return {daemon:{running:false}, windows:[]} instead of using socket-file existence as liveness. socketPath remains stable in src/platform/paths.ts, but stale socket behavior is now covered by regression tests: test/ipc-client.test.ts creates a stale socket placeholder and verifies request('ping') recovers, and test/cli-list.test.ts verifies glimpse list reports running:false with a stale socket. Focused tests and the full suite pass.",
+      "commands": [
+        "sed -n '1,140p' src/ipc/client.ts",
+        "sed -n '1,120p' src/cli.ts",
+        "sed -n '1,80p' src/platform/paths.ts",
+        "rg -n \"existsSync\\(socketPath\\(\\)\\)|ensureDaemon\\(|request\\('list'|socketPath\\(\\)\" src test tests package.json",
+        "sed -n '1,180p' test/ipc-client.test.ts",
+        "sed -n '1,160p' test/cli-list.test.ts",
+        "cat package.json",
+        "rg -n \"ipc-client|cli-list|vitest|node --test|test\" package.json test src",
+        "bun test test/ipc-client.test.ts test/cli-list.test.ts",
+        "bun test"
+      ],
+      "createdAt": "2026-05-28T21:09:45.072Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-17d514f2b2_82aba71455",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:50.058Z",
-  "updatedAt": "2026-05-28T20:32:50.058Z"
+  "updatedAt": "2026-05-28T21:09:45.072Z"
 }

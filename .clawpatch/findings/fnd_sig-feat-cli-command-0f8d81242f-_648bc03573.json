@@ -23,10 +23,33 @@
   "suggestedRegressionTest": "Add a command test for `open --watch` that asserts either `watch: true` is sent in the IPC request or that the parser rejects/omits the option if the feature is intentionally unsupported.",
   "minimumFixScope": "src/cli.ts",
   "status": "open",
-  "history": [],
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "open",
+      "note": null,
+      "reasoning": "The original evidence still exists at src/cli.ts:25: the open command still declares .option('--watch'), but the action constructs request('open', {...}) without reading o.watch or forwarding any watch field. Current daemon handling also has no watch support: src/daemon/daemon.ts dispatches open by passing params to WindowRegistry.open, and src/daemon/window-registry.ts open() accepts only name/replace/options/source/bridge/security and contains no watcher setup. A repository search found watch-related behavior only in docs plus the unused CLI option, not in implementation or tests. bun run typecheck passes. bun test could not fully complete under the read-only sandbox because tests that call mkdtempSync fail with EPERM, but the passing tests do not cover open --watch.",
+      "commands": [
+        "pwd && rg -n \"watch|\\.option\\(|request\\('open'|request\\(\\\"open\\\"|program\\.command\\('open'|command\\(\\\"open\" src test tests . --glob '!node_modules'",
+        "git status --short",
+        "sed -n '1,220p' src/cli.ts",
+        "rg -n \"method.*open|case 'open'|case \\\"open\\\"|open\\(|watch|watcher|fs\\.watch|set-html|html\\.reloaded\" src test . --glob '!node_modules' --glob '!dist'",
+        "rg --files -g 'package.json' -g '*test*' -g '*spec*' -g 'vitest.config.*' -g 'bun.lock*' -g 'tsconfig.json'",
+        "nl -ba src/cli.ts | sed -n '20,28p'",
+        "sed -n '1,220p' src/daemon/window-registry.ts",
+        "sed -n '1,80p' src/daemon/daemon.ts",
+        "cat package.json",
+        "rg -n \"open|watch\" test src --glob '!node_modules'",
+        "XDG_STATE_HOME=/var/tmp bun test",
+        "bun run typecheck"
+      ],
+      "createdAt": "2026-05-28T21:17:10.655Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-0f8d81242f_04def54999",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:20.965Z",
-  "updatedAt": "2026-05-28T20:32:20.965Z"
+  "updatedAt": "2026-05-28T21:17:10.654Z"
 }

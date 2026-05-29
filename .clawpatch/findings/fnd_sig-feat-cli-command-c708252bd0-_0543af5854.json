@@ -37,10 +37,35 @@
   "suggestedRegressionTest": "Add CLI tests for each command that pass these flags and verify either a changed payload (`request`/`promptWindow` arguments) or an explicit usage error for unsupported options.",
   "minimumFixScope": "src/cli.ts",
   "status": "open",
-  "history": [],
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "open",
+      "note": null,
+      "reasoning": "The original evidence still exists in current src/cli.ts at lines 19 and 24-27. addPolicy still advertises --allow-remote, --allow-bridge, --allow-remote-resources, and --csp; open still advertises --watch on line 25 but no current source/test reference reads o.watch. navigate still inherits all policy flags on line 27 but its action only uses o.allowRemote and sends {window,url}, so --allow-bridge, --allow-remote-resources, and --csp remain accepted no-ops. prompt and set-html still accept --allow-bridge via addHtml/addPolicy without reading o.allowBridge. Help output confirms these flags are still advertised. The repository tests and typecheck pass, but they do not cover option propagation or rejection for these flags, so passing tests do not fix the contract mismatch.",
+      "commands": [
+        "pwd && rg -n \"addPolicy|allow-remote|allow-bridge|allow-remote-resources|csp|watch|prompt|set-html|navigate\" src test tests spec 2>/dev/null",
+        "git status --short",
+        "rg --files",
+        "sed -n '1,220p' src/cli.ts",
+        "sed -n '1,260p' test/core.test.ts",
+        "sed -n '1,260p' test/cli-list.test.ts",
+        "cat package.json",
+        "bun test",
+        "bun run typecheck",
+        "rg -n \"watch|allowBridge|allowRemoteResources|csp|allowRemote\" src dist test",
+        "nl -ba src/cli.ts | sed -n '15,30p'",
+        "bun src/cli.ts open --help",
+        "bun src/cli.ts navigate --help",
+        "bun src/cli.ts prompt --help && bun src/cli.ts set-html --help"
+      ],
+      "createdAt": "2026-05-28T21:19:15.061Z"
+    }
+  ],
   "signature": "sig_feat-cli-command-c708252bd0_4196b99fb5",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:00.793Z",
-  "updatedAt": "2026-05-28T20:32:00.793Z"
+  "updatedAt": "2026-05-28T21:19:15.061Z"
 }

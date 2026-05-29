@@ -23,10 +23,29 @@
   "suggestedRegressionTest": "Add a CI setup check or package-manager smoke job that installs from a clean checkout using the declared toolchain and runs `npm run test` and `npm run typecheck`.",
   "minimumFixScope": "Update `package.json` toolchain metadata and/or scripts so required runtimes are declared and reproducible.",
   "status": "open",
-  "history": [],
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "open",
+      "note": null,
+      "reasoning": "The original one-line quote no longer matches formatting, but the evidence still exists in package.json: scripts.test is still \"bun test\" at line 12, with prepack/start also invoking bun at lines 11 and 14. package.json still has no packageManager or engines field and does not declare Bun as a runtime dependency; @types/bun is only a dev type package. A bun.lock exists and docs/PRD.md says runtime/tooling is Bun, but that does not make npm-based clean setup reproducible or declare the required runtime in package metadata. Locally, `npm run test` does invoke `bun test` because Bun is installed at /Users/bjesuiter/.bun/bin/bun; the test run then failed on sandbox temp-directory EPERM, not because the finding is fixed. `npm run typecheck` passed. The issue remains open: npm scripts still depend on undeclared global Bun tooling.",
+      "commands": [
+        "pwd && rg -n '\"(scripts|test|packageManager|engines|devDependencies|dependencies)\"|bun' package.json README.md .github 2>/dev/null",
+        "nl -ba package.json | sed -n '1,120p'",
+        "rg --files -g 'bun.lock*' -g 'package-lock.json' -g 'pnpm-lock.yaml' -g 'yarn.lock' -g '.github/**' -g 'README*'",
+        "command -v bun; bun --version; command -v npm; npm --version",
+        "rg -n 'bun|packageManager|engines|npm run test|bun test|oven-sh/setup-bun|setup-bun|Bun' -S . --glob '!node_modules/**' --glob '!dist/**'",
+        "find .github -maxdepth 3 -type f -print 2>/dev/null",
+        "npm run test",
+        "npm run typecheck"
+      ],
+      "createdAt": "2026-05-28T21:21:26.130Z"
+    }
+  ],
   "signature": "sig_feat-config-7528cb5b98_fad9ec6c1e",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:33.404Z",
-  "updatedAt": "2026-05-28T20:32:33.404Z"
+  "updatedAt": "2026-05-28T21:21:26.130Z"
 }

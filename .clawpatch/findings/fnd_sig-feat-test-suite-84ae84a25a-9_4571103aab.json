@@ -23,10 +23,29 @@
   "suggestedRegressionTest": null,
   "minimumFixScope": "Update `package.json` to declare the required package/runtime contract or replace the test script with a runner available from declared npm dependencies.",
   "status": "open",
-  "history": [],
+  "history": [
+    {
+      "runId": "20260528T211556-de1b9e",
+      "kind": "revalidate",
+      "status": "open",
+      "note": null,
+      "reasoning": "The original compact package.json evidence has moved but still exists: package.json lines 9-14 define scripts.test as \"bun test\" and other scripts also invoke bun. Current package.json has no packageManager, engines, or devEngines field; `npm pkg get scripts.test packageManager engines devEngines` returns only {\"scripts.test\":\"bun test\"}. There is a bun.lock and docs/PRD.md says testing uses Bun, but that is not an npm-install/runtime contract for a normal Node/npm checkout. Running `npm run test` in this environment found local Bun at /Users/bjesuiter/.bun/bin/bun and started `bun test`; it failed later because the read-only sandbox blocks temp-directory creation, not because the runtime contract is fixed. The undeclared Bun runtime dependency is therefore still open.",
+      "commands": [
+        "pwd && rg -n '\"(scripts|test|packageManager|engines|devEngines)\"|bun' package.json README.md AGENTS.md .github 2>/dev/null",
+        "ls -la && rg --files -g 'package.json' -g 'bun.lock*' -g 'package-lock.json' -g 'pnpm-lock.yaml' -g 'yarn.lock' -g '.github/**' -g 'README*' -g 'AGENTS.md'",
+        "nl -ba package.json",
+        "find . -maxdepth 3 \\( -name 'README*' -o -name 'AGENTS.md' -o -path './.github/*' \\) -type f -print",
+        "command -v bun; bun --version; npm run test",
+        "npm pkg get scripts.test packageManager engines devEngines",
+        "rg -n 'bun|packageManager|engines|npm run test|bun test' --glob '!node_modules/**' --glob '!bun.lock' .",
+        "find .github -maxdepth 3 -type f -print 2>/dev/null"
+      ],
+      "createdAt": "2026-05-28T21:22:12.873Z"
+    }
+  ],
   "signature": "sig_feat-test-suite-84ae84a25a_9b01aa1081",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:54.833Z",
-  "updatedAt": "2026-05-28T20:32:54.833Z"
+  "updatedAt": "2026-05-28T21:22:12.873Z"
 }
