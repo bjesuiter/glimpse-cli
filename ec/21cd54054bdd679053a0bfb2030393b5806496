@@ -1,0 +1,48 @@
+dist/cli.mjs
+  s_9c579781abc78c::t_fc64da9a36625b 2
+  s_9c579781abc78c::t_1a724347019f3c 5,273,278,289-290,293-294
+src/cli.ts
+  s_9c579781abc78c::t_c06806350684e6 4,29
+src/daemon/window-registry.ts
+  s_9c579781abc78c::t_1c517281d78f7c 2,4,7,13,25-31,37,41
+dist/daemon-main.mjs.map
+  ai_agent 1
+dist/daemon-main.mjs
+  s_9c579781abc78c::t_1a724347019f3c 3,7,102-134,175-179,202,224
+  s_9c579781abc78c::t_fc64da9a36625b 2
+.clawpatch/runs/20260529T120441-67ef4e.json
+  s_9c579781abc78c::t_4200913538356b 13-14
+test/watchers.test.ts
+  s_9c579781abc78c::t_07a523cc6d1e82 1-30
+dist/glimpse-adapter-COgj6E-W.mjs
+  s_9c579781abc78c::t_fc64da9a36625b 22-23,34
+src/daemon/watchers.ts
+  s_9c579781abc78c::t_465ebf89f7bf7c 1-37
+examples/03_watch.sh
+  s_9c579781abc78c::t_7187d76a5e68b0 9-17,21-23
+  s_9c579781abc78c::t_539f8b21bcfd50 1-8,18-20,24-75
+src/runtime/glimpse-adapter.ts
+  s_9c579781abc78c::t_4d773c6b6d9f78 15-16
+dist/cli.mjs.map
+  ai_agent 1
+.clawpatch/findings/fnd_sig-feat-cli-command-c708252bd0-_0543af5854.json
+  s_9c579781abc78c::t_4200913538356b 64-85,92
+test/cli-options.test.ts
+  s_9c579781abc78c::t_f68c5cd496a6bc 30-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "ec21cd54054bdd679053a0bfb2030393b5806496",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
