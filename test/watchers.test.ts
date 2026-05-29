@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from 'bun:test';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { watchHtmlFile } from '../src/daemon/watchers.ts';
@@ -9,6 +9,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('HTML file watching', () => {
   test('reloads changed file contents', async () => {
+    mkdirSync(tmpdir(), { recursive: true });
     const dir = mkdtempSync(join(tmpdir(), 'glimpse-watch-'));
     tmpRoots.push(dir);
     const file = join(dir, 'index.html');

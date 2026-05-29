@@ -1,6 +1,6 @@
 import { afterAll, describe, expect, test } from 'bun:test';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { socketPath } from '../src/platform/paths.ts';
@@ -8,6 +8,7 @@ import { socketPath } from '../src/platform/paths.ts';
 const tmpRoots: string[] = [];
 
 function isolatedRuntime() {
+  mkdirSync(tmpdir(), { recursive: true });
   const dir = mkdtempSync(join(tmpdir(), 'glimpse-list-'));
   tmpRoots.push(dir);
   return dir;

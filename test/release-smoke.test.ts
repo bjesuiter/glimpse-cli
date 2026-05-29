@@ -1,12 +1,13 @@
 import { afterAll, describe, expect, test } from 'bun:test';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, readdirSync, rmSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const tmpRoots: string[] = [];
 
 function tempDir(prefix: string) {
+  mkdirSync(tmpdir(), { recursive: true });
   const dir = mkdtempSync(join(tmpdir(), prefix));
   tmpRoots.push(dir);
   return dir;

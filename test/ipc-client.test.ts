@@ -1,13 +1,15 @@
 import { afterAll, describe, expect, test } from 'bun:test';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { request } from '../src/ipc/client.ts';
 import { socketPath } from '../src/platform/paths.ts';
 
 const tmpRoots: string[] = [];
+const originalTmpdir = process.env.TMPDIR;
 
 function isolatedRuntime() {
+  mkdirSync(tmpdir(), { recursive: true });
   const dir = mkdtempSync(join(tmpdir(), 'glimpse-ipc-'));
   tmpRoots.push(dir);
   process.env.TMPDIR = dir;
@@ -26,5 +28,7 @@ describe('ipc client daemon recovery', () => {
 });
 
 afterAll(() => {
+  if (originalTmpdir === undefined) delete process.env.TMPDIR;
+  else process.env.TMPDIR = originalTmpdir;
   for (const dir of tmpRoots) rmSync(dir, { recursive: true, force: true });
 });
