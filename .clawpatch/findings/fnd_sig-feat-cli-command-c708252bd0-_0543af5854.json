@@ -36,7 +36,7 @@
   "whyTestsDoNotAlreadyCoverThis": "No linked command-level tests assert option propagation or rejection, so no-op flags can ship unnoticed.",
   "suggestedRegressionTest": "Add CLI tests for each command that pass these flags and verify either a changed payload (`request`/`promptWindow` arguments) or an explicit usage error for unsupported options.",
   "minimumFixScope": "src/cli.ts",
-  "status": "open",
+  "status": "fixed",
   "history": [
     {
       "runId": "20260528T211556-de1b9e",
@@ -83,11 +83,37 @@
         "rg -n \"watch|o\\.watch|--watch\" src dist test"
       ],
       "createdAt": "2026-05-29T12:05:39.237Z"
+    },
+    {
+      "runId": "20260529T122302-cda862",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original src/cli.ts evidence no longer exists as described: the old addPolicy helper was split into addUrlPolicy/addHtmlPolicy/addOpenPolicy/addPromptPolicy at src/cli.ts:20-23. The current command surfaces now match current handling. navigate only advertises --allow-remote and rejects --csp as an unknown option; set-html advertises only HTML policy flags it uses; prompt reads allowBridge/csp/allowRemoteResources; open reads o.watch, rejects non-file sources, passes source.watch and watchPath in the open request, and the daemon consumes watchPath in WindowRegistry.open via watchHtmlFile. dist/cli.mjs and dist/daemon-main.mjs contain the same implementation. Tests pass, including cli-options tests for rejected unsupported flags and open --watch usage, plus watcher reload behavior. The prior accepted-but-ignored flag issue is fixed.",
+      "commands": [
+        "pwd && git status --short",
+        "rg -n \"addPolicy|addUrlPolicy|addHtmlPolicy|addOpenPolicy|addPromptPolicy|allow-remote|allow-bridge|allow-remote-resources|csp|watch|prompt|set-html|navigate|allowBridge|allowRemoteResources|allowRemote|o\\.watch\" src test tests spec 2>/dev/null",
+        "sed -n '1,260p' src/cli.ts",
+        "rg --files",
+        "sed -n '1,220p' test/cli-options.test.ts",
+        "sed -n '1,120p' src/daemon/window-registry.ts",
+        "sed -n '1,120p' src/daemon/watchers.ts",
+        "cat package.json",
+        "bun test",
+        "bun run typecheck",
+        "bun src/cli.ts open --help && bun src/cli.ts navigate --help && bun src/cli.ts prompt --help && bun src/cli.ts set-html --help",
+        "nl -ba src/cli.ts | sed -n '15,35p'",
+        "sed -n '1,180p' test/daemon.test.ts",
+        "sed -n '1,180p' test/watchers.test.ts",
+        "sed -n '1,80p' src/daemon/daemon.ts",
+        "rg -n -- \"--watch|watchPath|allowBridge|allowRemoteResources|addUrlPolicy|addHtmlPolicy|addOpenPolicy|addPromptPolicy|allow-bridge|allow-remote-resources|csp <policy>\" dist src test"
+      ],
+      "createdAt": "2026-05-29T12:24:03.921Z"
     }
   ],
   "signature": "sig_feat-cli-command-c708252bd0_4196b99fb5",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:00.793Z",
-  "updatedAt": "2026-05-29T12:05:39.237Z"
+  "updatedAt": "2026-05-29T12:24:03.921Z"
 }
