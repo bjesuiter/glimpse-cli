@@ -1,0 +1,22 @@
+scripts/build-binaries.ts
+  s_b381f8a39d121e::t_ad2cf1bb405cac 54
+  s_b381f8a39d121e::t_2f62961e0adc8f 38
+src/runtime/compiled-assets.ts
+  s_b381f8a39d121e::t_306cc4a761861a 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "3c691bcc4719cf4558f82f16eb1265389b108bcd",
+  "prompts": {},
+  "sessions": {
+    "s_b381f8a39d121e": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73fc-ae30-7708-8133-98a303a68aca",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
