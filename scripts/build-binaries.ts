@@ -12,7 +12,6 @@ type Target = { bun: string; out: string };
 
 const targets: Target[] = [
   { bun: 'bun-darwin-arm64', out: 'glimpse-darwin-arm64' },
-  { bun: 'bun-darwin-x64', out: 'glimpse-darwin-x64' },
   { bun: 'bun-linux-arm64', out: 'glimpse-linux-arm64' },
   { bun: 'bun-linux-x64', out: 'glimpse-linux-x64' },
   { bun: 'bun-windows-arm64', out: 'glimpse-windows-arm64.exe' },
@@ -36,7 +35,7 @@ function ensurePlaceholder(path: string) {
 }
 
 function prepareDarwinHost() {
-  const output = join(hostDir, 'darwin-universal', 'glimpse');
+  const output = join(hostDir, 'darwin-arm64', 'glimpse');
   mkdirSync(dirname(output), { recursive: true });
 
   if (process.platform !== 'darwin') {
@@ -52,11 +51,7 @@ function prepareDarwinHost() {
   rmSync(tmp, { recursive: true, force: true });
   mkdirSync(tmp, { recursive: true });
 
-  const arm64 = join(tmp, 'glimpse-arm64');
-  const x64 = join(tmp, 'glimpse-x64');
-  run('swiftc', ['-O', '-target', 'arm64-apple-macosx13.0', swiftSource, '-o', arm64]);
-  run('swiftc', ['-O', '-target', 'x86_64-apple-macosx13.0', swiftSource, '-o', x64]);
-  run('lipo', ['-create', arm64, x64, '-output', output]);
+  run('swiftc', ['-O', '-target', 'arm64-apple-macosx13.0', swiftSource, '-o', output]);
 }
 
 function prepareWindowsHost(selectedTargets: Target[]) {

@@ -20,11 +20,6 @@ jobs:
             artifact: glimpse-darwin-arm64
             binary: dist/glimpse-darwin-arm64
             smoke: ./dist/glimpse-darwin-arm64
-          - os: macos-15-intel
-            target: bun-darwin-x64
-            artifact: glimpse-darwin-x64
-            binary: dist/glimpse-darwin-x64
-            smoke: ./dist/glimpse-darwin-x64
           - os: ubuntu-latest
             target: bun-linux-x64
             artifact: glimpse-linux-x64
