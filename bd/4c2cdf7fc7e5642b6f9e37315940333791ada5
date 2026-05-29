@@ -1,0 +1,37 @@
+src/cli.ts
+  s_9c579781abc78c::t_c5958e33ee2ca5 19-23,27-28,30
+.clawpatch/runs/20260528T211045-5fd535.json
+  s_9c579781abc78c::t_ac1fbfe752f5a8 1-21
+.clawpatch/findings/fnd_sig-feat-cli-command-17d514f2b2-_97e1ce9843.json
+  s_9c579781abc78c::t_ac1fbfe752f5a8 39-65,70
+dist/cli.mjs
+  s_9c579781abc78c::t_bed2aa2aab5b58 241-251,254,260,262-264,271,296
+dist/cli.mjs.map
+  ai_agent 1
+test/cli-options.test.ts
+  s_9c579781abc78c::t_5e4e8af5cf2e08 1-30
+.clawpatch/findings/fnd_sig-feat-cli-command-17d514f2b2-_35af6cdcc0.json
+  s_9c579781abc78c::t_1d941a3bf9c76e 39-64,69
+.clawpatch/runs/20260528T210849-12a153.json
+  s_9c579781abc78c::t_e0bf1b5fecf3c2 13-14
+.clawpatch/findings/fnd_sig-feat-cli-command-17d514f2b2-_69405bc7a7.json
+  s_9c579781abc78c::t_e0bf1b5fecf3c2 39-61,66
+.clawpatch/runs/20260528T211308-7ad62f.json
+  s_9c579781abc78c::t_1d941a3bf9c76e 13-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "bd4c2cdf7fc7e5642b6f9e37315940333791ada5",
+  "prompts": {},
+  "sessions": {
+    "s_9c579781abc78c": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e7004-d161-7182-b158-aeeca92d781c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
