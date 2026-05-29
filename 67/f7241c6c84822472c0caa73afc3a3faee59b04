@@ -1,0 +1,19 @@
+skills/glimpse-prompt/SKILL.md
+  s_18a95ea616cbf6::t_195cd163079dcf 105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "67f7241c6c84822472c0caa73afc3a3faee59b04",
+  "prompts": {},
+  "sessions": {
+    "s_18a95ea616cbf6": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e739d-d8d5-764e-a656-b00dd3b03bb7",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
