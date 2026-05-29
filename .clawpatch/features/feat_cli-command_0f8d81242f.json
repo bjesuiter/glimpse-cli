@@ -36,7 +36,7 @@
     "filesystem",
     "process-exec"
   ],
-  "status": "needs-fix",
+  "status": "fixed",
   "lock": null,
   "findingIds": [
     "fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201",
@@ -56,5 +56,5 @@
     }
   ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:32:20.966Z"
+  "updatedAt": "2026-05-29T12:34:21.404Z"
 }

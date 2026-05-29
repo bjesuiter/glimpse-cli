@@ -22,7 +22,7 @@
   "whyTestsDoNotAlreadyCoverThis": "There are no linked tests for command option handling, so this dead flag is not exercised anywhere in the provided evidence.",
   "suggestedRegressionTest": "Add a command test for `open --watch` that asserts either `watch: true` is sent in the IPC request or that the parser rejects/omits the option if the feature is intentionally unsupported.",
   "minimumFixScope": "src/cli.ts",
-  "status": "open",
+  "status": "fixed",
   "history": [
     {
       "runId": "20260528T211556-de1b9e",
@@ -45,11 +45,37 @@
         "bun run typecheck"
       ],
       "createdAt": "2026-05-28T21:17:10.655Z"
+    },
+    {
+      "runId": "20260529T123323-c6417e",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original evidence is stale. `src/cli.ts:25` still exists but is now only shared option setup; the `open --watch` command is on `src/cli.ts:29` and the handler now reads `o.watch`, rejects invalid non-file sources, computes `watchPath`, forwards `source: { kind: 'html', path: src, watch: Boolean(o.watch) }`, and includes `watchPath` in the `request('open', ...)` payload. The daemon path also uses it: `src/daemon/daemon.ts:8` passes open params to `WindowRegistry.open`, and `src/daemon/window-registry.ts:13-31` accepts `watchPath` and starts `watchHtmlFile`; `src/daemon/watchers.ts:10-36` implements fs watching and reload callbacks. `bun run typecheck` passed and `bun test test/cli-options.test.ts` passed, including a current `open --watch` validation test. Full `bun test` and `test/watchers.test.ts` could not complete in this read-only sandbox because tests that call `mkdtempSync` fail with EPERM under `/var/tmp`, but the current code and available passing tests show the original no-op CLI flag contract mismatch is fixed.",
+      "commands": [
+        "pwd",
+        "git status --short",
+        "nl -ba src/cli.ts | sed -n '1,120p'",
+        "rg -n \"--watch|watch\\b|request\\(['\\\"]open|command\\(['\\\"]open|\\.option\\(\" src test tests . --glob '!node_modules' --glob '!dist'",
+        "rg -n -e \"--watch|watch\\b|request\\(['\\\"]open|command\\(['\\\"]open|\\.option\\(\" src test tests . --glob '!node_modules' --glob '!dist'",
+        "nl -ba src/daemon/daemon.ts | sed -n '1,180p'",
+        "nl -ba src/daemon/window-registry.ts | sed -n '1,260p'",
+        "rg -n -e \"watchPath|watchers|fs\\.watch|set-html|html\\.reloaded|source.*watch|watch: Boolean\" src test tests . --glob '!node_modules' --glob '!dist'",
+        "nl -ba src/daemon/watchers.ts | sed -n '1,180p'",
+        "nl -ba test/watchers.test.ts | sed -n '1,220p'",
+        "nl -ba test/cli-options.test.ts | sed -n '1,120p'",
+        "cat package.json",
+        "bun run typecheck",
+        "bun test test/cli-options.test.ts",
+        "TMPDIR=/var/tmp XDG_STATE_HOME=/var/tmp bun test test/watchers.test.ts",
+        "TMPDIR=/var/tmp XDG_STATE_HOME=/var/tmp bun test"
+      ],
+      "createdAt": "2026-05-29T12:34:21.394Z"
     }
   ],
   "signature": "sig_feat-cli-command-0f8d81242f_04def54999",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:20.965Z",
-  "updatedAt": "2026-05-28T21:17:10.654Z"
+  "updatedAt": "2026-05-29T12:34:21.394Z"
 }

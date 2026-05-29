@@ -15,8 +15,8 @@
   ],
   "provider": {
     "name": "codex",
-    "model": null,
-    "reasoningEffort": null
+    "model": "gpt-5.5-codex",
+    "reasoningEffort": "low"
   },
   "commands": {
     "typecheck": "npm run typecheck",

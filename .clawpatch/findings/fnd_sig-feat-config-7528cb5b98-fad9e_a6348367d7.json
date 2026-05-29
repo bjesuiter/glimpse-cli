@@ -22,7 +22,7 @@
   "whyTestsDoNotAlreadyCoverThis": "This is a toolchain declaration gap; repository tests cannot run in the affected environment because the test runner itself is the missing prerequisite.",
   "suggestedRegressionTest": "Add a CI setup check or package-manager smoke job that installs from a clean checkout using the declared toolchain and runs `npm run test` and `npm run typecheck`.",
   "minimumFixScope": "Update `package.json` toolchain metadata and/or scripts so required runtimes are declared and reproducible.",
-  "status": "open",
+  "status": "fixed",
   "history": [
     {
       "runId": "20260528T211556-de1b9e",
@@ -41,11 +41,27 @@
         "npm run typecheck"
       ],
       "createdAt": "2026-05-28T21:21:26.130Z"
+    },
+    {
+      "runId": "20260529T123101-3518a1",
+      "kind": "revalidate",
+      "status": "fixed",
+      "note": null,
+      "reasoning": "The original one-line evidence no longer exists as quoted. Current package.json declares the required Bun toolchain with \"packageManager\": \"bun@1.3.14\" at line 5 and engines.bun \">=1.3.14\" at lines 6-9, while scripts.test remains \"bun test\" at line 17. That satisfies the finding's minimum fix scope: the Bun runtime required by npm scripts is now declared in package metadata. A bun.lock is present and docs/PRD.md still documents Bun testing. Local `npm run test` did invoke Bun 1.3.14, proving the script can resolve Bun in this environment; it failed only because the read-only sandbox denies mkdtemp under the OS temp directory, not because Bun is undeclared or missing. `npm run typecheck` passed.",
+      "commands": [
+        "pwd && nl -ba package.json | sed -n '1,140p'",
+        "rg -n '\"(scripts|test|packageManager|engines|dependencies|devDependencies)\"|bun|setup-bun|oven-sh/setup-bun|npm run test|bun test|Bun' -S package.json README.md docs .github 2>/dev/null",
+        "rg --files -g 'bun.lock*' -g 'package-lock.json' -g 'pnpm-lock.yaml' -g 'yarn.lock' -g '.github/**' -g 'README*' -g 'docs/**'",
+        "command -v bun; bun --version; command -v npm; npm --version",
+        "npm run test",
+        "npm run typecheck"
+      ],
+      "createdAt": "2026-05-29T12:31:37.371Z"
     }
   ],
   "signature": "sig_feat-config-7528cb5b98_fad9ec6c1e",
   "linkedPatchAttemptIds": [],
   "createdByRunId": "20260528T203017-f145c2",
   "createdAt": "2026-05-28T20:32:33.404Z",
-  "updatedAt": "2026-05-28T21:21:26.130Z"
+  "updatedAt": "2026-05-29T12:31:37.371Z"
 }

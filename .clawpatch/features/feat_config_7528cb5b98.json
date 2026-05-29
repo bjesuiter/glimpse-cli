@@ -29,7 +29,7 @@
     "process-exec",
     "filesystem"
   ],
-  "status": "needs-fix",
+  "status": "fixed",
   "lock": null,
   "findingIds": [
     "fnd_sig-feat-config-7528cb5b98-8fae7_35e3bf63e2",
@@ -48,5 +48,5 @@
     }
   ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T20:32:33.405Z"
+  "updatedAt": "2026-05-29T12:31:37.378Z"
 }
