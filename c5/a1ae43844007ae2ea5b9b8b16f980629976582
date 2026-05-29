@@ -1,0 +1,19 @@
+.github/workflows/binaries.yml
+  s_b381f8a39d121e::t_34042e8fb78f96 74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "c5a1ae43844007ae2ea5b9b8b16f980629976582",
+  "prompts": {},
+  "sessions": {
+    "s_b381f8a39d121e": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73fc-ae30-7708-8133-98a303a68aca",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
