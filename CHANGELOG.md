@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.4 - 2026-06-01
+
+- Added `glimpse version` plus `-v`/`--version` support for printing the CLI version.
+- Updated the npm playground to test against the published 0.2.3 package.
+
 ## 0.2.3 - 2026-06-01
 
 - Documented the dual UPPT and manual release flows for agents.
