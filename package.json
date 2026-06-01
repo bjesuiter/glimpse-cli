@@ -30,7 +30,7 @@
     "build:binary": "bun scripts/build-binaries.ts --current",
     "build:binaries": "bun scripts/build-binaries.ts",
     "prepack": "bun run build >/dev/null",
-    "test": "bun test",
+    "test": "bun test ./test",
     "typecheck": "tsc --noEmit",
     "start": "bun src/cli.ts"
   },
