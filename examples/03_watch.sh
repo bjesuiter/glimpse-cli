@@ -16,7 +16,12 @@ else
   HTML_FILE="$WORK_DIR/watch.html"
 fi
 
+updater_pid=""
+
 cleanup() {
+  if [[ -n "$updater_pid" ]]; then
+    kill "$updater_pid" >/dev/null 2>&1 || true
+  fi
   $GLIMPSE close -w "$WINDOW_NAME" --force >/dev/null 2>&1 || true
   if [[ -n "$WORK_DIR" ]]; then
     rm -rf "$WORK_DIR"
@@ -64,12 +69,24 @@ render_html 0 "${colors[0]}"
 $GLIMPSE open "$HTML_FILE" --watch --name "$WINDOW_NAME" --replace --width 440 --height 420 --title "Glimpse Watch"
 
 echo "Opened '$WINDOW_NAME' with --watch."
-echo "Updating $HTML_FILE every second. Press Ctrl-C to stop."
+echo "Updating $HTML_FILE every second. Close the window or press Ctrl-C to stop."
 
-count=0
+(
+  count=0
+  while true; do
+    count=$((count + 1))
+    color="${colors[$((count % ${#colors[@]}))]}"
+    render_html "$count" "$color"
+    sleep 1
+  done
+) &
+updater_pid="$!"
+
 while true; do
-  count=$((count + 1))
-  color="${colors[$((count % ${#colors[@]}))]}"
-  render_html "$count" "$color"
-  sleep 1
+  event_json=$($GLIMPSE wait -w "$WINDOW_NAME")
+  if [[ "$event_json" == *'"type":"window.closed"'* ]]; then
+    echo "$event_json"
+    echo "Window closed; stopping watcher."
+    break
+  fi
 done
