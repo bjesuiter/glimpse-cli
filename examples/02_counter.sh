@@ -3,11 +3,9 @@ set -euo pipefail
 
 # Self-contained glimpse-cli example: an interactive counter window.
 # Uses one discrete event per button click.
-# Run from anywhere with: ./examples/02_counter.sh
+# Run from anywhere after installing or linking the global `glimpse` CLI.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-GLIMPSE="${GLIMPSE:-bun "$REPO_ROOT/src/cli.ts"}"
+GLIMPSE="${GLIMPSE:-glimpse}"
 WINDOW_NAME="glimpse-counter-example"
 
 HTML=$(cat <<'HTML'

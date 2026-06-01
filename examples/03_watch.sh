@@ -2,11 +2,9 @@
 set -euo pipefail
 
 # Self-contained glimpse-cli example: file-backed watch mode.
-# Run from anywhere with: ./examples/03_watch.sh
+# Run from anywhere after installing or linking the global `glimpse` CLI.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-GLIMPSE="${GLIMPSE:-bun "$REPO_ROOT/src/cli.ts"}"
+GLIMPSE="${GLIMPSE:-glimpse}"
 WINDOW_NAME="glimpse-watch-example"
 WATCH_FILE="${WATCH_FILE:-}"
 if [[ -n "$WATCH_FILE" ]]; then

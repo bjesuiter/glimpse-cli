@@ -83,7 +83,7 @@ Loopback URLs are trusted by default. Non-loopback remote URLs require `--allow-
 
 ## Examples
 
-The `examples/` directory contains runnable scripts. They resolve the local CLI path automatically, so you can run them from the repo root or from inside `examples/`:
+The `examples/` directory contains runnable scripts. They assume a global `glimpse` command from `npm install -g glimpse-cli` or a local `bun link`:
 
 ```sh
 ./examples/01_prompt.sh
