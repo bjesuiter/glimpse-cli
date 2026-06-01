@@ -3,9 +3,11 @@ set -euo pipefail
 
 # Self-contained glimpse-cli example: an interactive counter window.
 # Demonstrates a state-snapshot pattern for consumers that prefer latest-state reconciliation.
-# Run from the repo root with: ./examples/02b_counter_w_state.sh
+# Run from anywhere with: ./examples/02b_counter_w_state.sh
 
-GLIMPSE="${GLIMPSE:-bun src/cli.ts}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+GLIMPSE="${GLIMPSE:-bun "$REPO_ROOT/src/cli.ts"}"
 WINDOW_NAME="glimpse-counter-example"
 
 HTML=$(cat <<'HTML'

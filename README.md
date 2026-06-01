@@ -83,7 +83,7 @@ Loopback URLs are trusted by default. Non-loopback remote URLs require `--allow-
 
 ## Examples
 
-The `examples/` directory contains runnable scripts. From the repo root, use:
+The `examples/` directory contains runnable scripts. They resolve the local CLI path automatically, so you can run them from the repo root or from inside `examples/`:
 
 ```sh
 ./examples/01_prompt.sh

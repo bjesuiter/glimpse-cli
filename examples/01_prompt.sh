@@ -2,9 +2,11 @@
 set -euo pipefail
 
 # Self-contained glimpse-cli example: one-shot prompt window.
-# Run from the repo root with: ./examples/01_prompt.sh
+# Run from anywhere with: ./examples/01_prompt.sh
 
-GLIMPSE="${GLIMPSE:-bun src/cli.ts}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+GLIMPSE="${GLIMPSE:-bun "$REPO_ROOT/src/cli.ts"}"
 
 HTML=$(cat <<'HTML'
 <!doctype html>
