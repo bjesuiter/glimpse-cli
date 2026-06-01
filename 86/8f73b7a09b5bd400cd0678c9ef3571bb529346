@@ -1,0 +1,21 @@
+playground/npm/package.json
+  s_d8f70039ec3881::t_9cfcf9fb79f549 15
+playground/npm/package-lock.json
+  ai_agent 12,105-107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "868f73b7a09b5bd400cd0678c9ef3571bb529346",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
