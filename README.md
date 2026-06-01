@@ -92,19 +92,19 @@ The `examples/` directory contains runnable scripts. They assume a global `glimp
 ./examples/03_watch.sh
 ```
 
-### `01_prompt.sh` — one-shot prompt
+### [`examples/01_prompt.sh`](examples/01_prompt.sh) — one-shot prompt
 
 Opens a small form, returns the submitted value as JSON, and exits. This is the simplest pattern for scripts that need one piece of user input.
 
-### `02_counter.sh` — discrete event stream
+### [`examples/02_counter.sh`](examples/02_counter.sh) — discrete event stream
 
 Opens a persistent counter window. Each button click sends one `counter.changed` event back to the shell, where the script waits and prints events until the window closes.
 
-### `02b_counter_w_state.sh` — latest-state reconciliation
+### [`examples/02b_counter_w_state.sh`](examples/02b_counter_w_state.sh) — latest-state reconciliation
 
 A variant of the counter that emits click events plus short-lived `counter.snapshot` repeats. Use this pattern when a consumer cares about the latest state more than every individual click.
 
-### `03_watch.sh` — file-backed watch mode
+### [`examples/03_watch.sh`](examples/03_watch.sh) — file-backed watch mode
 
 Writes an HTML file, opens it with `--watch`, then rewrites the file once per second. Glimpse reloads the window as the file changes.
 
