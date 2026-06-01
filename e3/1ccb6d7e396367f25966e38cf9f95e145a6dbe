@@ -1,0 +1,21 @@
+.github/workflows/release.yml
+  s_d8f70039ec3881::t_cc4d5aff639725 74
+package.json
+  s_d8f70039ec3881::t_57395ef0df8777 33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "e31ccb6d7e396367f25966e38cf9f95e145a6dbe",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
