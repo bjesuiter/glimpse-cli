@@ -1,0 +1,27 @@
+playground/npm/package.json
+  s_b381f8a39d121e::t_51b56bb3e1871c 2,17
+  s_b381f8a39d121e::t_075c914be47203 4,7-8,16
+  s_b381f8a39d121e::t_cc380509993fa3 1,3,5-6,9-15,18
+playground/npm/test/glimpse-cli.test.js
+  s_b381f8a39d121e::t_a1db4367188497 1-42
+playground/npm/README.md
+  s_b381f8a39d121e::t_8017406f6ab5dc 1-12
+playground/npm/.gitignore
+  s_b381f8a39d121e::t_2ddeb4d71cf7b9 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "eaaa9678f28bd45ab021d10d83d185105c310fbf",
+  "prompts": {},
+  "sessions": {
+    "s_b381f8a39d121e": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e73fc-ae30-7708-8133-98a303a68aca",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
