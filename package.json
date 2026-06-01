@@ -22,7 +22,8 @@
     "dist",
     "README.md",
     "docs",
-    "examples"
+    "examples",
+    "skills"
   ],
   "scripts": {
     "build": "tsdown",
