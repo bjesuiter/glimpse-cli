@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5 - 2026-06-01
+
+- Added an MIT license and package metadata.
+- Added a comprehensive README with usage documentation and linked examples.
+- Updated examples to use a global `glimpse` CLI and stop cleanly when windows close.
+
 ## 0.2.4 - 2026-06-01
 
 - Added `glimpse version` plus `-v`/`--version` support for printing the CLI version.
