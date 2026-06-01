@@ -1,0 +1,27 @@
+README.md
+  s_d8f70039ec3881::t_dba7b8ca4f7505 86
+examples/01_prompt.sh
+  s_d8f70039ec3881::t_7e06e044bfd823 5,7
+examples/02_counter.sh
+  s_d8f70039ec3881::t_9fb294abe8f1e6 6,8
+examples/02b_counter_w_state.sh
+  s_d8f70039ec3881::t_336a2ba2bb57f4 6,8
+examples/03_watch.sh
+  s_d8f70039ec3881::t_56a981b38ed188 5,7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "deba28d9b1471ad1f129440620d8b1a378f53c57",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
