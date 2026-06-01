@@ -1,0 +1,21 @@
+package.json
+  ai_agent 5
+LICENSE
+  s_d8f70039ec3881::t_269d1db8953761 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "47bfcf9b1478e2f8719b18de5bb5dad4db681514",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
