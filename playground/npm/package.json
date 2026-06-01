@@ -12,7 +12,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "glimpse-cli": "^0.2.1"
+    "glimpse-cli": "^0.2.3"
   },
   "private": true
 }
