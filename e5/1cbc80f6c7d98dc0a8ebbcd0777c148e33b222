@@ -1,0 +1,20 @@
+examples/03_watch.sh
+  s_d8f70039ec3881::t_8edd1dabf2048d 72-83,86-91
+  s_d8f70039ec3881::t_8138c67b242fa4 19-20,22-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "e51cbc80f6c7d98dc0a8ebbcd0777c148e33b222",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
