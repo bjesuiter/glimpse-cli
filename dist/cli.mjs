@@ -273,6 +273,7 @@ function addOpts(c) {
 	return c.option("--name <name>", "Stable window name/handle.").option("--replace", "Replace an existing window with the same name.").option("--options-json <json>", "Raw Glimpse window options JSON.").option("--width <n>", "Window width in CSS pixels.", Number).option("--height <n>", "Window height in CSS pixels.", Number).option("--title <title>", "Window title.").option("--x <n>", "Initial window x position.", Number).option("--y <n>", "Initial window y position.", Number).option("--frameless", "Open without native window frame.").option("--floating", "Keep window above normal windows.").option("--transparent", "Enable transparent window background.").option("--click-through", "Let mouse clicks pass through the window.").option("--follow-cursor", "Keep the window near the cursor.").option("--follow-mode <mode>", "Cursor-following mode passed to Glimpse.").option("--cursor-offset <x,y>", "Cursor-following offset, for example `12,20`.");
 }
 const here = dirname(fileURLToPath(import.meta.url));
+const packageVersion = JSON.parse(readFileSync(resolve(here, "..", "package.json"), "utf8")).version;
 const skillsDir = resolve(here, "..", "skills");
 const examplesDir = resolve(here, "..", "examples");
 const skillNames = ["glimpse-open", "glimpse-prompt"];
@@ -290,6 +291,8 @@ NAME
   glimpse - show native UI windows from scripts and agents
 
 SYNOPSIS
+  glimpse [-v|--version]
+  glimpse version
   glimpse prompt [options] [html-source]
   glimpse open [options] [html-source]
   glimpse set-html -w <ref> [options] [html-source]
@@ -344,14 +347,17 @@ SKILLS
 
 SEE ALSO
   glimpse --help
+  glimpse --version
+  glimpse version
   glimpse <command> --help
 `;
-const program = new Command().name("glimpse").description("Show native UI from scripts and agents using HTML.").showHelpAfterError().addHelpText("after", `
+const program = new Command().name("glimpse").description("Show native UI from scripts and agents using HTML.").version(packageVersion, "-v, --version", "Print the glimpse CLI version.").showHelpAfterError().addHelpText("after", `
 Examples:
   $ glimpse prompt --html '<button onclick="window.glimpse?.send?.({type:&quot;ok&quot;})">OK</button>'
   $ glimpse open --name demo --replace --html '<h1>Hello</h1>'
   $ glimpse usage`).exitOverride();
 program.command("usage").description("Print man page style usage documentation with longer examples.").action(() => console.log(usageText + bundledExamples()));
+program.command("version").description("Print the glimpse CLI version.").action(() => console.log(packageVersion));
 const skills = program.command("skills").description("View or copy the bundled agent skills.");
 skills.command("view").description("Print the bundled glimpse-open and glimpse-prompt skill files.").argument("[name]", "Optional skill name: glimpse-open or glimpse-prompt.").action((name) => run(async () => {
 	const names = name ? [name] : [...skillNames];
@@ -492,7 +498,7 @@ try {
 	program.parse();
 } catch (err) {
 	const e = err;
-	if (e.code === "commander.helpDisplayed") process.exit(0);
+	if (e.code === "commander.helpDisplayed" || e.code === "commander.version") process.exit(0);
 	print({
 		ok: false,
 		error: {

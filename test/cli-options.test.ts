@@ -1,11 +1,20 @@
 import { describe, expect, test } from 'bun:test';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 
 function cli(args: string[]) {
   return execFileSync(process.execPath, ['src/cli.ts', ...args], { encoding: 'utf8' });
 }
 
 describe('CLI option surface', () => {
+  test('prints package version via command and flags', () => {
+    const expected = `${JSON.parse(readFileSync('package.json', 'utf8')).version}\n`;
+
+    expect(cli(['version'])).toBe(expected);
+    expect(cli(['--version'])).toBe(expected);
+    expect(cli(['-v'])).toBe(expected);
+  });
+
   test('navigate only advertises URL loading policy flags it uses', () => {
     const help = cli(['navigate', '--help']);
     expect(help).toContain('--allow-remote');

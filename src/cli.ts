@@ -26,6 +26,8 @@ function addHtml(c: Command) { return addHtmlPolicy(c.argument('[html-source]', 
 function addOpts(c: Command) { return c.option('--name <name>', 'Stable window name/handle.').option('--replace', 'Replace an existing window with the same name.').option('--options-json <json>', 'Raw Glimpse window options JSON.').option('--width <n>', 'Window width in CSS pixels.', Number).option('--height <n>', 'Window height in CSS pixels.', Number).option('--title <title>', 'Window title.').option('--x <n>', 'Initial window x position.', Number).option('--y <n>', 'Initial window y position.', Number).option('--frameless', 'Open without native window frame.').option('--floating', 'Keep window above normal windows.').option('--transparent', 'Enable transparent window background.').option('--click-through', 'Let mouse clicks pass through the window.').option('--follow-cursor', 'Keep the window near the cursor.').option('--follow-mode <mode>', 'Cursor-following mode passed to Glimpse.').option('--cursor-offset <x,y>', 'Cursor-following offset, for example `12,20`.'); }
 
 const here = dirname(fileURLToPath(import.meta.url));
+const packageJson = JSON.parse(readFileSync(resolve(here, '..', 'package.json'), 'utf8')) as { version: string };
+const packageVersion = packageJson.version;
 const skillsDir = resolve(here, '..', 'skills');
 const examplesDir = resolve(here, '..', 'examples');
 const skillNames = ['glimpse-open', 'glimpse-prompt'] as const;
@@ -45,6 +47,8 @@ NAME
   glimpse - show native UI windows from scripts and agents
 
 SYNOPSIS
+  glimpse [-v|--version]
+  glimpse version
   glimpse prompt [options] [html-source]
   glimpse open [options] [html-source]
   glimpse set-html -w <ref> [options] [html-source]
@@ -99,12 +103,15 @@ SKILLS
 
 SEE ALSO
   glimpse --help
+  glimpse --version
+  glimpse version
   glimpse <command> --help
 `;
 
 const program = new Command()
   .name('glimpse')
   .description('Show native UI from scripts and agents using HTML.')
+  .version(packageVersion, '-v, --version', 'Print the glimpse CLI version.')
   .showHelpAfterError()
   .addHelpText('after', `
 Examples:
@@ -116,6 +123,10 @@ Examples:
 program.command('usage')
   .description('Print man page style usage documentation with longer examples.')
   .action(() => console.log(usageText + bundledExamples()));
+
+program.command('version')
+  .description('Print the glimpse CLI version.')
+  .action(() => console.log(packageVersion));
 
 const skills = program.command('skills').description('View or copy the bundled agent skills.');
 skills.command('view')
@@ -177,7 +188,7 @@ Examples:
 program.command('list').description('List known windows and daemon status.').option('--include-closed', 'Include closed windows retained by the daemon.').action(o => run(async () => { try { ok(await request('list', { includeClosed:o.includeClosed }, false)); } catch { ok({ daemon:{ running:false }, windows:[] }); } }));
 try { program.parse(); } catch (err) {
   const e = err as any;
-  if (e.code === 'commander.helpDisplayed') process.exit(0);
+  if (e.code === 'commander.helpDisplayed' || e.code === 'commander.version') process.exit(0);
   print({ ok:false, error:{ code:'usage', message:e.message } });
   process.exit(2);
 }
