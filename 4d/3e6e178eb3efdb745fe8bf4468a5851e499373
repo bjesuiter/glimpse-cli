@@ -1,0 +1,26 @@
+CHANGELOG.md
+  s_d8f70039ec3881::t_ef9772d0f7fbd7 3-7
+package.json
+  s_d8f70039ec3881::t_ef9772d0f7fbd7 3
+AGENTS.md
+  s_d8f70039ec3881::t_3a2773e738fb82 5,7-11,15-18,24-26,28
+  s_d8f70039ec3881::t_e3a61cc2eb4c04 6,12-14,27
+.github/workflows/release.yml
+  s_d8f70039ec3881::t_f37acf3ee297bf 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "4d3e6e178eb3efdb745fe8bf4468a5851e499373",
+  "prompts": {},
+  "sessions": {
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
