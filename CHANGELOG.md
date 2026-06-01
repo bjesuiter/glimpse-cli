@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2 - 2026-06-01
+
+- Documented the dual UPPT and manual release flows for agents.
+- Enabled the release workflow to create UPPT release PRs from pushes to `main`.
+
 ## 0.2.1 - 2026-05-29
 
 - Switched the release workflow from staged npm publishing to direct trusted `npm publish`.
