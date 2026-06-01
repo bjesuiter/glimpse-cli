@@ -1,0 +1,29 @@
+src/cli.ts
+  s_cadb72103c72be::t_ba566a489c3f4e 63,111,146,165-172
+  s_cadb72103c72be::t_cc8cc36879a923 4-5,20-29,31,42-62,64-110,112-117,119-145,147-164,173-177
+  s_cadb72103c72be::t_d9cda2bf406a8b 3,30,32-41,118
+dist/cli.mjs.map
+  ai_agent 1
+package.json
+  s_cadb72103c72be::t_d238b5ea107e8b 25-26
+dist/cli.mjs
+  s_cadb72103c72be::t_ba566a489c3f4e 308,351,380
+  s_cadb72103c72be::t_3f8a397d4652f8 4,275-277,279-286,354
+  s_cadb72103c72be::t_7d63e1bfdc440a 5-6,255,258,261,264,267,270,273,278,287-307,309-350,352-353,355-379,381,392-396,421-423,427-429,436-438,451-453,462-473,481
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "48e7c8b3bccb3d08fc90ebdb5bf0bd5ae52f6047",
+  "prompts": {},
+  "sessions": {
+    "s_cadb72103c72be": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e8351-38e4-7c02-971f-34489d422882",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
