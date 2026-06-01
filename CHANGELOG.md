@@ -1,9 +1,10 @@
 # Changelog
 
-## 0.2.2 - 2026-06-01
+## 0.2.3 - 2026-06-01
 
 - Documented the dual UPPT and manual release flows for agents.
 - Enabled the release workflow to create UPPT release PRs from pushes to `main`.
+- Limited Bun test discovery to the main `test` directory so playground tests do not run in CI.
 
 ## 0.2.1 - 2026-05-29
 
