@@ -1,0 +1,35 @@
+dist/cli.mjs
+  s_d8f70039ec3881::t_758c29c308c1c5 276,294-295,350-351,354,360,501
+dist/cli.mjs.map
+  ai_agent 1
+test/cli-options.test.ts
+  s_282b0ea35eb2a3::t_898d6568e4d28d 3,10-17
+src/cli.ts
+  s_282b0ea35eb2a3::t_69781ed39c9d9f 29-30,50-51,106-107
+  s_282b0ea35eb2a3::t_2d5fe0763a4ab0 114,127-129
+  s_282b0ea35eb2a3::t_d09477802c2a7e 191
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "d9c5cd2a3bc01d2e62bf439a7957279d5db25227",
+  "prompts": {},
+  "sessions": {
+    "s_282b0ea35eb2a3": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e8497-0763-735e-847c-4c751245df4d",
+        "model": "gpt-5.5"
+      },
+      "human_author": null
+    },
+    "s_d8f70039ec3881": {
+      "agent_id": {
+        "tool": "pi",
+        "id": "019e834e-9e8b-729a-9801-1d8155479404",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Benjamin Jesuiter <bjesuiter@gmail.com>"
+    }
+  }
+}
