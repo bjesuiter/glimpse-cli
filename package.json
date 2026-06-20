@@ -37,14 +37,13 @@
   },
   "dependencies": {
     "commander": "^14.0.1",
-    "evlog": "^2.18.1",
+    "evlog": "^2.19.1",
     "glimpseui": "^0.8.1",
     "valibot": "^1.1.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "tsdown": "^0.22.1",
-    "typescript": "^5.9.3",
-    "unrun": "^0.3.0"
+    "tsdown": "^0.22.3",
+    "typescript": "^5.9.3"
   }
 }
