@@ -30,7 +30,8 @@ export async function dispatch(method: string, p: any = {}) {
     case "wait":
       return wait(p.window, p.type, p.timeout);
     case "close":
-      p.all ? registry.closeAll(p.force) : registry.close(p.window, p.force);
+      if (p.all) registry.closeAll(p.force);
+      else registry.close(p.window, p.force);
       return { ok: true };
     case "list":
       return { daemon: { running: true }, windows: registry.list(p.includeClosed) };

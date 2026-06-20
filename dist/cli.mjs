@@ -95,7 +95,8 @@ async function request(method, params, autostart = true) {
 			if (i >= 0) {
 				sock.end();
 				const res = JSON.parse(buf.slice(0, i));
-				res.ok ? resolve(res.result) : reject(Object.assign(new Error(res.error.message), { code: res.error.code }));
+				if (res.ok) resolve(res.result);
+				else reject(Object.assign(new Error(res.error.message), { code: res.error.code }));
 			}
 		});
 	});
