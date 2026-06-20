@@ -1,30 +1,30 @@
-import { afterAll, describe, expect, test } from 'bun:test';
-import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { tmpdir } from 'node:os';
-import { socketPath } from '../src/platform/paths.ts';
+import { afterAll, describe, expect, test } from "bun:test";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { socketPath } from "../src/platform/paths.ts";
 
 const tmpRoots: string[] = [];
 
 function isolatedRuntime() {
   mkdirSync(tmpdir(), { recursive: true });
-  const dir = mkdtempSync(join(tmpdir(), 'glimpse-list-'));
+  const dir = mkdtempSync(join(tmpdir(), "glimpse-list-"));
   tmpRoots.push(dir);
   return dir;
 }
 
-describe('list command liveness probing', () => {
-  test('reports daemon stopped when only a stale socket path exists', () => {
+describe("list command liveness probing", () => {
+  test("reports daemon stopped when only a stale socket path exists", () => {
     const runtimeDir = isolatedRuntime();
     const previousTmpdir = process.env.TMPDIR;
     process.env.TMPDIR = runtimeDir;
-    writeFileSync(socketPath(), 'stale socket placeholder');
+    writeFileSync(socketPath(), "stale socket placeholder");
     process.env.TMPDIR = previousTmpdir;
 
-    const output = execFileSync(process.execPath, ['src/cli.ts', 'list'], {
+    const output = execFileSync(process.execPath, ["src/cli.ts", "list"], {
       env: { ...process.env, TMPDIR: runtimeDir },
-      encoding: 'utf8',
+      encoding: "utf8",
       timeout: 10_000,
     });
 

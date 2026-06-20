@@ -1,23 +1,13 @@
 {
   "name": "glimpse-cli",
   "version": "0.2.5",
-  "type": "module",
   "license": "MIT",
-  "packageManager": "bun@1.3.14",
-  "engines": {
-    "node": ">=22.18.0",
-    "bun": ">=1.3.14"
-  },
-  "bin": {
-    "glimpse": "./dist/cli.mjs"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bjesuiter/glimpse-cli.git"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+  "bin": {
+    "glimpse": "./dist/cli.mjs"
   },
   "files": [
     "dist",
@@ -26,6 +16,11 @@
     "examples",
     "skills"
   ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "build": "tsdown",
     "build:binary": "bun scripts/build-binaries.ts --current",
@@ -51,5 +46,10 @@
     "oxlint": "^1.70.0",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3"
-  }
+  },
+  "engines": {
+    "bun": ">=1.3.14",
+    "node": ">=22.18.0"
+  },
+  "packageManager": "bun@1.3.14"
 }

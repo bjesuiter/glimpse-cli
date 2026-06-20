@@ -1,26 +1,33 @@
-import net from 'node:net';
-import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, rmSync } from 'node:fs';
-import { randomUUID } from 'node:crypto';
-import { socketPath, lockPath } from '../platform/paths.ts';
+import net from "node:net";
+import { spawn } from "node:child_process";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
+import { randomUUID } from "node:crypto";
+import { socketPath, lockPath } from "../platform/paths.ts";
 
 function isCompiledExecutableUrl(url: string): boolean {
-  return url.startsWith('file:///$bunfs/');
+  return url.startsWith("file:///$bunfs/");
 }
 
 function daemonEntrypoint(metaUrl = import.meta.url) {
-  const bundled = new URL('./daemon-main.mjs', metaUrl).pathname;
+  const bundled = new URL("./daemon-main.mjs", metaUrl).pathname;
   if (existsSync(bundled)) return bundled;
-  return new URL('../daemon-main.ts', metaUrl).pathname;
+  return new URL("../daemon-main.ts", metaUrl).pathname;
 }
 
 export function daemonSpawnCommand(metaUrl = import.meta.url, execPath = process.execPath) {
-  if (isCompiledExecutableUrl(metaUrl)) return { command: execPath, args: ['--glimpse-daemon'] };
+  if (isCompiledExecutableUrl(metaUrl)) return { command: execPath, args: ["--glimpse-daemon"] };
   return { command: execPath, args: [daemonEntrypoint(metaUrl)] };
 }
 
-async function ping() { try { await request('ping', {}, false); return true; } catch { return false; } }
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+async function ping() {
+  try {
+    await request("ping", {}, false);
+    return true;
+  } catch {
+    return false;
+  }
+}
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function acquireStartupLock() {
   try {
@@ -47,12 +54,16 @@ export async function ensureDaemon() {
       // lock acquisition. Re-check before spawning to avoid duplicate daemons.
       if (await ping()) return;
       const daemon = daemonSpawnCommand();
-      spawn(daemon.command, daemon.args, { detached: true, stdio: 'ignore', env: process.env }).unref();
+      spawn(daemon.command, daemon.args, {
+        detached: true,
+        stdio: "ignore",
+        env: process.env,
+      }).unref();
       while (Date.now() < deadline) {
         if (await ping()) return;
         await sleep(100);
       }
-      throw new Error('Daemon startup timed out');
+      throw new Error("Daemon startup timed out");
     } finally {
       releaseStartupLock();
     }
@@ -76,10 +87,23 @@ export async function request(method: string, params?: unknown, autostart = true
   // skip startup and fail forever with ECONNREFUSED.
   if (autostart) await ensureDaemon();
   return new Promise((resolve, reject) => {
-    const sock = new net.Socket(); let buf = '';
-    sock.on('error', reject);
-    sock.on('connect', () => sock.write(JSON.stringify({ id: randomUUID(), method, params }) + '\n'));
+    const sock = new net.Socket();
+    let buf = "";
+    sock.on("error", reject);
+    sock.on("connect", () =>
+      sock.write(JSON.stringify({ id: randomUUID(), method, params }) + "\n"),
+    );
     sock.connect({ path: socketPath() });
-    sock.on('data', chunk => { buf += chunk.toString(); const i = buf.indexOf('\n'); if (i >= 0) { sock.end(); const res = JSON.parse(buf.slice(0, i)); res.ok ? resolve(res.result) : reject(Object.assign(new Error(res.error.message), { code: res.error.code })); } });
+    sock.on("data", (chunk) => {
+      buf += chunk.toString();
+      const i = buf.indexOf("\n");
+      if (i >= 0) {
+        sock.end();
+        const res = JSON.parse(buf.slice(0, i));
+        res.ok
+          ? resolve(res.result)
+          : reject(Object.assign(new Error(res.error.message), { code: res.error.code }));
+      }
+    });
   });
 }
