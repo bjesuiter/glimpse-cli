@@ -22,12 +22,36 @@
     {
       "path": "tsconfig.json",
       "reason": "typescript configuration"
+    },
+    {
+      "path": "tsdown.config.ts",
+      "reason": "build configuration"
     }
   ],
   "contextFiles": [
     {
+      "path": "README.md",
+      "reason": "package context"
+    },
+    {
+      "path": "AGENTS.md",
+      "reason": "package context"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "reason": "package changelog"
+    },
+    {
       "path": "src/cli.ts",
       "reason": "package entrypoint"
+    },
+    {
+      "path": "src/bin.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/cli-helpers.ts",
+      "reason": "package source overview"
     },
     {
       "path": "src/daemon-main.ts",
@@ -39,6 +63,10 @@
     },
     {
       "path": "src/daemon/event-queue.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "src/daemon/watchers.ts",
       "reason": "package source overview"
     },
     {
@@ -66,6 +94,10 @@
       "reason": "package source overview"
     },
     {
+      "path": "src/runtime/compiled-assets.ts",
+      "reason": "package source overview"
+    },
+    {
       "path": "src/runtime/glimpse-adapter.ts",
       "reason": "package source overview"
     },
@@ -78,7 +110,43 @@
       "reason": "package source overview"
     },
     {
+      "path": "scripts/build-binaries.ts",
+      "reason": "package source overview"
+    },
+    {
+      "path": "test/cli-helpers.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/cli-list.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/cli-options.test.ts",
+      "reason": "package test"
+    },
+    {
       "path": "test/core.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/daemon.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/ipc-client-compiled.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/ipc-client.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/release-smoke.test.ts",
+      "reason": "package test"
+    },
+    {
+      "path": "test/watchers.test.ts",
       "reason": "package test"
     }
   ],
@@ -93,7 +161,7 @@
     "user-input",
     "process-exec"
   ],
-  "status": "fixed",
+  "status": "error",
   "lock": null,
   "findingIds": [
     "fnd_sig-feat-cli-command-17d514f2b2-_35af6cdcc0",
@@ -111,8 +179,17 @@
       "model": null,
       "reasoningEffort": null,
       "createdAt": "2026-05-28T20:32:50.060Z"
+    },
+    {
+      "runId": "20260620T072338-f06eea",
+      "kind": "review-error",
+      "summary": "codex provider failed: OpenAI Codex v0.140.0\n--------\nworkdir: /Users/bjesuiter/Develop/bjesuiter/glimpse-cli\nmodel: gpt-5.5-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: low\nreasoning summaries: none\nsession id: 019ee3e9-f025-7fb2-8ebe-9688d8aa9686\n--------\nuser\nYou are reviewing one semantic feature for clawpatch.\n\nReturn strict JSON only. No markdown fences.\n\nProject:\n{\n  \"name\": \"glimpse-cli\",\n  \"detected\": {\n    \"languages\": [\n      \"typescript\",\n      \"javascript\"\n    ],\n    \"frameworks\": [],\n    \"packageManagers\": [\n      \"node\"\n    ],\n    \"commands\": {\n      \"typecheck\": \"npm run typecheck\",\n      \"lint\": null,\n      \"format\": null,\n      \"test\": \"npm run test\"\n    }\n  }\n}\n\nFeature:\n{\n  \"schemaVersion\": 1,\n  \"featureId\": \"feat_cli-command_17d514f2b2\",\n  \"title\": \"Node package glimpse-cli\",\n  \"summary\": \"Node package glimpse-cli with package metadata and review context rooted at ..\",\n  \"kind\": \"cli-command\",\n  \"source\": \"node-package\",\n  \"confidence\": \"medium\",\n  \"entrypoints\": [\n    {\n      \"path\": \"package.json\",\n      \"symbol\": \"glimpse-cli\",\n      \"route\": null,\n      \"command\": null\n    }\n  ],\n  \"ownedFiles\": [\n    {\n      \"path\": \"package.json\",\n      \"reason\": \"package manifest\"\n    },\n    {\n      \"path\": \"tsconfig.json\",\n      \"reason\": \"typescript configuration\"\n    },\n    {\n      \"path\": \"tsdown.config.ts\",\n      \"reason\": \"build configuration\"\n    }\n  ],\n  \"contextFiles\": [\n    {\n      \"path\": \"README.md\",\n      \"reason\": \"package context\"\n    },\n    {\n      \"path\": \"AGENTS.md\",\n      \"reason\": \"package context\"\n    },\n    {\n      \"path\": \"CHANGELOG.md\",\n      \"reason\": \"package changelog\"\n    },\n    {\n      \"path\": \"src/cli.ts\",\n      \"reason\": \"package entrypoint\"\n    },\n    {\n      \"path\": \"src/bin.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/cli-helpers.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/daemon-main.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/daemon/daemon.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/daemon/event-queue.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/daemon/watchers.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/daemon/window-registry.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/ipc/client.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/ipc/protocol.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/ipc/server.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/platform/paths.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/platform/url-policy.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/runtime/compiled-assets.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/runtime/glimpse-adapter.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/utils/duration.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"src/utils/json.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"scripts/build-binaries.ts\",\n      \"reason\": \"package source overview\"\n    },\n    {\n      \"path\": \"test/cli-helpers.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/cli-list.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/cli-options.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/core.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/daemon.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/ipc-client-compiled.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/ipc-client.test.ts\",\n      \"reason\": \"package test\"\n    },\n    {\n      \"path\": \"test/release-smoke.test.ts\",\n      \"reason\": \"packag\n...[trimmed]...\nt { execFileSync } from \"node:child_process\";\nimport { mkdirSync, mkdtempSync, rmSync, writeFileSync } from \"node:fs\";\nimport { join } from \"node:path\";\nimport { tmpdir } from \"node:os\";\nimport { socketPath } from \"../src/platform/paths.ts\";\n\nconst tmpRoots: string[] = [];\n\nfunction isolatedRuntime() {\n  mkdirSync(tmpdir(), { recursive: true });\n  const dir = mkdtempSync(join(tmpdir(), \"glimpse-list-\"));\n  tmpRoots.push(dir);\n  return dir;\n}\n\ndescribe(\"list command liveness probing\", () => {\n  test(\"reports daemon stopped when only a stale socket path exists\", () => {\n    const runtimeDir = isolatedRuntime();\n    const previousTmpdir = process.env.TMPDIR;\n    process.env.TMPDIR = runtimeDir;\n    writeFileSync(socketPath(), \"stale socket placeholder\");\n    process.env.TMPDIR = previousTmpdir;\n\n    const output = execFileSync(process.execPath, [\"src/cli.ts\", \"list\"], {\n      env: { ...process.env, TMPDIR: runtimeDir },\n      encoding: \"utf8\",\n      timeout: 10_000,\n    });\n\n    const result = JSON.parse(output);\n    expect(result.ok).toBe(true);\n    expect(result.daemon.running).toBe(false);\n    expect(result.windows).toEqual([]);\n  });\n});\n\nafterAll(() => {\n  for (const dir of tmpRoots) rmSync(dir, { recursive: true, force: true });\n});\n\n\n--- test/cli-options.test.ts\nimport { describe, expect, test } from \"bun:test\";\nimport { execFileSync, spawnSync } from \"node:child_process\";\nimport { readFileSync } from \"node:fs\";\n\nfunction cli(args: string[]) {\n  return execFileSync(process.execPath, [\"src/cli.ts\", ...args], { encoding: \"utf8\" });\n}\n\ndescribe(\"CLI option surface\", () => {\n  test(\"prints package version via command and flags\", () => {\n    const expected = `${JSON.parse(readFileSync(\"package.json\", \"utf8\")).version}\\n`;\n\n    expect(cli([\"version\"])).toBe(expected);\n    expect(cli([\"--version\"])).toBe(expected);\n    expect(cli([\"-v\"])).toBe(expected);\n  });\n\n  test(\"navigate only advertises URL loading policy flags it uses\", () => {\n    const help = cli([\"navigate\", \"--help\"]);\n    expect(help).toContain(\"--allow-remote\");\n    expect(help).not.toContain(\"--allow-bridge\");\n    expect(help).not.toContain(\"--allow-remote-resources\");\n    expect(help).not.toContain(\"--csp\");\n  });\n\n  test(\"set-html only advertises HTML policy flags it uses\", () => {\n    const help = cli([\"set-html\", \"--help\"]);\n    expect(help).toContain(\"--allow-remote-resources\");\n    expect(help).toContain(\"--csp <policy>\");\n    expect(help).not.toContain(\"--allow-remote\\n\");\n    expect(help).not.toContain(\"--allow-bridge\");\n  });\n\n  test(\"unsupported policy flags are rejected instead of silently ignored\", () => {\n    const result = spawnSync(\n      process.execPath,\n      [\n        \"src/cli.ts\",\n        \"navigate\",\n        \"-w\",\n        \"x\",\n        \"--url\",\n        \"http://localhost\",\n        \"--csp\",\n        \"default-src 'self'\",\n      ],\n      { encoding: \"utf8\" },\n    );\n    expect(result.status).toBe(2);\n    expect(result.stdout).toContain(\"unknown option\");\n  });\n\n  test(\"open --watch rejects non-file HTML sources\", () => {\n    const result = spawnSync(\n      process.execPath,\n      [\"src/cli.ts\", \"open\", \"--html\", \"<h1>x</h1>\", \"--watch\"],\n      { encoding: \"utf8\" },\n    );\n    expect(result.status).toBe(2);\n    expect(result.stdout).toContain(\"--watch requires a file-based html-source\");\n  });\n});\n\nwarning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.\nhook: SessionStart\nhook: SessionStart Completed\nhook: UserPromptSubmit\nhook: UserPromptSubmit Completed\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\n",
+      "provider": "codex",
+      "model": "gpt-5.5-codex",
+      "reasoningEffort": "low",
+      "createdAt": "2026-06-20T07:23:48.464Z"
     }
   ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-28T21:18:15.052Z"
+  "updatedAt": "2026-06-20T07:23:48.464Z"
 }

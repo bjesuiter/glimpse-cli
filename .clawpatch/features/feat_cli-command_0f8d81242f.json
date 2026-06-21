@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "featureId": "feat_cli-command_0f8d81242f",
   "title": "CLI command glimpse",
-  "summary": "Package bin 'glimpse' at ./src/cli.ts.",
+  "summary": "Package bin 'glimpse' at ./dist/cli.mjs, source src/cli.ts.",
   "kind": "cli-command",
   "source": "package-json-bin",
   "confidence": "high",
@@ -17,16 +17,57 @@
   "ownedFiles": [
     {
       "path": "src/cli.ts",
-      "reason": "package bin entrypoint"
+      "reason": "entrypoint"
     }
   ],
   "contextFiles": [
     {
       "path": "package.json",
       "reason": "package manifest"
+    },
+    {
+      "path": "test/cli-helpers.test.ts",
+      "reason": "nearby test"
+    },
+    {
+      "path": "test/cli-list.test.ts",
+      "reason": "nearby test"
+    },
+    {
+      "path": "test/cli-options.test.ts",
+      "reason": "nearby test"
+    },
+    {
+      "path": "test/ipc-client-compiled.test.ts",
+      "reason": "nearby test"
+    },
+    {
+      "path": "test/ipc-client.test.ts",
+      "reason": "nearby test"
     }
   ],
-  "tests": [],
+  "tests": [
+    {
+      "path": "test/cli-helpers.test.ts",
+      "command": "npm run test"
+    },
+    {
+      "path": "test/cli-list.test.ts",
+      "command": "npm run test"
+    },
+    {
+      "path": "test/cli-options.test.ts",
+      "command": "npm run test"
+    },
+    {
+      "path": "test/ipc-client-compiled.test.ts",
+      "command": "npm run test"
+    },
+    {
+      "path": "test/ipc-client.test.ts",
+      "command": "npm run test"
+    }
+  ],
   "tags": [
     "node",
     "cli"
@@ -36,7 +77,7 @@
     "filesystem",
     "process-exec"
   ],
-  "status": "fixed",
+  "status": "error",
   "lock": null,
   "findingIds": [
     "fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201",
@@ -53,8 +94,17 @@
       "model": null,
       "reasoningEffort": null,
       "createdAt": "2026-05-28T20:32:20.966Z"
+    },
+    {
+      "runId": "20260620T072338-f06eea",
+      "kind": "review-error",
+      "summary": "codex provider failed: OpenAI Codex v0.140.0\n--------\nworkdir: /Users/bjesuiter/Develop/bjesuiter/glimpse-cli\nmodel: gpt-5.5-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: low\nreasoning summaries: none\nsession id: 019ee3e9-efc7-7e83-a1e9-97a2907f2772\n--------\nuser\nYou are reviewing one semantic feature for clawpatch.\n\nReturn strict JSON only. No markdown fences.\n\nProject:\n{\n  \"name\": \"glimpse-cli\",\n  \"detected\": {\n    \"languages\": [\n      \"typescript\",\n      \"javascript\"\n    ],\n    \"frameworks\": [],\n    \"packageManagers\": [\n      \"node\"\n    ],\n    \"commands\": {\n      \"typecheck\": \"npm run typecheck\",\n      \"lint\": null,\n      \"format\": null,\n      \"test\": \"npm run test\"\n    }\n  }\n}\n\nFeature:\n{\n  \"schemaVersion\": 1,\n  \"featureId\": \"feat_cli-command_0f8d81242f\",\n  \"title\": \"CLI command glimpse\",\n  \"summary\": \"Package bin 'glimpse' at ./dist/cli.mjs, source src/cli.ts.\",\n  \"kind\": \"cli-command\",\n  \"source\": \"package-json-bin\",\n  \"confidence\": \"high\",\n  \"entrypoints\": [\n    {\n      \"path\": \"src/cli.ts\",\n      \"symbol\": null,\n      \"route\": null,\n      \"command\": \"glimpse\"\n    }\n  ],\n  \"ownedFiles\": [\n    {\n      \"path\": \"src/cli.ts\",\n      \"reason\": \"entrypoint\"\n    }\n  ],\n  \"contextFiles\": [\n    {\n      \"path\": \"package.json\",\n      \"reason\": \"package manifest\"\n    },\n    {\n      \"path\": \"test/cli-helpers.test.ts\",\n      \"reason\": \"nearby test\"\n    },\n    {\n      \"path\": \"test/cli-list.test.ts\",\n      \"reason\": \"nearby test\"\n    },\n    {\n      \"path\": \"test/cli-options.test.ts\",\n      \"reason\": \"nearby test\"\n    },\n    {\n      \"path\": \"test/ipc-client-compiled.test.ts\",\n      \"reason\": \"nearby test\"\n    },\n    {\n      \"path\": \"test/ipc-client.test.ts\",\n      \"reason\": \"nearby test\"\n    }\n  ],\n  \"tests\": [\n    {\n      \"path\": \"test/cli-helpers.test.ts\",\n      \"command\": \"npm run test\"\n    },\n    {\n      \"path\": \"test/cli-list.test.ts\",\n      \"command\": \"npm run test\"\n    },\n    {\n      \"path\": \"test/cli-options.test.ts\",\n      \"command\": \"npm run test\"\n    },\n    {\n      \"path\": \"test/ipc-client-compiled.test.ts\",\n      \"command\": \"npm run test\"\n    },\n    {\n      \"path\": \"test/ipc-client.test.ts\",\n      \"command\": \"npm run test\"\n    }\n  ],\n  \"tags\": [\n    \"node\",\n    \"cli\"\n  ],\n  \"trustBoundaries\": [\n    \"user-input\",\n    \"filesystem\",\n    \"process-exec\"\n  ],\n  \"status\": \"claimed\",\n  \"lock\": {\n    \"lockedByRunId\": \"20260620T072338-f06eea\",\n    \"lockedAt\": \"2026-06-20T07:23:38.423Z\",\n    \"hostname\": \"zephir-m3\",\n    \"pid\": 87996\n  },\n  \"findingIds\": [\n    \"fnd_sig-feat-cli-command-0f8d81242f-_ac54fef201\",\n    \"fnd_sig-feat-cli-command-0f8d81242f-_648bc03573\",\n    \"fnd_sig-feat-cli-command-0f8d81242f-_bbfefc4f25\"\n  ],\n  \"patchAttemptIds\": [],\n  \"analysisHistory\": [\n    {\n      \"runId\": \"20260528T203017-f145c2\",\n      \"kind\": \"review\",\n      \"summary\": \"3 finding(s)\",\n      \"provider\": \"codex\",\n      \"model\": null,\n      \"reasoningEffort\": null,\n      \"createdAt\": \"2026-05-28T20:32:20.966Z\"\n    }\n  ],\n  \"createdAt\": \"2026-05-28T20:29:33.111Z\",\n  \"updatedAt\": \"2026-06-20T07:23:38.427Z\"\n}\n\nReview categories:\n- correctness bugs\n- security issues\n- race/concurrency bugs\n- data loss/corruption\n- resource leaks\n- bad error handling\n- permission/auth gaps\n- API contract mismatches\n- missing/weak tests\n- release/build hazards\n- maintainability risks with concrete impact\n\n\n\nInspect owned files, context files, and linked tests. Treat included tests as first-class\nevidence of intended behavior. If tests contradict a suspected bug, either skip it or\ndowngrade confidence and explain the uncertainty. Avoid reporting behavior as a bug\nsolely because a helper name implies a broader contract. Deduplicate sibling/root-cause\nissues: when the same bug pattern appears in multiple owned files, emit one finding\nwith multiple evidence refs instead of separate one-off findings.\n\nAvoid speculative low-evidence findings. Evidence must point at included files.\n\nJSON shape:\n{\n  \"findings\": [\n    {\n      \"title\": \"string\",\n      \"category\": \"bug|security|p\n...[trimmed]...\n;\n\n  test(\"navigate only advertises URL loading policy flags it uses\", () => {\n    const help = cli([\"navigate\", \"--help\"]);\n    expect(help).toContain(\"--allow-remote\");\n    expect(help).not.toContain(\"--allow-bridge\");\n    expect(help).not.toContain(\"--allow-remote-resources\");\n    expect(help).not.toContain(\"--csp\");\n  });\n\n  test(\"set-html only advertises HTML policy flags it uses\", () => {\n    const help = cli([\"set-html\", \"--help\"]);\n    expect(help).toContain(\"--allow-remote-resources\");\n    expect(help).toContain(\"--csp <policy>\");\n    expect(help).not.toContain(\"--allow-remote\\n\");\n    expect(help).not.toContain(\"--allow-bridge\");\n  });\n\n  test(\"unsupported policy flags are rejected instead of silently ignored\", () => {\n    const result = spawnSync(\n      process.execPath,\n      [\n        \"src/cli.ts\",\n        \"navigate\",\n        \"-w\",\n        \"x\",\n        \"--url\",\n        \"http://localhost\",\n        \"--csp\",\n        \"default-src 'self'\",\n      ],\n      { encoding: \"utf8\" },\n    );\n    expect(result.status).toBe(2);\n    expect(result.stdout).toContain(\"unknown option\");\n  });\n\n  test(\"open --watch rejects non-file HTML sources\", () => {\n    const result = spawnSync(\n      process.execPath,\n      [\"src/cli.ts\", \"open\", \"--html\", \"<h1>x</h1>\", \"--watch\"],\n      { encoding: \"utf8\" },\n    );\n    expect(result.status).toBe(2);\n    expect(result.stdout).toContain(\"--watch requires a file-based html-source\");\n  });\n});\n\n\n--- test/ipc-client-compiled.test.ts\nimport { describe, expect, test } from \"bun:test\";\nimport { daemonSpawnCommand } from \"../src/ipc/client.ts\";\n\ndescribe(\"ipc client compiled executable support\", () => {\n  test(\"spawns the compiled binary in daemon mode when running from bunfs\", () => {\n    expect(daemonSpawnCommand(\"file:///$bunfs/root/bin\", \"/tmp/glimpse\")).toEqual({\n      command: \"/tmp/glimpse\",\n      args: [\"--glimpse-daemon\"],\n    });\n  });\n\n  test(\"spawns the source daemon entrypoint in normal source runs\", () => {\n    const command = daemonSpawnCommand(\"file:///repo/src/ipc/client.ts\", \"/usr/bin/node\");\n    expect(command.command).toBe(\"/usr/bin/node\");\n    expect(command.args[0]).toEndWith(\"/repo/src/daemon-main.ts\");\n  });\n});\n\n\n--- test/ipc-client.test.ts\nimport { afterAll, describe, expect, test } from \"bun:test\";\nimport { mkdirSync, mkdtempSync, rmSync, writeFileSync } from \"node:fs\";\nimport { join } from \"node:path\";\nimport { tmpdir } from \"node:os\";\nimport { request } from \"../src/ipc/client.ts\";\nimport { socketPath } from \"../src/platform/paths.ts\";\n\nconst tmpRoots: string[] = [];\nconst originalTmpdir = process.env.TMPDIR;\n\nfunction isolatedRuntime() {\n  mkdirSync(tmpdir(), { recursive: true });\n  const dir = mkdtempSync(join(tmpdir(), \"glimpse-ipc-\"));\n  tmpRoots.push(dir);\n  process.env.TMPDIR = dir;\n  return dir;\n}\n\ndescribe(\"ipc client daemon recovery\", () => {\n  test(\"autostart recovers when a stale socket path already exists\", async () => {\n    isolatedRuntime();\n    writeFileSync(socketPath(), \"stale socket placeholder\");\n\n    const result = await request(\"ping\");\n\n    expect(result).toEqual({ pong: true });\n  }, 10_000);\n});\n\nafterAll(() => {\n  if (originalTmpdir === undefined) delete process.env.TMPDIR;\n  else process.env.TMPDIR = originalTmpdir;\n  for (const dir of tmpRoots) rmSync(dir, { recursive: true, force: true });\n});\n\nwarning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.\nhook: SessionStart\nhook: SessionStart Completed\nhook: UserPromptSubmit\nhook: UserPromptSubmit Completed\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\n",
+      "provider": "codex",
+      "model": "gpt-5.5-codex",
+      "reasoningEffort": "low",
+      "createdAt": "2026-06-20T07:23:48.461Z"
     }
   ],
   "createdAt": "2026-05-28T20:29:33.111Z",
-  "updatedAt": "2026-05-29T12:34:21.404Z"
+  "updatedAt": "2026-06-20T07:23:48.461Z"
 }

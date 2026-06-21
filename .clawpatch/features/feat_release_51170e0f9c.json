@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "featureId": "feat_release_775032a0f4",
-  "title": "Package script start",
-  "summary": "Package script 'start': bun src/cli.ts",
+  "featureId": "feat_release_51170e0f9c",
+  "title": "Package script build",
+  "summary": "Package script 'build': tsdown",
   "kind": "release",
   "source": "package-json-script",
   "confidence": "medium",
   "entrypoints": [
     {
       "path": "package.json",
-      "symbol": "start",
+      "symbol": "build",
       "route": null,
-      "command": "start"
+      "command": "build"
     }
   ],
   "ownedFiles": [
@@ -32,21 +32,11 @@
     "process-exec",
     "filesystem"
   ],
-  "status": "reviewed",
+  "status": "pending",
   "lock": null,
   "findingIds": [],
   "patchAttemptIds": [],
-  "analysisHistory": [
-    {
-      "runId": "20260528T203017-f145c2",
-      "kind": "review",
-      "summary": "0 finding(s)",
-      "provider": "codex",
-      "model": null,
-      "reasoningEffort": null,
-      "createdAt": "2026-05-28T20:32:31.245Z"
-    }
-  ],
-  "createdAt": "2026-05-28T20:29:33.111Z",
+  "analysisHistory": [],
+  "createdAt": "2026-06-20T07:23:38.112Z",
   "updatedAt": "2026-06-20T07:23:38.112Z"
 }

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "featureId": "feat_cli-command_9786f8231f",
+  "title": "Node source scripts",
+  "summary": "Node/TypeScript source file scripts/build-binaries.ts.",
+  "kind": "cli-command",
+  "source": "node-source-group",
+  "confidence": "medium",
+  "entrypoints": [
+    {
+      "path": "package.json",
+      "symbol": "scripts",
+      "route": null,
+      "command": null
+    }
+  ],
+  "ownedFiles": [
+    {
+      "path": "scripts/build-binaries.ts",
+      "reason": "source group scripts"
+    }
+  ],
+  "contextFiles": [
+    {
+      "path": "package.json",
+      "reason": "package manifest"
+    }
+  ],
+  "tests": [],
+  "tags": [
+    "node",
+    "typescript",
+    "source-group",
+    "project:glimpse-cli",
+    "project-root:."
+  ],
+  "trustBoundaries": [
+    "user-input",
+    "process-exec"
+  ],
+  "status": "error",
+  "lock": null,
+  "findingIds": [],
+  "patchAttemptIds": [],
+  "analysisHistory": [
+    {
+      "runId": "20260620T072338-f06eea",
+      "kind": "review-error",
+      "summary": "codex provider failed: OpenAI Codex v0.140.0\n--------\nworkdir: /Users/bjesuiter/Develop/bjesuiter/glimpse-cli\nmodel: gpt-5.5-codex\nprovider: openai\napproval: never\nsandbox: read-only\nreasoning effort: low\nreasoning summaries: none\nsession id: 019ee3e9-f00c-7ae3-bd3e-9cd384eaf907\n--------\nuser\nYou are reviewing one semantic feature for clawpatch.\n\nReturn strict JSON only. No markdown fences.\n\nProject:\n{\n  \"name\": \"glimpse-cli\",\n  \"detected\": {\n    \"languages\": [\n      \"typescript\",\n      \"javascript\"\n    ],\n    \"frameworks\": [],\n    \"packageManagers\": [\n      \"node\"\n    ],\n    \"commands\": {\n      \"typecheck\": \"npm run typecheck\",\n      \"lint\": null,\n      \"format\": null,\n      \"test\": \"npm run test\"\n    }\n  }\n}\n\nFeature:\n{\n  \"schemaVersion\": 1,\n  \"featureId\": \"feat_cli-command_9786f8231f\",\n  \"title\": \"Node source scripts\",\n  \"summary\": \"Node/TypeScript source file scripts/build-binaries.ts.\",\n  \"kind\": \"cli-command\",\n  \"source\": \"node-source-group\",\n  \"confidence\": \"medium\",\n  \"entrypoints\": [\n    {\n      \"path\": \"package.json\",\n      \"symbol\": \"scripts\",\n      \"route\": null,\n      \"command\": null\n    }\n  ],\n  \"ownedFiles\": [\n    {\n      \"path\": \"scripts/build-binaries.ts\",\n      \"reason\": \"source group scripts\"\n    }\n  ],\n  \"contextFiles\": [\n    {\n      \"path\": \"package.json\",\n      \"reason\": \"package manifest\"\n    }\n  ],\n  \"tests\": [],\n  \"tags\": [\n    \"node\",\n    \"typescript\",\n    \"source-group\",\n    \"project:glimpse-cli\",\n    \"project-root:.\"\n  ],\n  \"trustBoundaries\": [\n    \"user-input\",\n    \"process-exec\"\n  ],\n  \"status\": \"claimed\",\n  \"lock\": {\n    \"lockedByRunId\": \"20260620T072338-f06eea\",\n    \"lockedAt\": \"2026-06-20T07:23:38.423Z\",\n    \"hostname\": \"zephir-m3\",\n    \"pid\": 87996\n  },\n  \"findingIds\": [],\n  \"patchAttemptIds\": [],\n  \"analysisHistory\": [],\n  \"createdAt\": \"2026-06-20T07:23:38.112Z\",\n  \"updatedAt\": \"2026-06-20T07:23:38.427Z\"\n}\n\nReview categories:\n- correctness bugs\n- security issues\n- race/concurrency bugs\n- data loss/corruption\n- resource leaks\n- bad error handling\n- permission/auth gaps\n- API contract mismatches\n- missing/weak tests\n- release/build hazards\n- maintainability risks with concrete impact\n\n\n\nInspect owned files, context files, and linked tests. Treat included tests as first-class\nevidence of intended behavior. If tests contradict a suspected bug, either skip it or\ndowngrade confidence and explain the uncertainty. Avoid reporting behavior as a bug\nsolely because a helper name implies a broader contract. Deduplicate sibling/root-cause\nissues: when the same bug pattern appears in multiple owned files, emit one finding\nwith multiple evidence refs instead of separate one-off findings.\n\nAvoid speculative low-evidence findings. Evidence must point at included files.\n\nJSON shape:\n{\n  \"findings\": [\n    {\n      \"title\": \"string\",\n      \"category\": \"bug|security|performance|concurrency|api-contract|data-loss|test-gap|docs-gap|build-release|maintainability\",\n      \"severity\": \"critical|high|medium|low\",\n      \"confidence\": \"high|medium|low\",\n      \"evidence\": [{\"path\":\"string\",\"startLine\":1,\"endLine\":1,\"symbol\":null,\"quote\":null}],\n      \"reasoning\": \"string\",\n      \"reproduction\": null,\n      \"recommendation\": \"string\",\n      \"whyTestsDoNotAlreadyCoverThis\": \"string\",\n      \"suggestedRegressionTest\": \"string or null\",\n      \"minimumFixScope\": \"string\"\n    }\n  ],\n  \"inspected\": {\"files\":[\"string\"],\"symbols\":[\"string\"],\"notes\":[\"string\"]}\n}\n\nFiles:\n--- scripts/build-binaries.ts\n#!/usr/bin/env bun\nimport { existsSync, mkdirSync, rmSync, writeFileSync } from \"node:fs\";\nimport { dirname, join } from \"node:path\";\nimport { spawnSync } from \"node:child_process\";\n\nconst root = join(import.meta.dir, \"..\");\nconst distDir = join(root, \"dist\");\nconst hostDir = join(root, \".build\", \"glimpse-hosts\");\nconst swiftSource = join(root, \"node_modules\", \"glimpseui\", \"src\", \"glimpse.swift\");\n\ntype Target = { bun: string; out: string };\n\nconst targets: Target[] = [\n  { bun: \"bun-darwin-arm64\", out: \"glimpse-darwin-arm64\" },\n  { bun: \"bun-linux-arm64\", out:\n...[trimmed]...\niteFileSync(path, \"placeholder\");\n}\n\nfunction prepareDarwinHost() {\n  const output = join(hostDir, \"darwin-arm64\", \"glimpse\");\n  mkdirSync(dirname(output), { recursive: true });\n\n  if (process.platform !== \"darwin\") {\n    ensurePlaceholder(output);\n    return;\n  }\n  if (existsSync(output)) return;\n  if (!commandExists(\"swiftc\") || !commandExists(\"lipo\")) {\n    throw new Error(\"Preparing the bundled macOS Glimpse host requires swiftc and lipo.\");\n  }\n\n  const tmp = join(root, \".build\", \"tmp\", \"darwin-host\");\n  rmSync(tmp, { recursive: true, force: true });\n  mkdirSync(tmp, { recursive: true });\n\n  run(\"swiftc\", [\"-O\", \"-target\", \"arm64-apple-macosx13.0\", swiftSource, \"-o\", output]);\n}\n\nfunction currentTarget(): Target {\n  if (process.platform === \"win32\")\n    throw new Error(\"Windows binary builds are currently disabled.\");\n  const os = process.platform === \"darwin\" ? \"darwin\" : \"linux\";\n  const arch = process.arch === \"arm64\" ? \"arm64\" : \"x64\";\n  return targets.find((target) => target.bun === `bun-${os}-${arch}`) ?? targets[0];\n}\n\nfunction parseSelectedTargets(): Target[] {\n  const targetArg = process.argv\n    .find((arg) => arg.startsWith(\"--target=\"))\n    ?.slice(\"--target=\".length);\n  if (targetArg) {\n    const target = targets.find(\n      (candidate) => candidate.bun === targetArg || candidate.out === targetArg,\n    );\n    if (!target) throw new Error(`Unsupported target: ${targetArg}`);\n    return [target];\n  }\n  if (process.argv.includes(\"--current\")) return [currentTarget()];\n  return targets;\n}\n\nfunction build(target: Target) {\n  const outfile = join(distDir, target.out);\n  run(\"bun\", [\n    \"build\",\n    \"--compile\",\n    `--target=${target.bun}`,\n    `--outfile=${outfile}`,\n    \"src/bin.ts\",\n  ]);\n}\n\nmkdirSync(distDir, { recursive: true });\nconst selectedTargets = parseSelectedTargets();\nprepareDarwinHost();\n\nfor (const target of selectedTargets) build(target);\n\n\n--- package.json\n{\n  \"name\": \"glimpse-cli\",\n  \"version\": \"0.2.5\",\n  \"license\": \"MIT\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/bjesuiter/glimpse-cli.git\"\n  },\n  \"bin\": {\n    \"glimpse\": \"./dist/cli.mjs\"\n  },\n  \"files\": [\n    \"dist\",\n    \"README.md\",\n    \"docs\",\n    \"examples\",\n    \"skills\"\n  ],\n  \"type\": \"module\",\n  \"publishConfig\": {\n    \"access\": \"public\",\n    \"registry\": \"https://registry.npmjs.org\"\n  },\n  \"scripts\": {\n    \"build\": \"tsdown\",\n    \"build:binary\": \"bun scripts/build-binaries.ts --current\",\n    \"build:binaries\": \"bun scripts/build-binaries.ts\",\n    \"prepack\": \"bun run build >/dev/null\",\n    \"test\": \"bun test ./test\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"lint\": \"oxlint src test scripts tsdown.config.ts\",\n    \"lint:fix\": \"oxlint src test scripts tsdown.config.ts --fix\",\n    \"format\": \"oxfmt src test scripts package.json tsconfig.json tsdown.config.ts\",\n    \"format:check\": \"oxfmt src test scripts package.json tsconfig.json tsdown.config.ts --check\",\n    \"start\": \"bun src/cli.ts\"\n  },\n  \"dependencies\": {\n    \"commander\": \"^15.0.0\",\n    \"evlog\": \"^2.19.1\",\n    \"glimpseui\": \"^0.8.1\",\n    \"valibot\": \"^1.1.0\"\n  },\n  \"devDependencies\": {\n    \"@types/bun\": \"latest\",\n    \"oxfmt\": \"^0.55.0\",\n    \"oxlint\": \"^1.70.0\",\n    \"tsdown\": \"^0.22.3\",\n    \"typescript\": \"^6.0.3\"\n  },\n  \"engines\": {\n    \"bun\": \">=1.3.14\",\n    \"node\": \">=22.18.0\"\n  },\n  \"packageManager\": \"bun@1.3.14\"\n}\n\nwarning: Skill descriptions were shortened to fit the 2% skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.\nhook: SessionStart\nhook: SessionStart Completed\nhook: UserPromptSubmit\nhook: UserPromptSubmit Completed\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\nERROR: {\"type\":\"error\",\"status\":400,\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The 'gpt-5.5-codex' model is not supported when using Codex with a ChatGPT account.\"}}\n",
+      "provider": "codex",
+      "model": "gpt-5.5-codex",
+      "reasoningEffort": "low",
+      "createdAt": "2026-06-20T07:23:48.531Z"
+    }
+  ],
+  "createdAt": "2026-06-20T07:23:38.112Z",
+  "updatedAt": "2026-06-20T07:23:48.531Z"
+}
