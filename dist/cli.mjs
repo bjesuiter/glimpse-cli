@@ -189,6 +189,9 @@ async function assertUrlAllowed(raw, allowRemote) {
 	return trust;
 }
 //#endregion
+//#region package.json
+var version = "0.2.6";
+//#endregion
 //#region src/cli-helpers.ts
 function escapeHtmlAttribute(value) {
 	return value.replaceAll("&", "&amp;").replaceAll("\"", "&quot;").replaceAll("'", "&#39;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
@@ -274,7 +277,7 @@ function addOpts(c) {
 	return c.option("--name <name>", "Stable window name/handle.").option("--replace", "Replace an existing window with the same name.").option("--options-json <json>", "Raw Glimpse window options JSON.").option("--width <n>", "Window width in CSS pixels.", Number).option("--height <n>", "Window height in CSS pixels.", Number).option("--title <title>", "Window title.").option("--x <n>", "Initial window x position.", Number).option("--y <n>", "Initial window y position.", Number).option("--frameless", "Open without native window frame.").option("--floating", "Keep window above normal windows.").option("--transparent", "Enable transparent window background.").option("--click-through", "Let mouse clicks pass through the window.").option("--follow-cursor", "Keep the window near the cursor.").option("--follow-mode <mode>", "Cursor-following mode passed to Glimpse.").option("--cursor-offset <x,y>", "Cursor-following offset, for example `12,20`.");
 }
 const here = dirname(fileURLToPath(import.meta.url));
-const packageVersion = JSON.parse(readFileSync(resolve(here, "..", "package.json"), "utf8")).version;
+const packageVersion = version;
 const skillsDir = resolve(here, "..", "skills");
 const examplesDir = resolve(here, "..", "examples");
 const skillNames = ["glimpse-open", "glimpse-prompt"];

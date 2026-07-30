@@ -8,6 +8,7 @@ import { parseDuration } from "./utils/duration.ts";
 import { parseJson, readDataFile, readStdin } from "./utils/json.ts";
 import { assertUrlAllowed } from "./platform/url-policy.ts";
 import { promptWindow, withBridge } from "./runtime/glimpse-adapter.ts";
+import packageJson from "../package.json" with { type: "json" };
 import { iframeForUrl } from "./cli-helpers.ts";
 
 const DEFAULT_CSP =
@@ -121,9 +122,6 @@ function addOpts(c: Command) {
 }
 
 const here = dirname(fileURLToPath(import.meta.url));
-const packageJson = JSON.parse(readFileSync(resolve(here, "..", "package.json"), "utf8")) as {
-  version: string;
-};
 const packageVersion = packageJson.version;
 const skillsDir = resolve(here, "..", "skills");
 const examplesDir = resolve(here, "..", "examples");
