@@ -283,7 +283,8 @@ function bundledExamples() {
 	const files = readdirSync(examplesDir).filter((file) => file.endsWith(".sh")).sort();
 	if (files.length === 0) return "\nEXAMPLE FILES\n  No bundled shell examples found.\n";
 	return "\nEXAMPLE FILES\n" + files.map((file) => {
-		return `\n  ${file}\n\n${readFileSync(join(examplesDir, file), "utf8").trimEnd().split("\n").map((line) => `    ${line}`).join("\n")}`;
+		const path = join(examplesDir, file);
+		return `\n  ${file}\n\n${readFileSync(path, "utf8").trimEnd().split("\n").map((line) => `    ${line}`).join("\n")}`;
 	}).join("\n") + "\n";
 }
 const usageText = `GLIMPSE(1)                         User Commands                         GLIMPSE(1)
