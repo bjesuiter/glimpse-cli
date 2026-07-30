@@ -19,10 +19,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      # danielroe/uppt v0.5.1, pinned to SHA as recommended by upstream.
-      - uses: danielroe/uppt/pr@e4a14cf018abc126b709938c2c2c61d62b6d859e
+      # danielroe/uppt v0.5.5, pinned to SHA as recommended by upstream.
+      - uses: danielroe/uppt/pr@7bcfb5397c37202ef882363f755423130419d28a
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: "26"
 
   release:
     if: |
@@ -38,10 +39,11 @@ jobs:
       contents: write
       actions: write
     steps:
-      # danielroe/uppt v0.5.1, pinned to SHA as recommended by upstream.
-      - uses: danielroe/uppt/release@e4a14cf018abc126b709938c2c2c61d62b6d859e
+      # danielroe/uppt v0.5.5, pinned to SHA as recommended by upstream.
+      - uses: danielroe/uppt/release@7bcfb5397c37202ef882363f755423130419d28a
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: "26"
 
   pack:
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && startsWith(github.ref, 'refs/tags/v')
@@ -54,7 +56,7 @@ jobs:
       files: ${{ steps.pack.outputs.files }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
@@ -77,9 +79,10 @@ jobs:
         run: bun run build
 
       - id: pack
-        # danielroe/uppt v0.5.1, pinned to SHA as recommended by upstream.
-        uses: danielroe/uppt/pack@e4a14cf018abc126b709938c2c2c61d62b6d859e
+        # danielroe/uppt v0.5.5, pinned to SHA as recommended by upstream.
+        uses: danielroe/uppt/pack@7bcfb5397c37202ef882363f755423130419d28a
         with:
+          node-version: "26"
           install: false
           checkout: false
 
@@ -98,9 +101,9 @@ jobs:
     environment: npm
     steps:
       - name: Set up Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: "24"
+          node-version: "26"
           registry-url: "https://registry.npmjs.org"
           package-manager-cache: false
 
